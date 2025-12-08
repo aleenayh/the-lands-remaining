@@ -85,12 +85,14 @@ export function Conditions({ character }: { character: Character }) {
 	);
 }
 
-function ConditionInput({
+export function ConditionInput({
 	condition,
 	onSave,
+	placeholder = "Add condition...",
 }: {
 	condition: string;
 	onSave: (value: string) => void;
+	placeholder?: string;
 }) {
 	const [localText, setLocalText] = useState(condition);
 
@@ -125,7 +127,7 @@ function ConditionInput({
 				onChange={(e) => setLocalText(e.target.value)}
 				onBlur={handleSave}
 				onKeyDown={handleKeyDown}
-				placeholder="Add condition..."
+				placeholder={placeholder}
 				className={`border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent flex-grow ${
 					isDirty ? "border-yellow-500/50" : "border-theme-border"
 				}`}
@@ -139,6 +141,8 @@ function ConditionInput({
 	);
 }
 
-function BlankCondition() {
-	return <div className="flex-grow">______________________________</div>;
+export function BlankCondition() {
+	return (
+		<div className="flex-grow font-mono">______________________________</div>
+	);
 }

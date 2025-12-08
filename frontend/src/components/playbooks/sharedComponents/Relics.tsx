@@ -1,6 +1,8 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useGame } from "../../../context/GameContext";
+import { PencilIconButton } from "../creation/PencilIconButton";
 import type { Character } from "../types";
+import { BlankCondition, ConditionInput } from "./Conditions";
 
 export function Relics({ character }: { character: Character }) {
 	const {
@@ -55,6 +57,17 @@ export function Relics({ character }: { character: Character }) {
 							{relic.title}
 						</h3>
 						<p className="text-sm leading-relaxed">{parsed.elements}</p>
+						{editable &&
+							relic.extraLines > 0 &&
+							Array.from({ length: relic.extraLines }).map((_, index) => (
+								<EditableLine
+									relic={relic}
+									key={`extra-line-${
+										// biome-ignore lint/suspicious/noArrayIndexKey: order unimportant
+										index
+									}`}
+								/>
+							))}
 					</div>
 				);
 			})}
@@ -65,7 +78,7 @@ export function Relics({ character }: { character: Character }) {
 /**
  * Parse relic text and render <aspect> tags with checkboxes
  */
-function parseRelicText(
+export function parseRelicText(
 	text: string,
 	relicAspects: number[],
 	startIndex: number,
@@ -145,5 +158,63 @@ function AspectSpan({
 				{text}
 			</strong>
 		</span>
+	);
+}
+
+function EditableLine({
+	relic,
+}: {
+	relic: { title: string; text: string; extraLines: number };
+}) {
+	const [showEdit, setShowEdit] = useState(false);
+	const {
+		updateGameState,
+		gameState,
+		user: { id },
+	} = useGame();
+	const character = gameState.players.find(
+		(player) => player.id === id,
+	)?.character;
+
+	const onSave = (value: string) => {
+		if (!character) return;
+		const newRelicText = `${relic.text}\n<aspect>${value}</aspect>`;
+		const newRelics = character.relics.map((rel) =>
+			rel.title === relic.title
+				? {
+						...rel,
+						text: newRelicText,
+						extraLines: relic.extraLines - 1,
+					}
+				: rel,
+		);
+		updateGameState({
+			players: gameState.players.map((player) =>
+				player.character && player.id === id
+					? { ...player, character: { ...player.character, relics: newRelics } }
+					: player,
+			),
+		});
+		setShowEdit(false);
+	};
+
+	return (
+		<div className="flex gap-2 items-center">
+			{showEdit ? (
+				<ConditionInput
+					condition={""}
+					placeholder={`Add aspect...`}
+					onSave={onSave}
+				/>
+			) : (
+				<div className="flex-grow w-full flex gap-2 items-center ">
+					<BlankCondition />
+				</div>
+			)}
+			<PencilIconButton
+				isEditing={showEdit}
+				setIsEditing={() => setShowEdit(!showEdit)}
+			/>
+		</div>
 	);
 }
