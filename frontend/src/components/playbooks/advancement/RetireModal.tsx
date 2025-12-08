@@ -1,0 +1,104 @@
+import { Dialog } from "radix-ui";
+import { useGame } from "../../../context/GameContext";
+
+export function RetireCharacterModal() {
+	const {
+		gameState,
+		updateGameState,
+		user: { id },
+	} = useGame();
+	const character = gameState.players.find(
+		(player) => player.id === id,
+	)?.character;
+	if (!character || character.fireToCome !== 0) {
+		return (
+			<Dialog.Root>
+				<Dialog.Trigger asChild className="DialogTrigger">
+					<button type="button">Retire Character</button>
+				</Dialog.Trigger>
+				<Dialog.Portal>
+					<Dialog.Overlay className="DialogOverlay" />
+					<Dialog.Content className="DialogContent">
+						<Dialog.Title className="DialogTitle">
+							Retire Character
+						</Dialog.Title>
+						<div>
+							<p className="mb-4">
+								You may not retire a character with a Fire to Come marked. You
+								may instead Ascend the Throne.
+							</p>
+							<Dialog.Close
+								asChild
+								className="mx-auto w-1/3 flex justify-center items-center"
+							>
+								<button
+									type="button"
+									className="bg-theme-bg-accent text-theme-text-primary rounded-md p-2"
+								>
+									Close
+								</button>
+							</Dialog.Close>
+						</div>
+					</Dialog.Content>
+				</Dialog.Portal>
+			</Dialog.Root>
+		);
+	}
+
+	const retireCharacter = () => {
+		updateGameState({
+			players: gameState.players.map((player) =>
+				player.id === id ? { ...player, character: null } : player,
+			),
+		});
+	};
+
+	return (
+		<Dialog.Root>
+			<Dialog.Trigger asChild className="DialogTrigger">
+				<button type="button">Retire Character</button>
+			</Dialog.Trigger>
+			<Dialog.Portal>
+				<Dialog.Overlay className="DialogOverlay" />
+				<Dialog.Content className="DialogContent">
+					<Dialog.Title className="DialogTitle">Retire Character</Dialog.Title>
+					<div className="flex flex-col gap-4 overflow-y-auto max-h-[500px]">
+						<p className="mb-4">
+							Retire this character to a life of obscurity. Narrate what becomes
+							of them to the other Embers.
+						</p>
+						<p className="mb-4">
+							Pressing retire will remove the character from the tracked game
+							state. You will lose customizations and advancements, and will be
+							prompted to create a new character next time you join.
+						</p>
+						<p className="mb-4">
+							This action is{" "}
+							<strong className="text-theme-text-accent font-bold">
+								PERMANENT
+							</strong>
+							.
+						</p>
+					</div>
+					<div className="mx-auto w-2/3 gap-4 flex justify-center items-center">
+						<Dialog.Close asChild>
+							<button
+								type="button"
+								className="bg-theme-bg-accent text-theme-text-primary rounded-md p-2"
+							>
+								Cancel
+							</button>
+						</Dialog.Close>
+						<button
+							type="button"
+							className="bg-theme-bg-accent text-theme-text-primary rounded-md p-2"
+							onClick={retireCharacter}
+						>
+							Retire
+						</button>
+					</div>
+				</Dialog.Content>
+			</Dialog.Portal>
+		</Dialog.Root>
+	);
+}

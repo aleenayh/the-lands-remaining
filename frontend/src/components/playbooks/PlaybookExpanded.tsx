@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { AdvancementTab } from "./advancement/AdvancementTab";
 import { Cinders } from "./sharedComponents/Cinders";
 import { Conditions } from "./sharedComponents/Conditions";
 import { ExperienceTracker } from "./sharedComponents/ExperienceTracker";
@@ -9,7 +10,6 @@ import { Relics } from "./sharedComponents/Relics";
 import { Section } from "./sharedComponents/Section";
 import { Stats } from "./sharedComponents/Stats";
 import type { Character } from "./types";
-import { AdvancementTab } from "./sharedComponents/advancement/AdvancementTab";
 
 const tabsConfig = (character: Character) => [
 	{
@@ -34,7 +34,7 @@ const tabsConfig = (character: Character) => [
 	},
 	{
 		label: "Advance",
-		component: <AdvancementTab character={character} />,
+		component: <AdvancementTab />,
 	},
 ];
 export function PlaybookExpanded({ character }: { character: Character }) {
