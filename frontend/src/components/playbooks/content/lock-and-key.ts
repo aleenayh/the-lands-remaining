@@ -153,6 +153,34 @@ export const LockAndKey: PlaybookBase = {
 
 		"<strong>As you vanish into the world to face the Dimning itself, what final vow—spoken or unspoken—guides you?</strong>",
 	],
-	extraMoves: [],
-	startingMoves: [],
+	moves: [
+		{
+			title: "…Whose Walls Recall Wind…",
+			text: [
+				"You have near-superhuman dexterity and climbing ability. When you take this move, narrate a flashback showing a montage of your Crystal Door training. What impossible heights did you learn to scale? What precarious paths did you manage to navigate?",
+				"For you, climbing sheer surfaces; quickly navigating up, down, or through; keeping your balance in treacherous situations; and other feats of acrobatics don’t trigger the Light/Dark Move. If you’re also under fire in such a situation, you never roll worse than the Light Move.",
+			],
+		},
+		{
+			title: "…And Where Fire and Frost Break.",
+			text: [
+				"Your mastery of your body allows you to more easily survive both extreme heat and extreme cold. When you take this move, narrate a flashback showing a montage of your Crystal Door training. How did your mentors know you could survive in the frozen North without shelter? How did they know your body was a lock against heat?",
+				"Heat that would cause a normal person to pass out, and cold that would slow another’s heart, have no effect on you. If you’re subjected to heat that would damage the skin, such as fire, or cold that would cause frostbite, such as being caught in a blizzard, you never roll worse than the Light Move.",
+			],
+		},
+		{
+			title: "All Are Turned Without…",
+			text: [
+				"You are able to expel sickness and toxins from your body. When you take this move, narrate a flashback showing a montage of your Crystal Door training. What tests did you endure that would have instantly—or extremely slowly—killed someone else?",
+				"When you attempt to resist disease, poison, venom, and other toxins, any associated rolls are taken with advantage. When you Make Camp, you immediately clear any Conditions connected to such.",
+			],
+		},
+		{
+			title: "…But the Meek, Who Walk Freely.",
+			text: [
+				"You can make yourself preternaturally small, flat, and/or quiet in order to avoid detection. When you take this move, narrate a flashback showing a montage of your Crystal Door training. What seemingly-impregnable place did you have to infiltrate as part of your final test?",
+				"So long as there is a shadow or space at least half the thickness of your body, or ¼ your height, you can hide in it. People with normal senses will not find you, period. When hiding from animals, monsters, or humanoid creatures with supernatural senses, you never roll worse than the Light Move.",
+			],
+		},
+	],
 };

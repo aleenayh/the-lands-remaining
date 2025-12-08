@@ -159,7 +159,7 @@ export const CandleBearer: PlaybookBase = {
 		"What will happen if the pilgrims place their creation on the Throne?",
 		"Does your light cleanse the world of darkness, or does it send the weak, the timid, the powerless scrambling for the shadows? Does it deliver the world from darkness, or simply prove that everything can burn?",
 	],
-	extraMoves: [
+	moves: [
 		{
 			title: "...And Our Hearts Burn Unafraid.",
 			text: [
@@ -191,37 +191,6 @@ export const CandleBearer: PlaybookBase = {
 				"What do you intend to do?",
 				"What do you want from ________?",
 				"What frightens you?",
-			],
-		},
-	],
-	startingMoves: [
-		{
-			title: "The Waxen Order Keeps the Flame…",
-			text: [
-				"You have the tools and ingredients necessary to craft magical candles. Whenever you take a few hours to do so, mark Wax below and roll with Cinder. On a 10+, you create a candle; pick an Aspect from the list below and write it on an empty candle space. On a 7-9, as above, but also pick a complication and write it below the Aspect. On a miss, as 7-9, but the candle is poorly made; cross out two of the boxes. To get the benefit of a candle's Aspect, you must allow it to burn for a short time.",
-				"On a 12+, create two candles (the same or different).",
-				"Aspects:",
-				"Bar a place or portal to [a specific person or type of non-human creature.]",
-				"Stare into the flame to observe another place or time.",
-				"The flame causes someone looking at it to be open to suggestion.",
-				"The candle’s scent causes everyone in a small space to fall asleep.",
-				"Light and shadow warp into an illusion of an object or non-human creature.",
-				"Complications:",
-				"The candle draws unwanted attention.",
-				"____________________",
-				"____________________",
-				"____________________",
-				"____________________",
-				"To replenish your Wax, you must render the fat of a magical creature. When you take a few hours to do so, unmark all Wax and work with the Keeper to define a new complication that might arise because of the source of the Wax, and write it on a blank line under complications, above.",
-			],
-			checkboxes: [
-				{ title: "Wax", number: 3 },
-				{ title: "Candle", number: 3, extraLines: 2 },
-				{ title: "Candle", number: 3, extraLines: 2 },
-				{ title: "Candle", number: 3, extraLines: 2 },
-				{ title: "Candle", number: 3, extraLines: 2 },
-				{ title: "Candle", number: 3, extraLines: 2 },
-				{ title: "Candle", number: 3, extraLines: 2 },
 			],
 		},
 	],

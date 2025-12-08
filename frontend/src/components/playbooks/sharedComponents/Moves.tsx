@@ -1,24 +1,36 @@
+import { playbookBases } from "../content";
 import { coreMoves } from "../coreMoves";
-import type { Character, playbookKey } from "../types";
+import type { Character } from "../types";
 
 export function Moves({ character }: { character: Character }) {
-	const coreMoveKey = character.moves
-		? (character.moves.find((move) => typeof move === "string") as playbookKey)
-		: null;
-	const coreMove = coreMoveKey ? coreMoves[coreMoveKey] : null;
-	const otherMoves = character.moves
-		? character.moves.filter((move) => typeof move !== "string")
-		: [];
+	const coreMove = coreMoves(character)[character.playbook];
+	const otherMoves = character.moves ? character.moves : [];
+	const moveContent = playbookBases[character.playbook].moves;
 
 	return (
-		<div>
+		<div className="text-sm">
 			{coreMove}
-			{otherMoves.map((move) => {
-				if (move && typeof move === "object") {
-					return <div key={move.title}>{move.title}</div>;
-				}
-				return null;
-			})}
+			<div className="h-6" />
+			{otherMoves.length > 0 &&
+				otherMoves.map((move) => {
+					const content = moveContent.find((m) => m.title === move.title);
+					if (!content) {
+						return null;
+					}
+					return (
+						<div key={move.title} className="flex flex-col justify-center">
+							<h3>{move.title}</h3>
+							{content.text.map((line) => {
+								return (
+									<div className="text-left" key={line}>
+										{line}
+									</div>
+								);
+							})}
+							<div className="h-6" />
+						</div>
+					);
+				})}
 		</div>
 	);
 }

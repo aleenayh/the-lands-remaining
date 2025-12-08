@@ -72,8 +72,8 @@ export function Cinders({ character }: { character: Character }) {
 									// biome-ignore lint/suspicious/noArrayIndexKey: just boxes
 									index
 								}`}
-								checked={false} //TODO
-								onChange={() => {}}
+								checked={markedCinders[index + 6] === true}
+								onChange={(e) => onToggle(e.target.checked, index + 6)}
 							/>
 						);
 					})}

@@ -3,6 +3,7 @@ import { type UseFormRegister, useForm } from "react-hook-form";
 import { useGame } from "../../../context/GameContext";
 import { PlayerRole } from "../../../context/types";
 import { playbookBases } from "../content";
+import { generateCoreMoveState } from "../coreMoves";
 import { Section } from "../sharedComponents/Section";
 import { Stats } from "../sharedComponents/Stats";
 import type { Character, PlaybookBase, playbookKey } from "../types";
@@ -98,11 +99,13 @@ export function CharacterCreateForm({
 					options={base.names}
 					register={register}
 				/>
-				<SelectOrEdit
-					name="honorific"
-					options={base.honorifics}
-					register={register}
-				/>
+				{base.honorifics.length > 0 && (
+					<SelectOrEdit
+						name="honorific"
+						options={base.honorifics}
+						register={register}
+					/>
+				)}
 			</Section>
 
 			{/* Looks - 3 */}
@@ -144,7 +147,6 @@ export function CharacterCreateForm({
 				<div className="flex justify-center w-full">
 					<Stats
 						stats={base.abilities}
-						editable={true}
 						registerStat={(name) => register(name, { valueAsNumber: true })}
 					/>
 				</div>
@@ -247,10 +249,7 @@ function constructCharacter(
 	} = formInputs;
 
 	// Count total aspects across all relics to initialize the array
-	const aspectCount = base.relics.reduce((count, relic) => {
-		const matches = relic.text.match(/<aspect>/g);
-		return count + (matches?.length ?? 0);
-	}, 0);
+	const relicAspects = constructAspectArray(base.relics);
 
 	const conditions: string[] = ["", "", ""];
 
@@ -265,6 +264,8 @@ function constructCharacter(
 		8: false,
 		9: false,
 	};
+
+	const coreMoveState = generateCoreMoveState(playbookKey);
 
 	return {
 		playbook: playbookKey,
@@ -283,15 +284,24 @@ function constructCharacter(
 			Object.keys(base.cinders).map((key) => [key, false]),
 		),
 		relics: base.relics,
-		relicAspects: Array(aspectCount).fill(0),
+		relicAspects,
 		oldFire: 0,
 		fireToCome: 0,
 		advancements,
 		conditions,
-		moves: base.startingMoves,
+		moves: [],
+		coreMoveState,
 		experience: 0,
 		questions: Object.fromEntries(
 			Object.keys(base.questions).map((key) => [parseInt(key, 10), false]),
 		),
 	};
+}
+
+export function constructAspectArray(relics: { text: string }[]): number[] {
+	const aspectCount = relics.reduce((count, relic) => {
+		const matches = relic.text.match(/<aspect>/g);
+		return count + (matches?.length ?? 0);
+	}, 0);
+	return Array(aspectCount).fill(0);
 }

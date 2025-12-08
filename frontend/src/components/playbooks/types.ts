@@ -18,8 +18,7 @@ export type PlaybookBase = {
 		[key: string]: string;
 	};
 	ascendTheThrone: string[];
-	extraMoves: PlaybookMove[];
-	startingMoves: PlaybookMove[];
+	moves: PlaybookMove[];
 };
 
 export type Stats = {
@@ -30,21 +29,17 @@ export type Stats = {
 	cinder: number;
 };
 
-//alias type for readability
-type CoreMove = playbookKey;
+export type PlaybookMove = {
+	title: string;
+	text: string[];
+	checkboxes?: boolean[];
+	extraLines?: number;
+};
 
-type PlaybookMove =
-	| CoreMove
-	| {
-			title: string;
-			text: string[];
-			checkboxes?: {
-				title: string;
-				number: number;
-				extraLines?: number;
-			}[];
-			extraLines?: number;
-	  };
+export type CoreMoveState =
+	| { type: "nameless"; legion: boolean[] }
+	| { type: "candle-bearer" }
+	| { type: "lock-and-key"; checks: boolean[] };
 
 export type Character = {
 	playbook: playbookKey;
@@ -55,7 +50,12 @@ export type Character = {
 	oldFire: number;
 	fireToCome: number;
 	conditions: string[];
-	moves: PlaybookMove[];
+	moves: {
+		title: string;
+		checks: boolean[];
+		lines: string[];
+	}[];
+	coreMoveState: CoreMoveState;
 	advancements: Record<number, boolean>;
 	abilities: Stats;
 	cinders: Record<number, boolean>;

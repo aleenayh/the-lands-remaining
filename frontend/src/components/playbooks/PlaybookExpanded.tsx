@@ -55,7 +55,7 @@ export function PlaybookExpanded({ character }: { character: Character }) {
 					<Conditions character={character} />
 				</Section>
 
-				<Stats stats={character.abilities} editable={false} />
+				<Stats stats={character.abilities} />
 				<ExperienceTracker character={character} />
 
 				<div className="flex gap-1 justify-center text-md">

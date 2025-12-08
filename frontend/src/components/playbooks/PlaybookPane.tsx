@@ -19,7 +19,7 @@ export function PlaybookPane({ character }: { character: Character }) {
 				<Section title="Conditions">
 					<Conditions character={character} />
 				</Section>
-				<Stats stats={character.abilities} editable={false} />
+				<Stats stats={character.abilities} />
 				<ExperienceTracker character={character} />
 
 				<Section title="Moves" collapsible={true}>
