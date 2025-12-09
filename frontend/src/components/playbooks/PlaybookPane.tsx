@@ -1,3 +1,4 @@
+import { AbilityBoxes } from "./sharedComponents/AbilityBoxes";
 import { Cinders } from "./sharedComponents/Cinders";
 import { Conditions } from "./sharedComponents/Conditions";
 import { ExperienceTracker } from "./sharedComponents/ExperienceTracker";
@@ -6,7 +7,6 @@ import { Moves } from "./sharedComponents/Moves";
 import { Questions } from "./sharedComponents/Questions";
 import { Relics } from "./sharedComponents/Relics";
 import { Section } from "./sharedComponents/Section";
-import { Stats } from "./sharedComponents/Stats";
 import type { Character } from "./types";
 
 export function PlaybookPane({ character }: { character: Character }) {
@@ -19,7 +19,7 @@ export function PlaybookPane({ character }: { character: Character }) {
 				<Section title="Conditions">
 					<Conditions character={character} />
 				</Section>
-				<Stats stats={character.abilities} />
+				<AbilityBoxes stats={character.abilities} />
 				<ExperienceTracker character={character} />
 
 				<Section title="Moves" collapsible={true}>

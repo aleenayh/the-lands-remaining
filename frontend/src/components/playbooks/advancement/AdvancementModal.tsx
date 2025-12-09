@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useGame } from "../../../context/GameContext";
 import { advancements, playbookBases } from "../content";
-import { coreMoves, coreMoveTitles } from "../coreMoves";
+import { coreMoveTitles } from "../coreMoves";
 import { constructAspectArray } from "../creation/CharacterCreateForm";
-import type { Character } from "../types";
+import { orderAbilities } from "../sharedComponents/AbilityBoxes";
+import type { Abilities, Character } from "../types";
 
 export function AdvancementModal() {
 	const {
@@ -16,17 +17,26 @@ export function AdvancementModal() {
 	const [step, setStep] = useState<
 		| "select-advancement"
 		| "adjust-stats"
+		| "increase-cinder"
 		| "select-move"
 		| "write-custom-move"
 		| "unmark-aspects"
 	>("select-advancement");
 	const [open, onOpenChange] = useState(false);
+	const [advancementIndex, setAdvancementIndex] = useState<number | null>(null);
 	const character = gameState.players.find(
 		(player) => player.id === id,
 	)?.character;
 	if (!character) {
 		return null;
 	}
+	const handleOpenChange = (open: boolean) => {
+		if (!open) {
+			setStep("select-advancement");
+			setAdvancementIndex(null);
+		}
+		onOpenChange(open);
+	};
 
 	const { advancements: advancementProgress } = character;
 	const advancementOptions = Object.keys(advancements).map((key) => ({
@@ -35,12 +45,15 @@ export function AdvancementModal() {
 	}));
 
 	const handleChangeStep = (advancementIndex: number) => {
+		setAdvancementIndex(advancementIndex);
 		switch (advancementIndex) {
 			case 1:
 			case 2:
 			case 3:
-			case 4:
 				setStep("adjust-stats");
+				break;
+			case 4:
+				setStep("increase-cinder");
 				break;
 			case 5:
 			case 6:
@@ -56,7 +69,7 @@ export function AdvancementModal() {
 	};
 
 	return (
-		<Dialog.Root open={open} onOpenChange={onOpenChange}>
+		<Dialog.Root open={open} onOpenChange={handleOpenChange}>
 			<Dialog.Trigger asChild className="DialogTrigger">
 				<button type="button">Advancement</button>
 			</Dialog.Trigger>
@@ -77,7 +90,10 @@ export function AdvancementModal() {
 					<div className="flex flex-col gap-4 min-h-[50vh] overflow-y-auto">
 						<AnimatePresence>
 							{step !== "select-advancement" && (
-								<BackButton setStep={setStep} />
+								<BackButton
+									setStep={setStep}
+									setAdvancementIndex={setAdvancementIndex}
+								/>
 							)}
 							{step === "select-advancement" && (
 								<motion.div
@@ -115,7 +131,8 @@ export function AdvancementModal() {
 								>
 									<MoveSelector
 										character={character}
-										closeModal={() => onOpenChange(false)}
+										closeModal={() => handleOpenChange(false)}
+										advancementIndex={advancementIndex}
 									/>
 								</motion.div>
 							)}
@@ -128,7 +145,8 @@ export function AdvancementModal() {
 								>
 									<MoveWriter
 										character={character}
-										closeModal={() => onOpenChange(false)}
+										closeModal={() => handleOpenChange(false)}
+										advancementIndex={advancementIndex}
 									/>
 								</motion.div>
 							)}
@@ -141,18 +159,24 @@ export function AdvancementModal() {
 								>
 									<UnmarkAspects
 										character={character}
-										closeModal={() => onOpenChange(false)}
+										closeModal={() => handleOpenChange(false)}
+										advancementIndex={advancementIndex}
 									/>
 								</motion.div>
 							)}
-							{step === "adjust-stats" && (
+							{(step === "adjust-stats" || step === "increase-cinder") && (
 								<motion.div
 									initial={{ opacity: 0, x: 10 }}
 									animate={{ opacity: 1, x: 0 }}
 									exit={{ opacity: 0, x: -10 }}
 									transition={{ duration: 0.2 }}
 								>
-									<div>stat adjuster</div>
+									<AdjustStats
+										character={character}
+										closeModal={() => handleOpenChange(false)}
+										cinderVersion={step === "increase-cinder"}
+										advancementIndex={advancementIndex}
+									/>
 								</motion.div>
 							)}
 						</AnimatePresence>
@@ -165,15 +189,20 @@ export function AdvancementModal() {
 
 function BackButton({
 	setStep,
+	setAdvancementIndex,
 }: {
 	setStep: (step: "select-advancement") => void;
+	setAdvancementIndex: (advancementIndex: number | null) => void;
 }) {
 	return (
 		<div className="mx-auto w-full gap-4 flex justify-start items-center">
 			<button
 				type="button"
 				className="text-theme-text-primary rounded-md hover:text-theme-text-accent"
-				onClick={() => setStep("select-advancement")}
+				onClick={() => {
+					setStep("select-advancement");
+					setAdvancementIndex(null);
+				}}
 			>
 				← Back to Advancements
 			</button>
@@ -198,9 +227,11 @@ function ConfirmChoice({ onClick }: { onClick: () => void }) {
 function MoveSelector({
 	character,
 	closeModal,
+	advancementIndex,
 }: {
 	character: Character;
 	closeModal: () => void;
+	advancementIndex: number | null;
 }) {
 	const { gameState, updateGameState } = useGame();
 	const existingMoves =
@@ -214,6 +245,13 @@ function MoveSelector({
 		if (!newMove) {
 			return;
 		}
+		if (advancementIndex === null) {
+			return;
+		}
+		const newAdvancements = {
+			...character.advancements,
+			[advancementIndex]: true,
+		};
 		updateGameState({
 			players: gameState.players.map((player) =>
 				player.id === character.playerId
@@ -225,6 +263,7 @@ function MoveSelector({
 									...existingMoves,
 									{ checks: [], lines: [], ...newMove },
 								],
+								advancements: newAdvancements,
 							},
 						}
 					: player,
@@ -286,14 +325,18 @@ function MoveSelector({
 function MoveWriter({
 	character,
 	closeModal,
+	advancementIndex,
 }: {
 	character: Character;
 	closeModal: () => void;
+	advancementIndex: number | null;
 }) {
-	const { gameState, updateGameState } = useGame();
-	const existingMoves =
-		gameState.players.find((player) => player.id === character.playerId)
-			?.character?.moves ?? [];
+	const {
+		gameState,
+		updateGameState,
+		user: { id },
+	} = useGame();
+	const existingMoves = character.moves;
 	const { register, handleSubmit } = useForm({
 		defaultValues: {
 			title: "",
@@ -320,13 +363,23 @@ function MoveWriter({
 			checks: Array.from({ length: data.numberChecks }, () => false),
 			lines: Array.from({ length: data.numberLines }, () => ""),
 		};
-		console.log(newMove);
+		if (advancementIndex === null) {
+			return;
+		}
+		const newAdvancements = {
+			...character.advancements,
+			[advancementIndex]: true,
+		};
 		updateGameState({
 			players: gameState.players.map((player) =>
-				player.id === character.playerId
+				player.character && player.id === id
 					? {
 							...player,
-							character: { ...character, moves: [...existingMoves, newMove] },
+							character: {
+								...character,
+								moves: [...existingMoves, newMove],
+								advancements: newAdvancements,
+							},
 						}
 					: player,
 			),
@@ -388,9 +441,11 @@ function MoveWriter({
 function UnmarkAspects({
 	character,
 	closeModal,
+	advancementIndex,
 }: {
 	character: Character;
 	closeModal: () => void;
+	advancementIndex: number | null;
 }) {
 	const { gameState, updateGameState } = useGame();
 	const markedAspects =
@@ -402,11 +457,25 @@ function UnmarkAspects({
 	const playbook = playbookBases[character.playbook];
 
 	const onConfirm = () => {
+		if (advancementIndex === null) {
+			return;
+		}
+		const newAdvancements = {
+			...character.advancements,
+			[advancementIndex]: true,
+		};
 		const newAspects = constructAspectArray(playbook.relics);
 		updateGameState({
 			players: gameState.players.map((player) =>
 				player.id === character.playerId
-					? { ...player, character: { ...character, relicAspects: newAspects } }
+					? {
+							...player,
+							character: {
+								...character,
+								relicAspects: newAspects,
+								advancements: newAdvancements,
+							},
+						}
 					: player,
 			),
 		});
@@ -424,5 +493,93 @@ function UnmarkAspects({
 			<div className="h-6" />
 			<ConfirmChoice onClick={onConfirm} />
 		</div>
+	);
+}
+
+function AdjustStats({
+	character,
+	closeModal,
+	cinderVersion,
+	advancementIndex,
+}: {
+	character: Character;
+	closeModal: () => void;
+	cinderVersion: boolean;
+	advancementIndex: number | null;
+}) {
+	const currentStats = cinderVersion
+		? { ...character.abilities, cinder: character.abilities.cinder + 1 }
+		: character.abilities;
+	const { updateGameState, gameState } = useGame();
+
+	const { register, handleSubmit } = useForm({
+		defaultValues: {
+			vitality: currentStats.vitality,
+			composure: currentStats.composure,
+			reason: currentStats.reason,
+			presence: currentStats.presence,
+			cinder: currentStats.cinder,
+		},
+	});
+
+	const onSubmit = (data: { [key in keyof Abilities]: number }) => {
+		if (advancementIndex === null) {
+			return;
+		}
+		const newAdvancements = {
+			...character.advancements,
+			[advancementIndex]: true,
+		};
+		updateGameState({
+			players: gameState.players.map((player) =>
+				player.id === character.playerId
+					? {
+							...player,
+							character: {
+								...character,
+								abilities: data,
+								advancements: newAdvancements,
+							},
+						}
+					: player,
+			),
+		});
+		closeModal();
+	};
+	return (
+		<form onSubmit={handleSubmit(onSubmit)}>
+			<h2 className="text-center">
+				{cinderVersion ? "Add 1 to Cinder" : "Add 1 to Any Ability"}
+			</h2>
+
+			{cinderVersion && (
+				<p className="text-center text-theme-text-muted">
+					Your Ability scores will be updated as follows:
+				</p>
+			)}
+
+			<div className="flex justify-center w-full my-4">
+				<div className="grid grid-cols-5 gap-1">
+					{orderAbilities(currentStats).map(({ ability, value }) => (
+						<div key={ability} className="flex flex-col gap-1">
+							<label htmlFor={ability} className="flex flex-col gap-1">
+								<span className="text-sm text-theme-text-muted text-center">
+									{ability}
+								</span>
+							</label>
+							<input
+								id={ability}
+								type="number"
+								defaultValue={value}
+								disabled={cinderVersion}
+								{...register(ability, { valueAsNumber: true })}
+								className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent flex-grow"
+							/>
+						</div>
+					))}
+				</div>
+			</div>
+			<ConfirmChoice onClick={handleSubmit(onSubmit)} />
+		</form>
 	);
 }

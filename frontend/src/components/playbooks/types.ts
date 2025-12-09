@@ -6,7 +6,7 @@ export type PlaybookBase = {
 	look: string[];
 	rituals: string[];
 	questions: string[];
-	abilities: Stats;
+	abilities: Abilities;
 	cinders: Record<number, string>;
 	relics: {
 		title: string;
@@ -21,7 +21,7 @@ export type PlaybookBase = {
 	moves: PlaybookMove[];
 };
 
-export type Stats = {
+export type Abilities = {
 	vitality: number;
 	composure: number;
 	reason: number;
@@ -52,12 +52,13 @@ export type Character = {
 	conditions: string[];
 	moves: {
 		title: string;
+		text?: string[]; //only necessary for custom moves
 		checks: boolean[];
 		lines: string[];
 	}[];
 	coreMoveState: CoreMoveState;
 	advancements: Record<number, boolean>;
-	abilities: Stats;
+	abilities: Abilities;
 	cinders: Record<number, boolean>;
 	relics: {
 		title: string;

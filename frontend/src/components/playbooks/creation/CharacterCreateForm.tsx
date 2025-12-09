@@ -5,8 +5,7 @@ import { PlayerRole } from "../../../context/types";
 import { playbookBases } from "../content";
 import { generateCoreMoveState } from "../coreMoves";
 import { Section } from "../sharedComponents/Section";
-import { Stats } from "../sharedComponents/Stats";
-import type { Character, PlaybookBase, playbookKey } from "../types";
+import type { Abilities, Character, PlaybookBase, playbookKey } from "../types";
 import { PencilIconButton } from "./PencilIconButton";
 
 function getRandomValue(array: string[]): string {
@@ -145,10 +144,24 @@ export function CharacterCreateForm({
 
 			<Section title="Add 1 to Any Ability">
 				<div className="flex justify-center w-full">
-					<Stats
-						stats={base.abilities}
-						registerStat={(name) => register(name, { valueAsNumber: true })}
-					/>
+					<div className="grid grid-cols-5 gap-1">
+						{(
+							Object.entries(base.abilities) as [keyof Abilities, number][]
+						).map(([stat, value]) => (
+							<div key={stat} className="flex flex-col gap-1">
+								<label htmlFor={stat} className="flex flex-col gap-1">
+									<span className="text-sm text-theme-text-muted">{stat}</span>
+								</label>
+								<input
+									id={stat}
+									type="number"
+									defaultValue={value}
+									{...register(stat, { valueAsNumber: true })}
+									className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent flex-grow"
+								/>
+							</div>
+						))}
+					</div>
 				</div>
 			</Section>
 

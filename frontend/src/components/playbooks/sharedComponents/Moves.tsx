@@ -13,14 +13,16 @@ export function Moves({ character }: { character: Character }) {
 			<div className="h-6" />
 			{otherMoves.length > 0 &&
 				otherMoves.map((move) => {
-					const content = moveContent.find((m) => m.title === move.title);
+					const content = move.text
+						? move.text
+						: moveContent.find((m) => m.title === move.title)?.text;
 					if (!content) {
 						return null;
 					}
 					return (
 						<div key={move.title} className="flex flex-col justify-center">
 							<h3>{move.title}</h3>
-							{content.text.map((line) => {
+							{content.map((line) => {
 								return (
 									<div className="text-left" key={line}>
 										{line}
