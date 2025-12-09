@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useGame } from "../context/GameContext";
 import { resetGameToDefaults } from "../lib/firebase";
+import { Drawers } from "./Drawers";
 import { CharacterOverview } from "./playbooks/CharacterOverview";
-import { ReferenceSheet } from "./referenceSheet/referenceSheet";
 
 // Toggle this to show/hide debug controls
 const DEBUG_MODE = false;
@@ -19,7 +19,7 @@ export function Game() {
 	return (
 		<div className="flex flex-col w-full h-full p-4 overflow-hidden">
 			{DEBUG_MODE && <DebugControls gameHash={gameHash} />}
-			<ReferenceSheet />
+			<Drawers />
 			<div className="flex-1 min-h-0 overflow-hidden">
 				<CharacterOverview />
 			</div>

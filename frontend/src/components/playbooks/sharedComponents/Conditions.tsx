@@ -60,7 +60,7 @@ export function Conditions({ character }: { character: Character }) {
 								onSave={(value) => handleSaveCondition(index, value)}
 							/>
 						) : (
-							<div className="flex-grow w-full flex gap-2 items-center ">
+							<div className="flex-grow w-[70%] md:w-full flex gap-2 items-center ">
 								{showBlank ? (
 									<BlankCondition />
 								) : (

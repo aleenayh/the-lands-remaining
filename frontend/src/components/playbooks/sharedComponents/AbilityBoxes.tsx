@@ -2,7 +2,7 @@ import type { Abilities, Abilities as AbilityType } from "../types";
 
 export function AbilityBoxes({ stats }: { stats: AbilityType }) {
 	return (
-		<div className={`flex flex-wrap justify-center gap-1`}>
+		<div className={`flex flex-wrap justify-center gap-1 mx-10 md:mx-auto`}>
 			{orderAbilities(stats).map(({ ability, value }) => (
 				<AbilityBox key={ability} ability={ability} value={value} />
 			))}

@@ -207,7 +207,7 @@ function EditableLine({
 					onSave={onSave}
 				/>
 			) : (
-				<div className="flex-grow w-full flex gap-2 items-center ">
+				<div className="flex-grow w-[70%] md:w-full">
 					<BlankCondition />
 				</div>
 			)}

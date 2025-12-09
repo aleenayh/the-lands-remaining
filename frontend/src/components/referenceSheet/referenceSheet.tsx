@@ -1,12 +1,16 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
 import { Section } from "../playbooks/sharedComponents/Section";
 import { ReactComponent as BookIcon } from "./book.svg";
 
-export function ReferenceSheet() {
-	const [isOpen, setIsOpen] = useState(false);
+export function ReferenceSheet({
+	isOpen,
+	setIsOpen,
+}: {
+	isOpen: boolean;
+	setIsOpen: (open: boolean) => void;
+}) {
 	return (
-		<div className="absolute top-0 left-0 flex flex-col justify-start items-start h-full w-full pointer-events-none">
+		<div className="flex flex-col justify-start items-start h-full w-full pointer-events-none">
 			<button
 				type="button"
 				className="w-10 h-10 text-theme-accent-primary bg-theme-bg-secondary rounded-none rounded-br-lg p-2 hover:bg-theme-bg-accent hover:text-theme-text-accent transition-colors pointer-events-auto"
@@ -21,7 +25,7 @@ export function ReferenceSheet() {
 						animate={{ left: 0 }}
 						exit={{ left: "-100%" }}
 						transition={{ duration: 1 }}
-						className="absolute top-0 left-0 w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary border-r border-theme-border-accent rounded-lg p-4 z-10 transition-all ease-linear overflow-y-auto pointer-events-auto"
+						className="absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary border-r border-theme-border-accent rounded-lg p-4 z-10 transition-all ease-linear overflow-y-auto pointer-events-auto"
 					>
 						<button
 							type="button"

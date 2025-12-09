@@ -58,7 +58,7 @@ export function PlaybookExpanded({ character }: { character: Character }) {
 				<AbilityBoxes stats={character.abilities} />
 				<ExperienceTracker character={character} />
 
-				<div className="flex gap-1 justify-center text-md">
+				<div className="flex gap-1 justify-center text-md flex-wrap">
 					{tabs.map((tab) => (
 						<button
 							type="button"

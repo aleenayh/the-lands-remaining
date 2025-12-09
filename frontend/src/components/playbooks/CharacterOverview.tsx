@@ -38,9 +38,9 @@ export function CharacterOverview() {
 				Character Keeper
 			</h1>
 
-			<div className="flex gap-3 flex-1 min-h-0 overflow-hidden">
+			<div className="flex flex-1 min-h-0 overflow-hidden">
 				{/* Other players' playbooks - takes up ~60% width, shows up to 4 in a grid */}
-				<div className="flex-[3] min-w-0 grid grid-cols-2 gap-3 auto-rows-fr overflow-hidden">
+				<div className="hidden w-[60%] min-w-0 md:grid grid-cols-3 gap-2 auto-rows-fr overflow-hidden">
 					{otherCharacters.map((character) => (
 						<div key={character.playerId} className="min-h-0 overflow-hidden">
 							<PlaybookPane character={character} />
@@ -50,7 +50,7 @@ export function CharacterOverview() {
 
 				{/* Your playbook - slightly larger, takes ~40% width */}
 				{user.role !== PlayerRole.KEEPER && (
-					<div className="flex-[2] min-w-0 min-h-0 overflow-hidden">
+					<div className="w-full md:w-[40%] min-w-0 min-h-0 overflow-hidden">
 						{myCharacter ? (
 							<PlaybookExpanded character={myCharacter} />
 						) : (
