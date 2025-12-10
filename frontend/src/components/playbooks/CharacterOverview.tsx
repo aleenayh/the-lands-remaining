@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useGame } from "../../context/GameContext";
 import { PlayerRole } from "../../context/types";
+import { KeeperPill } from "../keeper/KeeperPill";
 import { playbookBases } from "./content";
 import { CharacterCreateForm } from "./creation/CharacterCreateForm";
 import { PlaybookExpanded } from "./PlaybookExpanded";
@@ -37,10 +38,13 @@ export function CharacterOverview() {
 			<h1 className="text-2xl font-bold text-center text-theme-text-accent shrink-0">
 				Character Keeper
 			</h1>
-
+			{user.role === PlayerRole.KEEPER && <KeeperPill />}
+			{user.role === PlayerRole.KEEPER && <div className="w-full h-8" />}
 			<div className="flex flex-1 min-h-0 overflow-hidden">
 				{/* Other players' playbooks - takes up ~60% width, shows up to 4 in a grid */}
-				<div className="hidden w-[60%] min-w-0 md:grid grid-cols-3 gap-2 auto-rows-fr overflow-hidden">
+				<div
+					className={`hidden  min-w-0 md:grid  gap-2 auto-rows-fr overflow-hidden ${user.role === PlayerRole.KEEPER ? "w-full grid-cols-4" : "w-[60%] grid-cols-3"}`}
+				>
 					{otherCharacters.map((character) => (
 						<div key={character.playerId} className="min-h-0 overflow-hidden">
 							<PlaybookPane character={character} />

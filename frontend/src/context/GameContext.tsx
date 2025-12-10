@@ -44,8 +44,9 @@ interface GameProviderProps {
 export const GameProvider: React.FC<GameProviderProps> = ({
 	children,
 	gameHash,
-	userInfo,
+	userInfo:	initialUserInfo,
 }) => {
+	const [userInfo, setUserInfo] = useState<UserInfo>(initialUserInfo);
 	// Session key - unique identifier for this user/browser
 	const [sessionKey] = useState<string>(() => {
 		const storageKey = `session_${gameHash}`;
@@ -130,7 +131,16 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 	 * Update game state locally AND send to Firebase
 	 */
 	const updateGameState = (updates: Partial<GameState>) => {
-		const newState = { ...gameState, ...updates };
+		const newState = { ...gameState, ...updates }
+		
+		if (updates.players) {
+			for (const player of updates.players) {
+				if (player.id === userInfo.id && player.role !== userInfo.role) {
+					localStorage.setItem("playerRole", player.role);
+					setUserInfo({ ...userInfo, role: player.role });
+				}
+			}
+		}
 
 		// Update local state immediately (optimistic update)
 		setGameState(newState);
