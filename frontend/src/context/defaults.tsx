@@ -1,4 +1,5 @@
-import type { GameState, Mystery, Shrine } from "./types";
+import type { Mystery } from "../components/mystery/types";
+import type { GameState, Shrine } from "./types";
 
 const defaultMysteries: Mystery[] = [];
 

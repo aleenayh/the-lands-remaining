@@ -1,3 +1,4 @@
+import type { Mystery } from "../components/mystery/types";
 import type { Character } from "../components/playbooks/types";
 import type { ShrineType } from "../components/shrine/details";
 
@@ -24,11 +25,6 @@ export type Shrine = {
 	color: string | null;
 };
 export type ShrineState = "available" | "active" | "completed" | "locked";
-
-export type Mystery = {
-	id: string;
-	timer: Record<number, boolean>;
-};
 
 type Player = {
 	id: string;

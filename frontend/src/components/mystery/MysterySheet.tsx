@@ -1,4 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { useGame } from "../../context/GameContext";
+import { PlayerRole } from "../../context/types";
+import { AddMystery } from "./AddMystery";
 import { Countdown } from "./Countdown";
 import { ReactComponent as HourglassIcon } from "./hourglass.svg";
 
@@ -9,27 +12,11 @@ export function MysterySheet({
 	isOpen: boolean;
 	setIsOpen: (open: boolean) => void;
 }) {
-	//spoofed for testing
-	const mysteries = [
-		{
-			title: "The Mouldering Court",
-			theme: "rose",
-			countdownTotal: 3,
-			countdownCurrent: 1,
-		},
-		{
-			title: "The White Wood",
-			theme: "dandelion",
-			countdownTotal: 6,
-			countdownCurrent: 3,
-		},
-		{
-			title: "The Mirror Sublime",
-			theme: "swallow",
-			countdownTotal: 4,
-			countdownCurrent: 3,
-		},
-	];
+	const {
+		gameState,
+		user: { role },
+	} = useGame();
+	const mysteries = gameState.mysteries;
 
 	return (
 		<div className="flex flex-col justify-start items-start h-full w-full pointer-events-none">
@@ -61,10 +48,15 @@ export function MysterySheet({
 							Mysteries
 						</h1>
 						<div className="flex flex-col gap-10">
-							{mysteries.map((mystery) => (
-								<Countdown mystery={mystery} key={mystery.title} />
-							))}
+							{mysteries && mysteries.length > 0 ? (
+								mysteries.map((mystery) => (
+									<Countdown mystery={mystery} key={mystery.title} />
+								))
+							) : (
+								<div>No active mysteries</div>
+							)}
 						</div>
+						{role === PlayerRole.KEEPER && <AddMystery />}
 					</motion.div>
 				)}
 			</AnimatePresence>

@@ -1,16 +1,14 @@
-import { ReactComponent as DandelionIcon } from "./icons/dandelion.svg";
-import { ReactComponent as RoseIcon } from "./icons/rose.svg";
-import { ReactComponent as SwallowIcon } from "./icons/swallow.svg";
-import { ReactComponent as SwordIcon } from "./icons/sword.svg";
-
-type Mystery = {
-	title: string;
-	theme: keyof typeof themeElements;
-	countdownTotal: number;
-	countdownCurrent: number;
-};
+import { useGame } from "../../context/GameContext";
+import { PlayerRole } from "../../context/types";
+import { themeElements } from "./themes";
+import type { Mystery } from "./types";
 
 export function Countdown({ mystery }: { mystery: Mystery }) {
+	const {
+		user: { role },
+		gameState,
+		updateGameState,
+	} = useGame();
 	const { initialColor, filledColor, textColors } =
 		themeElements[mystery.theme];
 	const localTheme = localStorage.getItem("theme") || "forest";
@@ -19,6 +17,26 @@ export function Countdown({ mystery }: { mystery: Mystery }) {
 	const gradient = textColors
 		? `linear-gradient(to bottom, hsl(${textColors.top.h}, ${textColors.top.s}%, ${textColors.top.l}%), hsl(${textColors.bottom.h}, ${textColors.bottom.s}%, ${textColors.bottom.l}%))`
 		: `linear-gradient(to bottom, hsl(${initialColor.h}, ${initialColor.s}%, ${initialColor.l}%), hsl(${filledColor.h}, ${filledColor.s}%, ${filledColor.l}%))`;
+
+	const onToggle = (checked: boolean) => {
+		updateGameState({
+			mysteries: gameState.mysteries.map((m) =>
+				m.title === mystery.title
+					? {
+							...m,
+							countdownCurrent: checked
+								? m.countdownCurrent + 1
+								: m.countdownCurrent - 1,
+						}
+					: m,
+			),
+		});
+	};
+	const onRemove = () => {
+		updateGameState({
+			mysteries: gameState.mysteries.filter((m) => m.title !== mystery.title),
+		});
+	};
 
 	const style = useHighContrastDark
 		? {
@@ -52,14 +70,50 @@ export function Countdown({ mystery }: { mystery: Mystery }) {
 					/>
 				))}
 			</div>
+			{role === PlayerRole.KEEPER && (
+				<div className="flex gap-3 justify-center items-center">
+					{Array.from({ length: mystery.countdownTotal }).map((_, index) => (
+						<input
+							type="checkbox"
+							key={`mc-${mystery.title}-${index}`}
+							defaultChecked={mystery.countdownCurrent > index}
+							onChange={(e) => onToggle(e.target.checked)}
+						/>
+					))}
+				</div>
+			)}
 			<div className="text-theme-text-secondary text-sm">
 				{mystery.countdownCurrent} / {mystery.countdownTotal}
 			</div>
+			{mystery.questions && mystery.questions.length > 0 && (
+				<div className="py-4 flex flex-col gap-2">
+					<h2 className="text-md text-center whitespace-nowrap" style={style}>
+						Questions
+					</h2>
+					{mystery.questions.map((question) => (
+						<div key={question.text}>
+							{question.text}{" "}
+							<span className="text-sm text-theme-text-secondary italic">
+								(Complexity: {question.complexity})
+							</span>
+						</div>
+					))}
+				</div>
+			)}
+			{role === PlayerRole.KEEPER && (
+				<button
+					type="button"
+					onClick={onRemove}
+					className="my-2 bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100"
+				>
+					Remove this mystery
+				</button>
+			)}
 		</div>
 	);
 }
 
-function CountdownItem({
+export function CountdownItem({
 	theme,
 	index,
 	filled,
@@ -86,94 +140,3 @@ function CountdownItem({
 		</div>
 	);
 }
-
-const colors = {
-	pink: {
-		h: 360,
-		s: 100,
-		l: 70,
-	},
-	burgundy: {
-		h: 3,
-		s: 70,
-		l: 30,
-	},
-	ghost: {
-		h: 50,
-		s: 6,
-		l: 80,
-	},
-	yellow: {
-		h: 50,
-		s: 70,
-		l: 70,
-	},
-	silver: {
-		h: 240,
-		s: 100,
-		l: 90,
-	},
-	blood: {
-		h: 360,
-		s: 100,
-		l: 50,
-	},
-	ice: {
-		h: 230,
-		s: 50,
-		l: 35,
-	},
-	lightblue: {
-		h: 250,
-		s: 50,
-		l: 10,
-	},
-	blue: {
-		h: 240,
-		s: 30,
-		l: 10,
-	},
-};
-
-const themeElements: Record<
-	string,
-	{
-		icon: React.ReactNode;
-		font: string;
-		initialColor: { h: number; s: number; l: number };
-		filledColor: { h: number; s: number; l: number };
-		textColors?: {
-			top: { h: number; s: number; l: number };
-			bottom: { h: number; s: number; l: number };
-		};
-	}
-> = {
-	dandelion: {
-		icon: <DandelionIcon className="w-10 h-10" />,
-		font: "Almendra",
-		initialColor: colors.ice,
-		filledColor: colors.ghost,
-	},
-	rose: {
-		icon: <RoseIcon className="w-10 h-10" />,
-		font: "Fleur",
-		initialColor: colors.pink,
-		filledColor: colors.burgundy,
-	},
-	sword: {
-		icon: <SwordIcon className="w-10 h-10" />,
-		font: "Pirata",
-		initialColor: colors.silver,
-		filledColor: colors.blood,
-	},
-	swallow: {
-		icon: <SwallowIcon className="w-10 h-10" />,
-		font: "Almendra",
-		textColors: {
-			top: colors.ghost,
-			bottom: colors.ice,
-		},
-		initialColor: colors.ice,
-		filledColor: colors.blue,
-	},
-};
