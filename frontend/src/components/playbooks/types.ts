@@ -36,9 +36,20 @@ export type PlaybookMove = {
 	extraLines?: number;
 };
 
+type Candle = {
+	checks: number;
+	aspect: string;
+	complication?: string;
+};
+
 export type CoreMoveState =
 	| { type: "nameless"; legion: boolean[] }
-	| { type: "candle-bearer" }
+	| {
+			type: "candle-bearer";
+			wax: number;
+			complications: string[];
+			candles: Record<number, Candle>;
+	  }
 	| { type: "lock-and-key"; checks: number[] };
 
 export type Character = {

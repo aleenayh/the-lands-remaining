@@ -179,6 +179,32 @@ input[type="checkbox"]:disabled {
   opacity: 0.7;
 }
 
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-block;
+  vertical-align: middle;
+  width: 0.75rem;
+  height: 0.75rem;
+  min-width: 0.75rem;
+  min-height: 0.75rem;
+  flex-shrink: 0;
+  aspect-ratio: 1;
+  border: 1px solid var(--color-border-accent);
+  border-radius: 50%;
+  background-color: transparent;
+  font-size: 8px;
+  line-height: 0.6rem;
+  text-align: center;
+  margin-right: 0.125rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+input[type="radio"]:checked {
+  background-color: var(--color-accent-primary);
+  border-color: var(--color-accent-primary);
+}
 /* ===== SCROLLBAR STYLES ===== */
 /* Hide scrollbars by default, show on hover/scroll, zero width overlay */
 

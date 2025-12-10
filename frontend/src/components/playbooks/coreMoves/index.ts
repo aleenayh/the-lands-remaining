@@ -30,7 +30,21 @@ export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
 			return { type: "nameless", legion };
 		}
 		case playbookKeys.candleBearer:
-			return { type: "candle-bearer" };
+			return {
+				type: "candle-bearer",
+				wax: 0,
+				complications: ["The candle draws unwanted attention.", "", "", "", ""],
+				candles: Object.fromEntries(
+					Array.from({ length: 6 }, (_, index) => [
+						index,
+						{
+							checks: 0,
+							aspect: "",
+							complication: "",
+						},
+					]),
+				),
+			};
 		case playbookKeys.lockAndKey:
 			return {
 				type: "lock-and-key",
