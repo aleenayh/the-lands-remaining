@@ -1,25 +1,26 @@
 import { Dialog } from "radix-ui";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useGame } from "../../../context/GameContext";
 
 export function RewardModal() {
 	const {
 		gameState,
-		updateGameState,
 		user: { id },
 	} = useGame();
 	const character = gameState.players.find(
 		(player) => player.id === id,
 	)?.character;
+	const [isOpen, setIsOpen] = useState(false);
+	const [step, setStep] = useState<"select-reward" | "add-relic">(
+		"select-reward",
+	);
 	if (!character) {
 		return null;
 	}
 
-	const confirmReward = () => {
-		console.log("confirmReward");
-	};
-
 	return (
-		<Dialog.Root>
+		<Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
 			<Dialog.Trigger asChild className="DialogTrigger">
 				<button type="button">Rewards</button>
 			</Dialog.Trigger>
@@ -39,18 +40,146 @@ export function RewardModal() {
 						<Dialog.Description>
 							Claim a reward on completion of a mystery.
 						</Dialog.Description>
-						<div className="mx-auto w-1/3 gap-4 flex justify-center items-center">
-							<button
-								type="button"
-								className="bg-theme-bg-accent text-theme-text-primary rounded-md p-2"
-								onClick={confirmReward}
-							>
-								Confirm
-							</button>
-						</div>
+						{step !== "select-reward" && <BackButton setStep={setStep} />}
+						{step === "select-reward" && (
+							<div className="mx-auto w-1/3 gap-4 flex justify-center items-center">
+								<button
+									type="button"
+									className="bg-theme-bg-accent text-theme-text-primary rounded-md p-2"
+									onClick={() => setStep("add-relic")}
+								>
+									Add a Relic
+								</button>
+							</div>
+						)}
+
+						{step === "add-relic" && (
+							<AddRelicForm onClose={() => setIsOpen(false)} />
+						)}
 					</div>
 				</Dialog.Content>
 			</Dialog.Portal>
 		</Dialog.Root>
+	);
+}
+
+function BackButton({
+	setStep,
+}: {
+	setStep: (step: "select-reward" | "add-relic") => void;
+}) {
+	return (
+		<div className="mx-auto w-full gap-4 flex justify-start items-center">
+			<button
+				type="button"
+				className="text-theme-text-primary rounded-md hover:text-theme-text-accent"
+				onClick={() => setStep("select-reward")}
+			>
+				← Back to Rewards
+			</button>
+		</div>
+	);
+}
+
+type AddRelicFormInputs = {
+	title: string;
+	description: string;
+	extraLines: number;
+};
+
+function AddRelicForm({ onClose }: { onClose: () => void }) {
+	const {
+		gameState,
+		updateGameState,
+		user: { id },
+	} = useGame();
+	const { register, handleSubmit } = useForm<AddRelicFormInputs>({
+		defaultValues: {
+			title: "",
+			description: "",
+			extraLines: 0,
+		},
+	});
+
+	const parseAspects = (lines: string[]): string[] => {
+		return lines.map((line) =>
+			line.replace(/<([^>]+)>/g, "<aspect>$1</aspect>"),
+		);
+	};
+
+	const countAspects = (lines: string[]): number => {
+		return lines.reduce((count, line) => {
+			return count + (line.match(/<aspect>/g)?.length || 0);
+		}, 0);
+	};
+
+	const onSubmit = (data: AddRelicFormInputs) => {
+		const newRelic = {
+			title: data.title,
+			text: parseAspects(data.description.split("\n")).join("\n"),
+			extraLines: data.extraLines,
+		};
+		const newAspects = countAspects(data.description.split("\n"));
+		updateGameState({
+			players: gameState.players.map((player) =>
+				player.character && player.id === id
+					? {
+							...player,
+							character: {
+								...player.character,
+								relics: [...player.character.relics, newRelic],
+								relicAspects: [
+									...player.character.relicAspects,
+									...Array.from({ length: newAspects }, () => 0),
+								],
+							},
+						}
+					: player,
+			),
+		});
+		onClose();
+	};
+
+	return (
+		<form onSubmit={handleSubmit(onSubmit)}>
+			<div className="flex flex-col gap-2">
+				<label htmlFor="title">Title</label>
+				<input
+					type="text"
+					{...register("title")}
+					className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent flex-grow"
+				/>
+
+				<p>
+					Write or paste the description of the relic below. To include aspects,
+					surround your text with &lt; &gt; symbols. For example:{" "}
+					<span className="italic">
+						a burnished sword that &lt;glows with the light of the morning&gt;
+					</span>
+				</p>
+				<textarea
+					{...register("description")}
+					className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent flex-grow"
+				/>
+
+				<p>
+					If the relic includes customizable aspects you may add later, include
+					a number of blank lines for them below.
+				</p>
+				<input
+					type="number"
+					{...register("extraLines")}
+					className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent flex-grow"
+				/>
+
+				<button
+					type="submit"
+					onClick={handleSubmit(onSubmit)}
+					className="bg-theme-bg-accent text-theme-text-primary rounded-md p-2"
+				>
+					Confirm
+				</button>
+			</div>
+		</form>
 	);
 }
