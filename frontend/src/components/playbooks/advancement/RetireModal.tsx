@@ -19,6 +19,14 @@ export function RetireCharacterModal() {
 				<Dialog.Portal>
 					<Dialog.Overlay className="DialogOverlay" />
 					<Dialog.Content className="DialogContent">
+						<Dialog.Close asChild>
+							<button
+								type="button"
+								className="absolute top-2 right-2 aspect-square w-8 h-8 bg-theme-bg-accent text-theme-text-primary rounded-full flex justify-center items-center"
+							>
+								X
+							</button>
+						</Dialog.Close>
 						<Dialog.Title className="DialogTitle">
 							Retire Character
 						</Dialog.Title>
@@ -61,12 +69,20 @@ export function RetireCharacterModal() {
 			<Dialog.Portal>
 				<Dialog.Overlay className="DialogOverlay" />
 				<Dialog.Content className="DialogContent">
+					<Dialog.Close asChild>
+						<button
+							type="button"
+							className="absolute top-2 right-2 aspect-square w-8 h-8 bg-theme-bg-accent text-theme-text-primary rounded-full flex justify-center items-center"
+						>
+							X
+						</button>
+					</Dialog.Close>
 					<Dialog.Title className="DialogTitle">Retire Character</Dialog.Title>
 					<div className="flex flex-col gap-4 overflow-y-auto max-h-[500px]">
-						<p className="mb-4">
+						<Dialog.Description className="mb-4">
 							Retire this character to a life of obscurity. Narrate what becomes
 							of them to the other Embers.
-						</p>
+						</Dialog.Description>
 						<p className="mb-4">
 							Pressing retire will remove the character from the tracked game
 							state. You will lose customizations and advancements, and will be

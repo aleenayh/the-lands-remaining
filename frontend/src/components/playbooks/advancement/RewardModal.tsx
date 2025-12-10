@@ -36,7 +36,9 @@ export function RewardModal() {
 					</Dialog.Close>
 					<Dialog.Title className="DialogTitle">Claim a Reward</Dialog.Title>
 					<div className="flex flex-col gap-4 overflow-y-auto max-h-[500px]">
-						<p>TODO!</p>
+						<Dialog.Description>
+							Claim a reward on completion of a mystery.
+						</Dialog.Description>
 						<div className="mx-auto w-1/3 gap-4 flex justify-center items-center">
 							<button
 								type="button"

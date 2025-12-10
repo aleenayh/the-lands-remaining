@@ -9,7 +9,6 @@ module.exports = {
           bg: {
             primary: "var(--color-bg-primary)",
             secondary: "var(--color-bg-secondary)",
-            tertiary: "var(--color-bg-tertiary)",
             accent: "var(--color-bg-accent)",
           },
           text: {
@@ -27,11 +26,6 @@ module.exports = {
             secondary: "var(--color-accent-secondary)",
           },
         },
-      },
-      boxShadow: {
-        theme: "0 4px 12px var(--color-shadow)",
-        "theme-lg": "0 8px 24px var(--color-shadow)",
-        "theme-glow": "0 0 20px var(--color-accent-glow)",
       },
     },
   },

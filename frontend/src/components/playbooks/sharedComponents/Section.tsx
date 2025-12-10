@@ -21,19 +21,19 @@ export function Section({
 				>
 					{collapsible && (
 						<span className="text-xs text-theme-text-secondary">
-							{isCollapsed ? "▼ " : "▶ "}
+							{isCollapsed ? "▶ " : "▼ "}
 						</span>
 					)}{" "}
 					{title}{" "}
 					{collapsible && (
 						<span className="text-xs text-theme-text-secondary">
-							{isCollapsed ? "▼" : " ◀"}
+							{isCollapsed ? " ◀" : "▼"}
 						</span>
 					)}
 				</button>
 			</h2>
 			<div
-				className={`flex flex-col gap-2 w-full min-w-0 overflow-hidden break-words ${isCollapsed || !collapsible ? "h-auto opacity-100" : "h-0 opacity-0"}`}
+				className={`flex flex-col gap-2 w-full min-w-0 overflow-hidden break-words ${isCollapsed ? "h-0 opacity-0" : "h-auto opacity-100"}`}
 			>
 				{children}
 			</div>

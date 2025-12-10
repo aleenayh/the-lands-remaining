@@ -15,12 +15,27 @@
 }
 
 /* ===== THEME VARIABLES ===== */
+/* Default to forest  if no theme set */
+:root {
+  --color-bg-primary: #171f14;
+  --color-bg-secondary: #252f22;
+  --color-bg-accent: #3d4a38;
+
+  --color-text-primary: #a8b5a0;
+  --color-text-secondary: #7a8873;
+  --color-text-muted: #5a6655;
+  --color-text-accent: #c4d4b8;
+
+  --color-border: #3a4536;
+  --color-border-accent: #4d5c47;
+
+  --color-accent-primary: #5c7a52;
+}
 
 /* Forest Theme - Decaying, sombre, muted greens */
 [data-theme="forest"] {
   --color-bg-primary: #171f14;
   --color-bg-secondary: #252f22;
-  --color-bg-tertiary: #2f3a2b;
   --color-bg-accent: #3d4a38;
 
   --color-text-primary: #a8b5a0;
@@ -30,58 +45,37 @@
 
   --color-border: #3a4536;
   --color-border-accent: #4d5c47;
-
-  --color-accent-primary: #5c7a52;
-  --color-accent-secondary: #4a6343;
-  --color-accent-glow: rgba(92, 122, 82, 0.3);
-
-  --color-shadow: rgba(10, 15, 8, 0.6);
 }
-
-/* Elegy Theme - Stark white, grey, black */
-[data-theme="elegy"] {
+[data-theme="dark"] {
   --color-bg-primary: #0a0a0a;
   --color-bg-secondary: #141414;
-  --color-bg-tertiary: #1f1f1f;
   --color-bg-accent: #2a2a2a;
 
   --color-text-primary: #e8e8e8;
-  --color-text-secondary: #b0b0b0;
-  --color-text-muted: #707070;
-  --color-text-accent: #ffffff;
+  --color-text-secondary: #bbb9b9;
+  --color-text-muted: #8da7a4;
+  --color-text-accent: #64b500;
 
-  --color-border: #333333;
-  --color-border-accent: #4a4a4a;
+  --color-border: #396601;
+  --color-border-accent: #64b500;
 
   --color-accent-primary: #888888;
-  --color-accent-secondary: #666666;
-  --color-accent-glow: rgba(255, 255, 255, 0.1);
-
-  --color-shadow: rgba(0, 0, 0, 0.8);
 }
+[data-theme="light"] {
+  --color-bg-primary: #f0f0f0;
+  --color-bg-secondary: #e0e0e0;
+  --color-bg-accent: #d0d0d0;
 
-/* Default to forest if no theme set */
-:root {
-  --color-bg-primary: #1a2418;
-  --color-bg-secondary: #252f22;
-  --color-bg-tertiary: #2f3a2b;
-  --color-bg-accent: #3d4a38;
+  --color-text-primary: #0a0a0a;
+  --color-text-secondary: #141414;
+  --color-text-muted: #3b4879;
+  --color-text-accent: #310199;
 
-  --color-text-primary: #a8b5a0;
-  --color-text-secondary: #7a8873;
-  --color-text-muted: #5a6655;
-  --color-text-accent: #c4d4b8;
+  --color-border: #617a9d;
+  --color-border-accent: #034fa5;
 
-  --color-border: #3a4536;
-  --color-border-accent: #4d5c47;
-
-  --color-accent-primary: #5c7a52;
-  --color-accent-secondary: #4a6343;
-  --color-accent-glow: rgba(92, 122, 82, 0.3);
-
-  --color-shadow: rgba(10, 15, 8, 0.6);
+  --color-accent-primary: #000000;
 }
-
 /* Apply theme colors to html and body */
 html,
 body {
@@ -177,6 +171,17 @@ input[type="checkbox"]:checked {
 input[type="checkbox"]:disabled {
   cursor: default;
   opacity: 0.7;
+}
+
+a {
+  color: var(--color-text-accent);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+a:hover {
+  color: var(--color-accent-primary);
 }
 
 input[type="radio"] {

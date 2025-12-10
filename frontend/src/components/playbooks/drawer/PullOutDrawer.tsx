@@ -25,7 +25,8 @@ export function PullOutCharacterOverview({
 		<div className="flex flex-col justify-start items-start h-full w-full pointer-events-none">
 			<button
 				type="button"
-				className="block md:hidden w-10 h-10 text-theme-accent-primary bg-theme-bg-secondary rounded-none rounded-br-lg p-2 hover:bg-theme-bg-accent hover:text-theme-text-accent transition-colors pointer-events-auto"
+				aria-label="Open character overview"
+				className="block md:hidden w-10 h-10 text-theme-accent-primary bg-theme-bg-secondary rounded-none rounded-br-lg p-2 hover:bg-theme-bg-accent hover:text-theme-text-accent transition-colors pointer-events-auto rounded-tr-lg"
 				onClick={() => setIsOpen(!isOpen)}
 			>
 				<GroupIcon className="w-full h-full" />

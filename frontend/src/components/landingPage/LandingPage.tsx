@@ -301,7 +301,7 @@ function ChooseStep({
 			<button
 				type="button"
 				onClick={onJoinGame}
-				className="px-4 py-4 rounded-lg bg-theme-bg-secondary border border-theme-border text-theme-text-primary hover:bg-theme-bg-tertiary transition-colors flex flex-col items-center gap-1"
+				className="px-4 py-4 rounded-lg bg-theme-bg-secondary border border-theme-border text-theme-text-primary hover:bg-theme-bg-secondary transition-colors flex flex-col items-center gap-1"
 			>
 				<span className="font-bold">Join Existing Game</span>
 				<span className="text-sm opacity-70">Enter a game code to join</span>
@@ -433,7 +433,7 @@ function ConfirmNameStep({
 							key={player.id}
 							type="button"
 							onClick={() => onJoinAsExisting(player)}
-							className="px-3 py-2 rounded-lg bg-theme-bg-tertiary border border-theme-border hover:border-theme-border-accent text-theme-text-primary text-sm transition-colors"
+							className="px-3 py-2 rounded-lg bg-theme-bg-secondary border border-theme-border hover:border-theme-border-accent text-theme-text-primary text-sm transition-colors"
 						>
 							Join as <span className="font-bold">{player.name}</span>
 						</button>

@@ -87,6 +87,9 @@ export function AdvancementModal() {
 					<Dialog.Title className="DialogTitle">
 						Select an Advancement
 					</Dialog.Title>
+					<Dialog.Description className="hidden">
+						Select an advancement for your Ember.
+					</Dialog.Description>
 					<div className="flex flex-col gap-4 min-h-[50vh] overflow-y-auto">
 						<AnimatePresence>
 							{step !== "select-advancement" && (

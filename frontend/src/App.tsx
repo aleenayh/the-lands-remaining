@@ -11,6 +11,9 @@ function App() {
 	const initialGameHash = searchParams.get("gameHash");
 	const [gameHash, setGameHash] = useState<string | null>(initialGameHash);
 
+	const savedTheme = localStorage.getItem("theme") || "forest";
+	document.documentElement.setAttribute("data-theme", savedTheme);
+
 	// Get saved user info if returning to a game via URL
 	const savedName = localStorage.getItem("playerName") || "";
 	const savedRole = localStorage.getItem("playerRole") as PlayerRole | null;

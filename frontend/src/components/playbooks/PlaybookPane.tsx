@@ -11,7 +11,10 @@ import type { Character } from "./types";
 
 export function PlaybookPane({ character }: { character: Character }) {
 	return (
-		<div className="border-2 border-theme-border-accent rounded-lg p-3 h-full flex flex-col gap-2 overflow-hidden">
+		<section
+			aria-label={`Playbook for ${character.name}`}
+			className="border-2 border-theme-border-accent rounded-lg p-3 h-full flex flex-col gap-2 overflow-hidden"
+		>
 			<h2 className="text-lg font-bold text-theme-text-accent shrink-0 truncate">
 				{character.name}
 			</h2>
@@ -36,6 +39,6 @@ export function PlaybookPane({ character }: { character: Character }) {
 					<Questions character={character} />
 				</Section>
 			</div>
-		</div>
+		</section>
 	);
 }

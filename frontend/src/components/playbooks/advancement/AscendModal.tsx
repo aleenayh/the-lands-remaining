@@ -41,6 +41,9 @@ export function AscendTheThroneModal() {
 						</button>
 					</Dialog.Close>
 					<Dialog.Title className="DialogTitle">Ascend the Throne</Dialog.Title>
+					<Dialog.Description className="hidden">
+						Ascend the Throne of the Old Capitol.
+					</Dialog.Description>
 					<div className="flex flex-col gap-4 overflow-y-auto max-h-[500px]">
 						{ascendTheThroneContent.map((line, index) => (
 							// biome-ignore lint/suspicious/noArrayIndexKey: text
