@@ -10,7 +10,7 @@ export function Drawers() {
 	const [mysteryOpen, setMysteryOpen] = useState(false);
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	return (
-		<nav className="absolute top-0 left-0 w-auto h-auto flex flex-col justify-start items-start">
+		<nav className="absolute top-0 left-0 w-full h-auto flex flex-col justify-start items-start">
 			<ReferenceSheet isOpen={refOpen} setIsOpen={setRefOpen} />
 			<MysterySheet isOpen={mysteryOpen} setIsOpen={setMysteryOpen} />
 			<PullOutCharacterOverview

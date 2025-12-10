@@ -6,7 +6,7 @@ import { Section } from "../playbooks/sharedComponents/Section";
 import { ReactComponent as CogIcon } from "./cog.svg";
 
 // Toggle this to show/hide debug controls
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 
 export function SettingsPane({
 	isOpen,
