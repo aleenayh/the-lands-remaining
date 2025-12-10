@@ -39,7 +39,7 @@ export type PlaybookMove = {
 export type CoreMoveState =
 	| { type: "nameless"; legion: boolean[] }
 	| { type: "candle-bearer" }
-	| { type: "lock-and-key"; checks: boolean[] };
+	| { type: "lock-and-key"; checks: number[] };
 
 export type Character = {
 	playbook: playbookKey;

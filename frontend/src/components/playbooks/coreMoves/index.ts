@@ -32,6 +32,9 @@ export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
 		case playbookKeys.candleBearer:
 			return { type: "candle-bearer" };
 		case playbookKeys.lockAndKey:
-			return { type: "lock-and-key", checks: [] };
+			return {
+				type: "lock-and-key",
+				checks: Array.from({ length: 12 }, () => 0),
+			};
 	}
 }
