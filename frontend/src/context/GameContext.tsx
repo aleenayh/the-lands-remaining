@@ -44,7 +44,7 @@ interface GameProviderProps {
 export const GameProvider: React.FC<GameProviderProps> = ({
 	children,
 	gameHash,
-	userInfo:	initialUserInfo,
+	userInfo: initialUserInfo,
 }) => {
 	const [userInfo, setUserInfo] = useState<UserInfo>(initialUserInfo);
 	// Session key - unique identifier for this user/browser
@@ -131,8 +131,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 	 * Update game state locally AND send to Firebase
 	 */
 	const updateGameState = (updates: Partial<GameState>) => {
-		const newState = { ...gameState, ...updates }
-		
+		const newState = { ...gameState, ...updates };
+
 		if (updates.players) {
 			for (const player of updates.players) {
 				if (player.id === userInfo.id && player.role !== userInfo.role) {
@@ -150,6 +150,21 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 			console.error("Failed to sync state to Firebase:", error);
 		});
 	};
+
+	if (!gameState.players.some((player) => player.id === userInfo.id)) {
+		updateGameState({
+			players: [
+				...gameState.players,
+				{
+					id: userInfo.id,
+					name: userInfo.name,
+					role: userInfo.role,
+					character: null,
+					online: true,
+				},
+			],
+		});
+	}
 
 	// Context value
 	const value: GameContextValue = {

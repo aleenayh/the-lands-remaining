@@ -3,29 +3,42 @@ import { useState } from "react";
 import { Game } from "./components/Game";
 import { LandingPage } from "./components/landingPage/LandingPage";
 import { GameProvider } from "./context/GameContext";
-import type { PlayerRole, UserInfo } from "./context/types";
+import { PlayerRole, type UserInfo } from "./context/types";
 import { nameToPlayerId } from "./lib/firebase";
 
 function App() {
 	const searchParams = new URLSearchParams(window.location.search);
 	const initialGameHash = searchParams.get("gameHash");
+	// Get saved user info if returning to a game via URL
+	const savedName = localStorage.getItem("playerName") || "";
+	const savedRole = localStorage.getItem("playerRole") as PlayerRole | null;
 	const [gameHash, setGameHash] = useState<string | null>(initialGameHash);
+	const [userName, setUserName] = useState<string | null>(savedName ?? null);
+	const userRole = savedRole ?? PlayerRole.PLAYER;
+	const [userId, setUserId] = useState<string | null>(
+		savedName ? nameToPlayerId(savedName) : null,
+	);
 
 	const savedTheme = localStorage.getItem("theme") || "forest";
 	document.documentElement.setAttribute("data-theme", savedTheme);
 
-	// Get saved user info if returning to a game via URL
-	const savedName = localStorage.getItem("playerName") || "";
-	const savedRole = localStorage.getItem("playerRole") as PlayerRole | null;
-	const [userInfo, setUserInfo] = useState<UserInfo | null>(
-		initialGameHash && savedName && savedRole
-			? { id: nameToPlayerId(savedName), name: savedName, role: savedRole }
-			: null,
-	);
-
-	if (!gameHash || !userInfo) {
-		return <LandingPage setGameHash={setGameHash} setUserInfo={setUserInfo} />;
+	if (!gameHash || !userName || !userId) {
+		return (
+			<LandingPage
+				setGameHash={setGameHash}
+				userName={userName}
+				userId={userId}
+				setUserName={setUserName}
+				setUserId={setUserId}
+			/>
+		);
 	}
+
+	const userInfo: UserInfo = {
+		id: userId,
+		name: userName,
+		role: userRole,
+	};
 
 	return (
 		<div className="App">

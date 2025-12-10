@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { PlayerRole, type UserInfo } from "../../context/types";
 import {
 	checkGameExists,
 	createNewGame,
@@ -18,12 +17,19 @@ type LandingStep =
 
 export function LandingPage({
 	setGameHash,
-	setUserInfo,
+	userName,
+	userId,
+	setUserName,
+	setUserId,
 }: {
 	setGameHash: (hash: string) => void;
-	setUserInfo: (info: UserInfo) => void;
+	userName: string | null;
+	userId: string | null;
+	setUserName: (name: string) => void;
+	setUserId: (id: string) => void;
 }) {
-	const [step, setStep] = useState<LandingStep>("name");
+	const firstStep = userName && userId ? "choose" : "name";
+	const [step, setStep] = useState<LandingStep>(firstStep);
 	const [playerName, setPlayerName] = useState(
 		localStorage.getItem("playerName") || "",
 	);
@@ -65,11 +71,8 @@ export function LandingPage({
 			const newUrl = `${window.location.origin}${window.location.pathname}?gameHash=${newHash}`;
 			window.history.pushState({}, "", newUrl);
 
-			setUserInfo({
-				id: playerId,
-				name: playerName.trim(),
-				role: PlayerRole.PLAYER,
-			});
+			setUserId(playerId);
+			setUserName(playerName.trim());
 			setGameHash(newHash);
 		} catch (err) {
 			console.error("Failed to create game:", err);
@@ -130,11 +133,8 @@ export function LandingPage({
 		const newUrl = `${window.location.origin}${window.location.pathname}?gameHash=${hash}`;
 		window.history.pushState({}, "", newUrl);
 
-		setUserInfo({
-			id: playerId,
-			name: playerName.trim(),
-			role: PlayerRole.PLAYER,
-		});
+		setUserId(playerId);
+		setUserName(playerName.trim());
 		setGameHash(hash);
 	};
 
@@ -153,11 +153,8 @@ export function LandingPage({
 		localStorage.setItem("playerName", existingPlayer.name);
 
 		if (pendingGameHash) {
-			setUserInfo({
-				id: existingPlayer.id,
-				name: existingPlayer.name,
-				role: PlayerRole.PLAYER,
-			});
+			setUserId(existingPlayer.id);
+			setUserName(existingPlayer.name);
 			const newUrl = `${window.location.origin}${window.location.pathname}?gameHash=${pendingGameHash}`;
 			window.history.pushState({}, "", newUrl);
 			setGameHash(pendingGameHash);
