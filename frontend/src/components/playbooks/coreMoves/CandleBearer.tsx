@@ -16,27 +16,33 @@ export function CoreMoveCandleBearer({ character }: { character: Character }) {
 	const editable = id === character.playerId;
 	const { coreMoveState } = character;
 
-	const toggleWax = useCallback(() => {
-		if (coreMoveState.type !== "candle-bearer") return;
+	const toggleWax = useCallback(
+		(toggled: boolean) => {
+			if (coreMoveState.type !== "candle-bearer") return;
 
-		updateGameState({
-			players: gameState.players.map((player) =>
-				player.id === id && player.character
-					? {
-							...player,
-							character: {
-								...player.character,
-								coreMoveState: { ...coreMoveState, wax: coreMoveState.wax + 1 },
-							},
-						}
-					: player,
-			),
-		});
-	}, [updateGameState, gameState.players, id, coreMoveState]);
+			updateGameState({
+				players: gameState.players.map((player) =>
+					player.id === id && player.character
+						? {
+								...player,
+								character: {
+									...player.character,
+									coreMoveState: {
+										...coreMoveState,
+										wax: toggled
+											? coreMoveState.wax + 1
+											: coreMoveState.wax - 1,
+									},
+								},
+							}
+						: player,
+				),
+			});
+		},
+		[updateGameState, gameState.players, id, coreMoveState],
+	);
 
 	if (coreMoveState.type !== "candle-bearer") return null;
-
-	console.log(coreMoveState.candles);
 	return (
 		<div className="flex flex-col gap-2 text-left">
 			<h2 className="text-xl font-bold text-theme-text-accent text-center">
@@ -94,7 +100,7 @@ export function CoreMoveCandleBearer({ character }: { character: Character }) {
 						}`}
 						disabled={!editable}
 						checked={index < coreMoveState.wax}
-						onChange={toggleWax}
+						onChange={(e) => toggleWax(e.target.checked)}
 					/>
 				))}
 			</div>
@@ -102,7 +108,8 @@ export function CoreMoveCandleBearer({ character }: { character: Character }) {
 			{Object.entries(coreMoveState.candles).map(([indexString, candle]) => {
 				const index = parseInt(indexString, 10);
 				const blank = candle.aspect === "";
-				if (blank)
+				if (blank) {
+					if (!editable) return <div />;
 					return (
 						<CandleCreateForm
 							character={character}
@@ -110,6 +117,7 @@ export function CoreMoveCandleBearer({ character }: { character: Character }) {
 							key={`candle-create-form-${index}`}
 						/>
 					);
+				}
 				return (
 					<Candle character={character} key={`candle-${index}`} index={index} />
 				);
