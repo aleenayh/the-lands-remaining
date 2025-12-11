@@ -46,7 +46,9 @@ export function CoreMoveLockAndKey({ character }: { character: Character }) {
 
 	return (
 		<div className="flex flex-col gap-2 text-left">
-			<h2 className="text-center">The Mouse in the Tower…</h2>
+			<h2 className="text-center text-lg font-bold text-theme-text-accent">
+				The Mouse in the Tower…
+			</h2>
 			<p>
 				You have mastered a form of martial arts inspired by a story told to
 				small children raised in your order. The Aspects of the story function

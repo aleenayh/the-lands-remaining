@@ -5,7 +5,7 @@ import type { Character } from "../types";
 export function CoreMoveNameless({ character }: { character: Character }) {
 	return (
 		<div className="flex flex-col gap-2 text-left">
-			<h2 className="text-xl font-bold text-theme-text-accent text-center">
+			<h2 className="text-lg font-bold text-theme-text-accent text-center">
 				The Nameless Legion Endures…
 			</h2>
 			<p>
