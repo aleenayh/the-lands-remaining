@@ -61,11 +61,11 @@ export function Conditions({ character }: { character: Character }) {
 								onSave={(value) => handleSaveCondition(index, value)}
 							/>
 						) : (
-							<div className="flex-grow w-[70%] md:w-full flex gap-2 items-center ">
+							<div className="flex-grow w-[60%] flex gap-2 items-center ">
 								{showBlank ? (
 									<BlankCondition />
 								) : (
-									<span className="text-md text-theme-text-primary flex justify-start">
+									<span className="flex-grow w-[60%] text-md text-theme-text-primary flex justify-start">
 										{condition}
 									</span>
 								)}
@@ -121,7 +121,7 @@ export function ConditionInput({
 	};
 
 	return (
-		<div className="relative flex w-full justify-evenly items-center gap-2">
+		<div className="flex-grow relative flex w-[60%] justify-evenly items-center gap-2">
 			<input
 				type="text"
 				value={localText}
@@ -144,6 +144,8 @@ export function ConditionInput({
 
 export function BlankCondition() {
 	return (
-		<div className="flex-grow font-mono">______________________________</div>
+		<div className="overflow-hidden font-mono whitespace-nowrap">
+			______________________________
+		</div>
 	);
 }
