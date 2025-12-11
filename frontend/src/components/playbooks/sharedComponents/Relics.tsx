@@ -153,7 +153,7 @@ function AspectSpan({
 				{checked && "✓"}
 			</button>
 			<strong
-				className={`${checked ? "line-through opacity-60" : ""} text-theme-text-accent`}
+				className={`${checked ? "line-through opacity-60" : ""} text-theme-text-accent font-extrabold`}
 			>
 				{text}
 			</strong>
