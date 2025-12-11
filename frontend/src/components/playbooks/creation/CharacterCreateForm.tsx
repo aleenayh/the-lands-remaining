@@ -109,11 +109,7 @@ export function CharacterCreateForm({
 
 			{/* Looks - 3 */}
 			<Section title="Build Your Look">
-				<div className="flex flex-col gap-2 justify-stretch items-stretch w-full">
-					<SelectOrEdit name="look1" options={base.look} register={register} />
-					<SelectOrEdit name="look2" options={base.look} register={register} />
-					<SelectOrEdit name="look3" options={base.look} register={register} />
-				</div>
+				<LookSelector options={base.look} register={register} />
 			</Section>
 
 			<Section title="Your Story">
@@ -148,9 +144,14 @@ export function CharacterCreateForm({
 						{(
 							Object.entries(base.abilities) as [keyof Abilities, number][]
 						).map(([stat, value]) => (
-							<div key={stat} className="flex flex-col gap-1">
+							<div
+								key={stat}
+								className="flex flex-col-reverse md:flex-col gap-1"
+							>
 								<label htmlFor={stat} className="flex flex-col gap-1">
-									<span className="text-sm text-theme-text-muted">{stat}</span>
+									<span className="text-xs md:text-sm text-theme-text-muted whitespace-nowrap overflow-hidden text-ellipsis">
+										{stat}
+									</span>
 								</label>
 								<input
 									id={stat}
@@ -179,6 +180,90 @@ type SelectOrEditFieldName = keyof Pick<
 	CharacterCreateFormInputs,
 	"characterName" | "honorific" | "look1" | "look2" | "look3" | "ritual"
 >;
+
+function LookSelector({
+	options,
+	register,
+}: {
+	options: string[];
+	register: UseFormRegister<CharacterCreateFormInputs>;
+}) {
+	const [selectedLooks, setSelectedLooks] = useState<string[]>(() => {
+		// Initialize with first 3 options (matches default form values)
+		return options.slice(0, 3);
+	});
+
+	const toggleLook = (option: string) => {
+		setSelectedLooks((prev) => {
+			if (prev.includes(option)) {
+				// Remove if already selected
+				return prev.filter((look) => look !== option);
+			}
+			if (prev.length < 3) {
+				// Add if under limit
+				return [...prev, option];
+			}
+			// At limit, replace the oldest selection
+			return [...prev.slice(1), option];
+		});
+	};
+
+	return (
+		<>
+			{/* Desktop: 3 separate selects */}
+			<div className="hidden sm:flex flex-col gap-2 justify-stretch items-stretch w-full">
+				<SelectOrEdit name="look1" options={options} register={register} />
+				<SelectOrEdit name="look2" options={options} register={register} />
+				<SelectOrEdit name="look3" options={options} register={register} />
+			</div>
+
+			{/* Mobile: checklist with exactly 3 selections */}
+			<div className="sm:hidden flex flex-col gap-1 w-full">
+				{/* Hidden inputs to sync with react-hook-form */}
+				<input
+					type="hidden"
+					{...register("look1")}
+					value={selectedLooks[0] ?? ""}
+				/>
+				<input
+					type="hidden"
+					{...register("look2")}
+					value={selectedLooks[1] ?? ""}
+				/>
+				<input
+					type="hidden"
+					{...register("look3")}
+					value={selectedLooks[2] ?? ""}
+				/>
+
+				<p className="text-sm text-theme-text-muted mb-1">
+					Select 3 ({selectedLooks.length}/3)
+				</p>
+
+				{options.map((option) => {
+					const isSelected = selectedLooks.includes(option);
+					return (
+						<button
+							key={option}
+							type="button"
+							onClick={() => toggleLook(option)}
+							className={`flex items-start gap-2 px-2 py-1.5 rounded-lg text-left transition-colors ${
+								isSelected
+									? "bg-theme-bg-accent text-theme-text-accent"
+									: "bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent/50"
+							}`}
+						>
+							<span className="w-5 h-5 flex-shrink-0 flex items-center justify-center">
+								{isSelected && "✓"}
+							</span>
+							<span className="whitespace-normal">{option}</span>
+						</button>
+					);
+				})}
+			</div>
+		</>
+	);
+}
 
 function SelectOrEdit({
 	options,

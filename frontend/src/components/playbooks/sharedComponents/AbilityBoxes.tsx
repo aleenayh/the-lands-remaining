@@ -8,7 +8,7 @@ export function AbilityBoxes({
 	abbreviate?: boolean;
 }) {
 	return (
-		<div className={`flex flex-wrap justify-center gap-1 mx-10 md:mx-auto`}>
+		<div className={`flex justify-center gap-1 mx-0 md:mx-auto`}>
 			{orderAbilities(stats).map(({ ability, value }) => (
 				<AbilityBox
 					key={ability}
@@ -43,7 +43,7 @@ export function AbilityBox({
 }: AbilityBoxProps) {
 	return (
 		<div className="flex flex-col gap-1 rounded-lg border border-theme-border-accent p-1 bg-theme-bg-secondary justify-center items-center min-w-[10%]">
-			<h2 className="text-theme-text-muted text-[0.5rem] truncate max-w-full">
+			<h2 className="text-theme-text-muted text-[0.5rem] truncate max-w-full whitespace-nowrap overflow-hidden text-ellipsis">
 				{abbreviate ? ability.slice(0, 4) : ability}
 			</h2>
 			<div className="text-center text-lg font-bold bg-transparent">
