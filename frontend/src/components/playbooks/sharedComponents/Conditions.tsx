@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { useGame } from "../../../context/GameContext";
+import { PlayerRole } from "../../../context/types";
 import { PencilIconButton } from "../creation/PencilIconButton";
 import type { Character } from "../types";
 
@@ -7,9 +8,9 @@ export function Conditions({ character }: { character: Character }) {
 	const {
 		updateGameState,
 		gameState,
-		user: { id },
+		user: { id, role },
 	} = useGame();
-	const editable = id === character.playerId;
+	const editable = id === character.playerId || role === PlayerRole.KEEPER;
 	const [showEdit, setShowEdit] = useState<Record<number, boolean>>({
 		0: false,
 		1: false,
