@@ -1,5 +1,6 @@
 import "./App.css";
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { Game } from "./components/Game";
 import { LandingPage } from "./components/landingPage/LandingPage";
 import { GameProvider } from "./context/GameContext";
@@ -43,6 +44,7 @@ function App() {
 	return (
 		<div className="App">
 			<GameProvider gameHash={gameHash} userInfo={userInfo}>
+				<Toaster />
 				<Game />
 			</GameProvider>
 		</div>
