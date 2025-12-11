@@ -4,6 +4,7 @@ import { useGame } from "../../context/GameContext";
 import { resetGameToDefaults } from "../../lib/firebase";
 import { Section } from "../playbooks/sharedComponents/Section";
 import { ReactComponent as CogIcon } from "./cog.svg";
+import { GameInfo } from "./GameInfo";
 
 // Toggle this to show/hide debug controls
 const DEBUG_MODE = false;
@@ -46,6 +47,7 @@ export function SettingsPane({
 						</h1>
 						<div className="flex flex-col gap-10 justify-between h-full">
 							<ThemeSelector />
+							<GameInfo />
 							{DEBUG_MODE && <DebugControls />}
 							<Credits />
 						</div>
