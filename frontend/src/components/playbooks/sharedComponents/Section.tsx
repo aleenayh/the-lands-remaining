@@ -3,16 +3,48 @@ import { useState } from "react";
 export function Section({
 	title,
 	collapsible = false,
+	minify = false,
 	children,
 }: {
 	title: string;
 	collapsible?: boolean;
+	minify?: boolean;
 	children: React.ReactNode;
 }) {
-	const [isCollapsed, setIsCollapsed] = useState(false);
+	const [isCollapsed, setIsCollapsed] = useState(minify ?? false);
+	return (
+		<ControlledSection
+			title={title}
+			collapsible={collapsible}
+			minify={minify}
+			isCollapsed={isCollapsed}
+			setIsCollapsed={setIsCollapsed}
+		>
+			{children}
+		</ControlledSection>
+	);
+}
+
+export function ControlledSection({
+	title,
+	collapsible = false,
+	minify = false,
+	isCollapsed,
+	setIsCollapsed,
+	children,
+}: {
+	title: string;
+	collapsible?: boolean;
+	minify?: boolean;
+	isCollapsed: boolean;
+	setIsCollapsed: (isCollapsed: boolean) => void;
+	children: React.ReactNode;
+}) {
 	return (
 		<div className="flex flex-col gap-2 my-4 justify-center items-stretch min-w-0">
-			<h2 className="text-lg font-bold text-center text-theme-text-accent">
+			<h2
+				className={`font-bold text-center text-theme-text-accent ${minify ? "text-sm" : "text-lg"}`}
+			>
 				<button
 					type="button"
 					onClick={() => {

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Section } from "../playbooks/sharedComponents/Section";
+import { useState } from "react";
+import { ControlledSection } from "../playbooks/sharedComponents/Section";
 import { ReactComponent as BookIcon } from "./book.svg";
 
 export function ReferenceSheet({
@@ -9,6 +10,12 @@ export function ReferenceSheet({
 	isOpen: boolean;
 	setIsOpen: (open: boolean) => void;
 }) {
+	const [lightCollapsed, setLightCollapsed] = useState(false);
+	const [darkCollapsed, setDarkCollapsed] = useState(false);
+	const [informationCollapsed, setInformationCollapsed] = useState(false);
+	const [questionCollapsed, setQuestionCollapsed] = useState(false);
+	const [campCollapsed, setCampCollapsed] = useState(false);
+
 	return (
 		<div className="flex flex-col justify-start items-start h-full w-full pointer-events-none">
 			<button
@@ -39,7 +46,12 @@ export function ReferenceSheet({
 							Reference Sheet
 						</h1>
 						<div className="flex flex-col justify-stretch items-start text-left">
-							<Section title="The Light Move" collapsible={true}>
+							<ControlledSection
+								title="The Light Move"
+								collapsible={true}
+								isCollapsed={lightCollapsed}
+								setIsCollapsed={setLightCollapsed}
+							>
 								<p>
 									When you do something risky or face something you fear, name
 									what you’re afraid will happen if you fail or lose your nerve,
@@ -62,8 +74,13 @@ export function ReferenceSheet({
 										receive. Describe what it looks like.
 									</li>
 								</ul>
-							</Section>
-							<Section title="The Dark Move" collapsible={true}>
+							</ControlledSection>
+							<ControlledSection
+								title="The Dark Move"
+								collapsible={true}
+								isCollapsed={darkCollapsed}
+								setIsCollapsed={setDarkCollapsed}
+							>
 								<p>
 									When you do something risky or face something you fear, name
 									what you’re afraid will happen if you fail or lose your nerve.
@@ -82,8 +99,13 @@ export function ReferenceSheet({
 										like.
 									</li>
 								</ul>
-							</Section>
-							<Section title="The Information Move" collapsible={true}>
+							</ControlledSection>
+							<ControlledSection
+								title="The Information Move"
+								collapsible={true}
+								isCollapsed={informationCollapsed}
+								setIsCollapsed={setInformationCollapsed}
+							>
 								<p>
 									When you explore the environment, question others, or
 									otherwise gather information, describe how you’re doing so and
@@ -102,8 +124,13 @@ export function ReferenceSheet({
 									</li>
 									<li>On a 12+, you also find a Lord Clue.</li>
 								</ul>
-							</Section>
-							<Section title="Answer a Question" collapsible={true}>
+							</ControlledSection>
+							<ControlledSection
+								title="Answer a Question"
+								collapsible={true}
+								isCollapsed={questionCollapsed}
+								setIsCollapsed={setQuestionCollapsed}
+							>
 								<p>
 									When the Embers have an open, freewheeling discussion about
 									the answer to a Question once they have gathered a number of
@@ -132,8 +159,13 @@ export function ReferenceSheet({
 									by one Ember marking Cinder; the Ember must reinterpret the
 									answer to the Question through the lens of the Cinder.
 								</p>
-							</Section>
-							<Section title="Make Camp" collapsible={true}>
+							</ControlledSection>
+							<ControlledSection
+								title="Make Camp"
+								collapsible={true}
+								isCollapsed={campCollapsed}
+								setIsCollapsed={setCampCollapsed}
+							>
 								<p>
 									When you and any other number of Embers settle down to rest,
 									you can tell a pleasant story from the time of the Old Fire or
@@ -166,7 +198,7 @@ export function ReferenceSheet({
 									</li>
 									<li>On a miss, the worst comes to pass.</li>
 								</ul>
-							</Section>
+							</ControlledSection>
 						</div>
 					</motion.div>
 				)}

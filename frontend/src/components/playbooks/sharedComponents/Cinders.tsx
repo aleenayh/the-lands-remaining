@@ -59,7 +59,7 @@ export function Cinders({ character }: { character: Character }) {
 					</div>
 				);
 			})}
-			<Section title="The Kindling Gate" collapsible={true}>
+			<Section title="The Kindling Gate" collapsible={true} minify>
 				<div className="text-sm italic text-theme-text-secondary">
 					If you have marked The Kindling Gate, track effects below.
 				</div>
