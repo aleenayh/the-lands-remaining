@@ -5,6 +5,7 @@ import { ExperienceTracker } from "./sharedComponents/ExperienceTracker";
 import { Extras } from "./sharedComponents/Extras";
 import { Fires } from "./sharedComponents/Fires";
 import { Moves } from "./sharedComponents/Moves";
+import { PlayerPill } from "./sharedComponents/PlayerPill";
 import { Questions } from "./sharedComponents/Questions";
 import { Relics } from "./sharedComponents/Relics";
 import { Section } from "./sharedComponents/Section";
@@ -14,9 +15,10 @@ export function PlaybookPane({ character }: { character: Character }) {
 	return (
 		<section
 			aria-label={`Playbook for ${character.name}`}
-			className="border-2 border-theme-border-accent rounded-lg p-3 h-full flex flex-col gap-2 overflow-hidden"
+			className="border-2 border-theme-border-accent rounded-lg p-4 h-full flex flex-col gap-2 overflow-hidden relative"
 		>
-			<h2 className="text-lg font-bold text-theme-text-accent shrink-0 truncate">
+			<PlayerPill playerId={character.playerId} />
+			<h2 className="text-lg whitespace-normal text-balance font-bold text-theme-text-accent shrink-0 truncate mx-10">
 				{character.name}
 			</h2>
 			<div className="flex-1 overflow-y-auto overflow-x-hidden min-h-0 min-w-0 flex flex-col gap-0">
