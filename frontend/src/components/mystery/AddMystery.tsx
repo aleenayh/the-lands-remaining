@@ -33,8 +33,8 @@ export function AddMystery() {
 
 	const addQuestion = () => {
 		setNumberOfQuestions(numberOfQuestions + 1);
-		setValue(`questions.${numberOfQuestions - 1}.text`, "");
-		setValue(`questions.${numberOfQuestions - 1}.complexity`, 1);
+		setValue(`questions.${numberOfQuestions}.text`, "");
+		setValue(`questions.${numberOfQuestions}.complexity`, 1);
 	};
 	const removeQuestion = () => {
 		setValue(`questions`, watch("questions").slice(0, -1));
@@ -82,7 +82,7 @@ export function AddMystery() {
 
 					<form
 						onSubmit={handleSubmit(onSubmit)}
-						className="flex flex-col gap-2"
+						className="flex flex-col gap-2 overflow-y-auto max-h-[75vh]"
 					>
 						<div className="flex flex-col gap-2">
 							<label
@@ -106,36 +106,40 @@ export function AddMystery() {
 								</label>
 								{watch("questions").map((question: Question, index: number) => (
 									<div
-										className="flex items-center gap-2"
+										className="flex flex-col md:flex-row items-center gap-2"
 										// biome-ignore lint/suspicious/noArrayIndexKey: order unimportant
 										key={`question-${index}`}
 									>
-										<label htmlFor={`questions.${index}.text`}>Text</label>
-										<input
-											type="text"
-											defaultValue={question.text}
-											{...register(`questions.${index}.text`)}
-											className="flex-grow border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
-										/>
-										<label htmlFor={`questions.${index}.complexity`}>
-											Complexity
-										</label>
-										<input
-											type="number"
-											defaultValue={question.complexity}
-											{...register(`questions.${index}.complexity`)}
-											min={1}
-											max={10}
-											className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
-										/>
+										<div className="flex gap-2 items-center w-full md:w-auto">
+											<label htmlFor={`questions.${index}.text`}>Text</label>
+											<input
+												type="text"
+												defaultValue={question.text}
+												{...register(`questions.${index}.text`)}
+												className="flex-grow border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
+											/>
+										</div>
+										<div className="flex gap-2 items-center w-full md:w-auto">
+											<label htmlFor={`questions.${index}.complexity`}>
+												Complexity
+											</label>
+											<input
+												type="number"
+												defaultValue={question.complexity}
+												{...register(`questions.${index}.complexity`)}
+												min={1}
+												max={10}
+												className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
+											/>
+										</div>
 									</div>
 								))}
 
-								<div className="flex gap-2">
+								<div className="flex gap-2 text-sm md:text-md">
 									<button
 										type="button"
 										onClick={() => addQuestion()}
-										className="w-1/2 mx-auto bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100"
+										className="w-1/2 mx-auto bg-theme-bg-accent text-theme-text-accent p-1 md:px-4 md:py-2 rounded-lg opacity-80 hover:opacity-100"
 									>
 										Add Question
 									</button>
@@ -143,7 +147,7 @@ export function AddMystery() {
 									<button
 										type="button"
 										onClick={() => removeQuestion()}
-										className="w-1/2 mx-auto bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100"
+										className="w-1/2 mx-auto bg-theme-bg-accent text-theme-text-accent p-1 md:px-4 md:py-2 rounded-lg opacity-80 hover:opacity-100"
 									>
 										Remove Question
 									</button>
@@ -151,29 +155,34 @@ export function AddMystery() {
 							</div>
 
 							<Divider />
-							<div className="mt-4 flex gap-2 items-center">
-								<label htmlFor="theme">Select Countdown Theme</label>
-								<select
-									{...register("theme")}
-									className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
-								>
-									{Object.values(MysteryTheme).map((theme) => (
-										<option key={theme} value={theme}>
-											{theme}
-										</option>
-									))}
-								</select>
-								<label htmlFor="countdownTotal">Countdown Total</label>
-								<input
-									type="number"
-									{...register("countdownTotal")}
-									min={1}
-									max={20}
-									className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
-								/>
+							<div className="mt-4 flex flex-col md:flex-row gap-2 items-center text-sm md:text-md">
+								<div className="flex gap-2 items-center w-full md:w-auto">
+									<label htmlFor="theme">Select Countdown Theme</label>
+									<select
+										{...register("theme")}
+										className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
+									>
+										{Object.values(MysteryTheme).map((theme) => (
+											<option key={theme} value={theme}>
+												{theme}
+											</option>
+										))}
+									</select>
+								</div>
+								<div className="flex gap-2 items-center w-full md:w-auto">
+									<label htmlFor="countdownTotal">Countdown Total</label>
+									<input
+										type="number"
+										{...register("countdownTotal")}
+										min={1}
+										max={20}
+										className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
+									/>
+								</div>
 							</div>
-							<Divider />
-							<div>
+
+							<div className="hidden md:block">
+								<Divider />
 								<p className="text-center italic">Preview Countdown Timer</p>
 								<Preview
 									type={watch("theme")}
