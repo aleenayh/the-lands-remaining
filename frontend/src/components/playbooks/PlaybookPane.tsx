@@ -15,7 +15,7 @@ export function PlaybookPane({ character }: { character: Character }) {
 	return (
 		<section
 			aria-label={`Playbook for ${character.name}`}
-			className="border-2 border-theme-border-accent rounded-lg p-4 h-full flex flex-col gap-2 overflow-hidden relative"
+			className="border-2 border-theme-border-accent bg-theme-bg-primary rounded-lg p-4 h-full flex flex-col gap-2 overflow-hidden relative"
 		>
 			<PlayerPill playerId={character.playerId} />
 			<h2 className="text-lg whitespace-normal text-balance font-bold text-theme-text-accent shrink-0 truncate mx-10">

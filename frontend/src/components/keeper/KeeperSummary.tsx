@@ -11,19 +11,27 @@ export function KeeperSummary() {
 		.filter((character): character is Character => character !== null);
 
 	return (
-		<div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:hidden overflow-y-auto">
-			{characters.map((character) => (
-				<div
-					key={character.playerId}
-					className="border-2 border-theme-border-accent rounded-lg p-4 relative"
-				>
-					<h2 className="text-lg whitespace-normal text-balance mx-auto">
-						{character.name}
-					</h2>
-					<PlayerPill playerId={character.playerId} />
-					<Conditions character={character} />
+		<div className="grid grid-cols-1  sm:grid-cols-2 gap-2 md:hidden overflow-y-auto">
+			{characters.length > 0 ? (
+				<div>
+					{characters.map((character) => (
+						<div
+							key={character.playerId}
+							className="border-2 border-theme-border-accent bg-theme-bg-primary rounded-lg p-4 relative"
+						>
+							<h2 className="text-lg whitespace-normal text-balance mx-auto">
+								{character.name}
+							</h2>
+							<PlayerPill playerId={character.playerId} />
+							<Conditions character={character} />
+						</div>
+					))}
 				</div>
-			))}
+			) : (
+				<div className="h-full flex md:hidden justify-center items-center py-10">
+					<CopyInvite />
+				</div>
+			)}
 		</div>
 	);
 }

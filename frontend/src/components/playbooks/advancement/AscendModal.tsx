@@ -1,8 +1,11 @@
 import { Dialog } from "radix-ui";
+import { useState } from "react";
 import { useGame } from "../../../context/GameContext";
 import { playbookBases } from "../content";
 
 export function AscendTheThroneModal() {
+	const [step, setStep] = useState<"ascendText" | "confirm">("ascendText");
+	const [isOpen, setIsOpen] = useState(false);
 	const {
 		gameState,
 		updateGameState,
@@ -14,6 +17,12 @@ export function AscendTheThroneModal() {
 	if (!character) {
 		return null;
 	}
+
+	const closeModal = () => {
+		setStep("ascendText");
+		setIsOpen(false);
+	};
+
 	const retireCharacter = () => {
 		updateGameState({
 			players: gameState.players.map((player) =>
@@ -25,7 +34,7 @@ export function AscendTheThroneModal() {
 		playbookBases[character.playbook].ascendTheThrone;
 
 	return (
-		<Dialog.Root>
+		<Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
 			<Dialog.Trigger asChild className="DialogTrigger">
 				<button type="button">Ascend the Throne</button>
 			</Dialog.Trigger>
@@ -44,21 +53,61 @@ export function AscendTheThroneModal() {
 					<Dialog.Description className="hidden">
 						Ascend the Throne of the Old Capitol.
 					</Dialog.Description>
-					<div className="flex flex-col gap-4 overflow-y-auto max-h-[500px]">
-						{ascendTheThroneContent.map((line, index) => (
-							// biome-ignore lint/suspicious/noArrayIndexKey: text
-							<p key={index}>{parsedStrong(line)}</p>
-						))}
-						<div className="mx-auto w-1/3 gap-4 flex justify-center items-center">
-							<button
-								type="button"
-								className="bg-theme-bg-accent text-theme-text-primary rounded-md p-2"
-								onClick={retireCharacter}
-							>
-								Ascend
-							</button>
+					{step === "ascendText" && (
+						<div className="flex flex-col gap-4 overflow-y-auto max-h-[500px]">
+							{ascendTheThroneContent.map((line, index) => (
+								// biome-ignore lint/suspicious/noArrayIndexKey: text
+								<p key={index}>{parsedStrong(line)}</p>
+							))}
+							<div className="mx-auto w-1/3 gap-4 flex justify-center items-center">
+								<button
+									type="button"
+									className="bg-theme-bg-accent text-theme-text-primary rounded-md p-2"
+									onClick={() => setStep("confirm")}
+								>
+									Ascend
+								</button>
+							</div>
 						</div>
-					</div>
+					)}
+					{step === "confirm" && (
+						<div className="flex flex-col gap-4 overflow-y-auto max-h-[500px]">
+							<p>Are you sure you want to ascend the throne?</p>
+
+							<p className="mb-4">
+								Pressing ascend will remove the character from the tracked game
+								state. You will lose customizations and advancements, and will
+								be prompted to create a new character next time you join.
+							</p>
+							<p className="mb-4">
+								This action is{" "}
+								<strong className="text-theme-text-accent font-bold">
+									PERMANENT
+								</strong>
+								.
+							</p>
+							<div className="flex flex-row gap-4">
+								<div className="mx-auto w-1/3 gap-4 flex justify-center items-center">
+									<button
+										type="button"
+										onClick={closeModal}
+										className="bg-theme-bg-accent text-theme-text-primary rounded-md p-2"
+									>
+										Not yet
+									</button>
+								</div>
+								<div className="mx-auto w-1/3 gap-4 flex justify-center items-center">
+									<button
+										type="button"
+										className="bg-theme-bg-accent text-theme-text-primary rounded-md p-2"
+										onClick={retireCharacter}
+									>
+										Ascend
+									</button>
+								</div>
+							</div>
+						</div>
+					)}
 				</Dialog.Content>
 			</Dialog.Portal>
 		</Dialog.Root>
