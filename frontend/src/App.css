@@ -45,6 +45,35 @@
 
   --color-border: #3a4536;
   --color-border-accent: #4d5c47;
+  --color-accent-primary: #5c7a52;
+}
+[data-theme="sagravelle"] {
+  --color-bg-primary: #250000;
+  --color-bg-secondary: #5e2c00;
+  --color-bg-accent: #7f2c02;
+
+  --color-text-primary: #fefefe;
+  --color-text-secondary: #f8e8be;
+  --color-text-muted: #b17676;
+  --color-text-accent: #fac989;
+
+  --color-border: #ff6600;
+  --color-border-accent: #ff8000;
+  --color-accent-primary: #ffaa00;
+}
+[data-theme="nevask"] {
+  --color-bg-primary: #e0e0e0;
+  --color-bg-secondary: #a6d9dc;
+  --color-bg-accent: #94c3d5;
+
+  --color-text-primary: #355e88;
+  --color-text-secondary: #00426d;
+  --color-text-muted: #4c4c4d;
+  --color-text-accent: #016184;
+
+  --color-border: #3a567a;
+  --color-border-accent: #3f789e;
+  --color-accent-primary: #0080c0;
 }
 [data-theme="dark"] {
   --color-bg-primary: #0a0a0a;
@@ -210,6 +239,7 @@ input[type="radio"] {
 input[type="radio"]:checked {
   background-color: var(--color-accent-primary);
   border-color: var(--color-accent-primary);
+  accent-color: var(--color-accent-primary);
 }
 /* ===== SCROLLBAR STYLES ===== */
 /* Hide scrollbars by default, show on hover/scroll, zero width overlay */
@@ -257,6 +287,7 @@ input[type="radio"]:checked {
   position: fixed;
   inset: 0;
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 24;
 }
 
 .DialogContent {
@@ -272,6 +303,7 @@ input[type="radio"]:checked {
   max-height: 85vh;
   padding: 25px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 25;
 }
 .DialogContent:focus {
   outline: none;

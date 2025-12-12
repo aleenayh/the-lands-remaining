@@ -81,6 +81,28 @@ function ThemeSelector() {
 					/>
 					The Great Forest
 				</label>
+				<label htmlFor="sagravelle">
+					<input
+						type="radio"
+						value="sagravelle"
+						name="theme"
+						className="mr-2"
+						defaultChecked={initialTheme === "sagravelle"}
+						onChange={(e) => confirmTheme(e.target.value)}
+					/>
+					Sagravelle
+				</label>
+				<label htmlFor="nevask">
+					<input
+						type="radio"
+						value="nevask"
+						name="theme"
+						className="mr-2"
+						defaultChecked={initialTheme === "nevask"}
+						onChange={(e) => confirmTheme(e.target.value)}
+					/>
+					Nevask
+				</label>
 				<label htmlFor="dark">
 					<input
 						type="radio"
@@ -110,7 +132,7 @@ function ThemeSelector() {
 
 function Credits() {
 	return (
-		<div className="flex flex-col gap-2 justify-start items-start text-left w-full text-lg">
+		<div className="flex flex-col gap-2 justify-start items-start text-left w-full text-md">
 			<h3 className="text-lg font-bold text-theme-text-accent text-center w-full">
 				About this Site
 			</h3>

@@ -63,7 +63,7 @@ export function CharacterOverview() {
 					</div>
 				) : (
 					<div
-						className={`h-full flex justify-center items-center text-center text-sm text-theme-text-muted p-10 ${user.role === PlayerRole.KEEPER ? "w-full" : "w-[60%]"}`}
+						className={`hidden h-full md:flex justify-center items-center text-center text-sm text-theme-text-muted p-10 ${user.role === PlayerRole.KEEPER ? "w-full" : "w-[60%]"}`}
 					>
 						<CopyInvite />
 					</div>
