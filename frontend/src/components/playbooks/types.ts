@@ -45,6 +45,12 @@ type Candle = {
 export type CoreMoveState =
 	| { type: "nameless"; legion: boolean[] }
 	| {
+			type: "crowns-pearl";
+			checks: number;
+			whatStole: string;
+			resolved: boolean;
+	  }
+	| {
 			type: "candle-bearer";
 			wax: number;
 			complications: string[];
@@ -86,6 +92,7 @@ export const playbookKeys = {
 	candleBearer: "candle-bearer",
 	nameless: "nameless",
 	lockAndKey: "lock-and-key",
+	crownsPearl: "crowns-pearl",
 } as const;
 
 export type playbookKey = (typeof playbookKeys)[keyof typeof playbookKeys];

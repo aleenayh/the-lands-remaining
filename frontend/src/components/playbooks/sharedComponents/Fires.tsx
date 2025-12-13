@@ -44,6 +44,11 @@ export function Fires({ character }: { character: Character }) {
 				<h3 className="text-sm font-bold text-theme-text-accent">
 					The Old Fire
 				</h3>
+				{editable && (
+					<p className="text-xs italic text-theme-text-muted">
+						Mark the first unmarked box.
+					</p>
+				)}
 				<div
 					className={`${editable ? "flex flex-col" : "flex flex-row gap-x-0 gap-y-2 justify-start flex-wrap"}`}
 				>
@@ -75,6 +80,13 @@ export function Fires({ character }: { character: Character }) {
 				<h3 className="text-sm font-bold text-theme-text-accent">
 					The Fire to Come
 				</h3>
+
+				{editable && (
+					<p className="text-xs italic text-theme-text-muted">
+						If no boxes are marked, you may retire this character to obscurity.
+						Otherwise, mark any box you wish.
+					</p>
+				)}
 				{Object.entries(fireToCome).map(([key, fire], i) => {
 					const marked = markedFireToCome >= i + 1; //zero indexed
 					return (

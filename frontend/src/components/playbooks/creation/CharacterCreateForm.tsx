@@ -5,7 +5,13 @@ import { PlayerRole } from "../../../context/types";
 import { playbookBases } from "../content";
 import { generateCoreMoveState } from "../coreMoves";
 import { Section } from "../sharedComponents/Section";
-import type { Abilities, Character, PlaybookBase, playbookKey } from "../types";
+import {
+	type Abilities,
+	type Character,
+	type PlaybookBase,
+	type playbookKey,
+	playbookKeys,
+} from "../types";
 import { PencilIconButton } from "./PencilIconButton";
 
 function getRandomValue(array: string[]): string {
@@ -17,6 +23,7 @@ function getRandomValue(array: string[]): string {
 }
 
 type CharacterCreateFormInputs = {
+	title: string;
 	characterName: string;
 	honorific: string;
 	look1: string;
@@ -92,7 +99,25 @@ export function CharacterCreateForm({
 			className="flex flex-col gap-2 justify-center"
 		>
 			<h1 className="text-2xl font-bold text-center">{base.title}</h1>
-			<Section title="Choose A Name">
+			<Section
+				title={
+					playbookKey === playbookKeys.nameless
+						? "Choose A Nickname"
+						: "Choose A Name"
+				}
+			>
+				{playbookKey === playbookKeys.crownsPearl && (
+					<div className="flex flex-col gap-1">
+						<p className="text-sm text-theme-text-muted">
+							Claim your previous title (Princess, Prince, etc.)
+						</p>
+						<SelectOrEdit
+							name="title"
+							options={["Princess", "Prince"]}
+							register={register}
+						/>
+					</div>
+				)}
 				<SelectOrEdit
 					name="characterName"
 					options={base.names}
@@ -178,7 +203,13 @@ export function CharacterCreateForm({
 
 type SelectOrEditFieldName = keyof Pick<
 	CharacterCreateFormInputs,
-	"characterName" | "honorific" | "look1" | "look2" | "look3" | "ritual"
+	| "characterName"
+	| "honorific"
+	| "look1"
+	| "look2"
+	| "look3"
+	| "ritual"
+	| "title"
 >;
 
 function LookSelector({
@@ -337,6 +368,7 @@ function constructCharacter(
 		look1,
 		look2,
 		look3,
+		title,
 		characterName,
 		honorific,
 		vitality,
@@ -349,7 +381,11 @@ function constructCharacter(
 	// Count total aspects across all relics to initialize the array
 	const relicAspects = constructAspectArray(base.relics);
 
-	const conditions: string[] = ["", "", ""];
+	let startingCondition = "";
+	if (playbookKey === playbookKeys.crownsPearl) {
+		startingCondition = "Mute";
+	}
+	const conditions: string[] = [startingCondition, "", ""];
 
 	const advancements: Record<number, boolean> = {
 		1: false,
@@ -368,7 +404,7 @@ function constructCharacter(
 	return {
 		playbook: playbookKey,
 		playerId,
-		name: `${characterName} ${honorific}`,
+		name: `${title !== undefined ? title : ""} ${characterName} ${honorific}`,
 		look: `${look1.charAt(0).toUpperCase() + look1.slice(1)}, ${look2}, ${look3}`,
 		ritual,
 		abilities: {

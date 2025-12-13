@@ -1,6 +1,7 @@
 import type { Character } from "../types";
 import { type CoreMoveState, type playbookKey, playbookKeys } from "../types";
 import { CoreMoveCandleBearer } from "./CandleBearer";
+import { CoreMoveCrownsPearl } from "./CrownsPearl";
 import { CoreMoveLockAndKey } from "./LockAndKey";
 import { CoreMoveNameless, legionNames } from "./Nameless";
 
@@ -11,6 +12,7 @@ export const coreMoves: (
 		[playbookKeys.candleBearer]: CoreMoveCandleBearer({ character }),
 		[playbookKeys.nameless]: CoreMoveNameless({ character }),
 		[playbookKeys.lockAndKey]: CoreMoveLockAndKey({ character }),
+		[playbookKeys.crownsPearl]: CoreMoveCrownsPearl({ character }),
 	};
 };
 
@@ -18,6 +20,7 @@ export const coreMoveTitles: Record<playbookKey, string> = {
 	[playbookKeys.candleBearer]: "The Waxen Order Keeps the Flame…",
 	[playbookKeys.nameless]: "The Nameless Legion Endures…",
 	[playbookKeys.lockAndKey]: "The Mouse in the Tower…",
+	[playbookKeys.crownsPearl]: "My Word, My Vow…",
 };
 
 export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
@@ -49,6 +52,13 @@ export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
 			return {
 				type: "lock-and-key",
 				checks: Array.from({ length: 12 }, () => 0),
+			};
+		case playbookKeys.crownsPearl:
+			return {
+				type: "crowns-pearl",
+				whatStole: "",
+				checks: 0,
+				resolved: false,
 			};
 	}
 }
