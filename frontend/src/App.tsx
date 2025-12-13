@@ -5,6 +5,7 @@ import { Game } from "./components/Game";
 import { LandingPage } from "./components/landingPage/LandingPage";
 import { GameProvider } from "./context/GameContext";
 import { PlayerRole, type UserInfo } from "./context/types";
+import ErrorBoundary from "./ErrorBoundary";
 import { nameToPlayerId } from "./lib/firebase";
 
 function App() {
@@ -43,10 +44,12 @@ function App() {
 
 	return (
 		<div className="App">
-			<GameProvider gameHash={gameHash} userInfo={userInfo}>
-				<Toaster />
-				<Game />
-			</GameProvider>
+			<ErrorBoundary>
+				<GameProvider gameHash={gameHash} userInfo={userInfo}>
+					<Toaster />
+					<Game />
+				</GameProvider>
+			</ErrorBoundary>
 		</div>
 	);
 }

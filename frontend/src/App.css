@@ -367,3 +367,82 @@ input[type="radio"]:checked {
     transform: translate(-50%, -50%) scale(1);
   }
 }
+
+/* ===== DICE STYLES ===== */
+.diceBase {
+  width: 4rem;
+  height: 4rem;
+  font-size: 8rem;
+  border: 1px solid var(--color-border-accent);
+  border-radius: 0.25rem;
+  background-color: var(--color-bg-secondary);
+  position: flex items-center justify-center;
+  padding: 1rem 0;
+  text-align: center;
+  line-height: 1;
+}
+.diceExcluded {
+  position: relative;
+}
+.diceExcluded::before {
+  content: "X";
+  color: red;
+  opacity: 0.5;
+  font-size: 4.5rem;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.diceRolling {
+  animation: roll 1s infinite;
+}
+
+@keyframes roll {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.diceRollingIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg-secondary);
+  border-radius: 0.25rem;
+  animation: rollParticle 1s infinite;
+}
+
+@keyframes rollParticle {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.bounce {
+  animation: bounce 2s ease-in-out forwards;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.2);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
