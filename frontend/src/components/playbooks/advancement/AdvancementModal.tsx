@@ -255,6 +255,12 @@ function MoveSelector({
 			...character.advancements,
 			[advancementIndex]: true,
 		};
+		const constructedMove = {
+			title: newMove.title,
+			text: newMove.text,
+			checks: Array.from({ length: newMove.checkboxes ?? 0 }, () => 0),
+			lines: Array.from({ length: newMove.extraLines ?? 0 }, () => ""),
+		};
 		updateGameState({
 			players: gameState.players.map((player) =>
 				player.id === character.playerId
@@ -262,10 +268,7 @@ function MoveSelector({
 							...player,
 							character: {
 								...character,
-								moves: [
-									...existingMoves,
-									{ checks: [], lines: [], ...newMove },
-								],
+								moves: [...existingMoves, constructedMove],
 								advancements: newAdvancements,
 							},
 						}

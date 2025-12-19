@@ -154,7 +154,7 @@ export const CrownsPearl: PlaybookBase = {
 			text: [
 				"Your grace and poise are recorded in the tales of the Old Kingdom. When another Ember would mark The Fire to Come in your presence, they may instead mark this move and describe what about you inspires them to boldly seize the moment. When the final box is marked, mark XP and cross out this move.",
 			],
-			checkboxes: [false, false, false],
+			checkboxes: 3,
 		},
 		{
 			title: "…I Will Come When I Am Called…",

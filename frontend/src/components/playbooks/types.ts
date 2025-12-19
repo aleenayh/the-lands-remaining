@@ -32,7 +32,7 @@ export type Abilities = {
 export type PlaybookMove = {
 	title: string;
 	text: string[];
-	checkboxes?: boolean[];
+	checkboxes?: number;
 	extraLines?: number;
 };
 
@@ -71,8 +71,8 @@ export type Character = {
 	moves: {
 		title: string;
 		text?: string[]; //only necessary for custom moves
-		checks: number[];
-		lines: string[];
+		checks?: number[];
+		lines?: string[];
 	}[];
 	coreMoveState: CoreMoveState;
 	advancements: Record<number, boolean>;

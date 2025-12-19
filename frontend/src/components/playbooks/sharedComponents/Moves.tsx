@@ -87,7 +87,7 @@ function MoveDisplay({
 	);
 
 	const syncLines = () => {
-		if (!editable) return;
+		if (!editable || !localLines) return;
 		const newLines = [...localLines];
 		updateGameState({
 			players: gameState.players.map((player) =>
@@ -108,6 +108,7 @@ function MoveDisplay({
 
 	const [localLines, setLocalLines] = useState(move.lines);
 	const updateLineLocal = (index: number, line: string) => {
+		if (!localLines) return;
 		const newLines = [...localLines];
 		newLines[index] = line;
 		setLocalLines(newLines);
@@ -168,13 +169,14 @@ function MoveDisplay({
 			)}
 
 			<div className="h-6" />
-			{move.lines.length > 0 &&
+			{move.lines &&
+				move.lines.length > 0 &&
 				move.lines.map((line, lineIndex) => {
 					return editable ? (
 						<input
 							type="text"
 							key={`${move.title}-line-${lineIndex}-${line}`}
-							value={localLines[lineIndex]}
+							value={localLines?.[lineIndex] ?? ""}
 							disabled={!editable}
 							onChange={(e) => updateLineLocal(lineIndex, e.target.value)}
 							onBlur={syncLines}
