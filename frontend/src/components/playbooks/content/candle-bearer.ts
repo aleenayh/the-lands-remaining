@@ -107,8 +107,6 @@ export const CandleBearer: PlaybookBase = {
 		"The Drip Vigil",
 	],
 	questions: [
-		"Did the Embers resolve a Mystery?",
-		"Did you roll with Cinder?",
 		"Did your light reveal something that others would rather remain hidden?",
 		"Did you risk yourself to bring hope or illumination into a dark place?",
 		"Did you deliver a trembling monologue about the dying of the light?",

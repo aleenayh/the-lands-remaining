@@ -80,8 +80,6 @@ export const LockAndKey: PlaybookBase = {
 		"The Door Beneath the Skin",
 	],
 	questions: [
-		"Did the Embers resolve a Mystery?",
-		"Did you roll with Cinder?",
 		"Did you slip past an enemy when fighting them was an option?",
 		"Did you fight an enemy when slipping past them was an option?",
 		"Did you deliver an embittered monologue about the Dimning?",

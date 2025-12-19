@@ -52,7 +52,7 @@ export const CrownsPearl: PlaybookBase = {
 		"the Scintillant Sovereign",
 	],
 	look: [
-		"A bleached coral hairpiece",
+		"a bleached coral hairpiece",
 		"a rigid head crest where hair should be",
 		"finned ears with bioluminescent tips",
 		"kelp woven through your hair",
@@ -81,8 +81,6 @@ export const CrownsPearl: PlaybookBase = {
 		"The Hymn of Salt and Sorrow",
 	],
 	questions: [
-		"Did the Embers resolve a Mystery?",
-		"Did you roll with Cinder?",
 		"Did you show us the beauty in your monstrosity?",
 		"Did you go out of your way to indulge your curiosity towards something from landwalker culture?",
 		"Did you allow a landwalker to indulge their curiosity towards you?",

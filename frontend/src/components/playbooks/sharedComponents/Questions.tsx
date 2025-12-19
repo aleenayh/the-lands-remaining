@@ -40,6 +40,22 @@ export function Questions({ character }: { character: Character }) {
 					The first two are always marked. Choose two more to mark.
 				</div>
 			)}
+			<div className="flex items-center gap-2 text-left">
+				<input type="checkbox" checked={true} disabled={true} />
+				<label className="text-sm" htmlFor="did-the-embers-resolve-a-mystery">
+					<span className={`text-theme-text-primary font-bold`}>
+						Did the Embers resolve a Mystery?
+					</span>
+				</label>
+			</div>
+			<div className="flex items-center gap-2 text-left">
+				<input type="checkbox" checked={true} disabled={true} />
+				<label className="text-sm" htmlFor="did-you-roll-with-cinder">
+					<span className={`text-theme-text-primary font-bold`}>
+						Did you roll with Cinder?
+					</span>
+				</label>
+			</div>
 			{Object.entries(questions).map(([key, value]) => {
 				const marked = markedQuestions[parseInt(key, 10)] === true;
 				return (

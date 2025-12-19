@@ -60,8 +60,6 @@ export const Nameless: PlaybookBase = {
 		"The Mirror Vigil",
 	],
 	questions: [
-		"Did the Embers resolve a Mystery?",
-		"Did you roll with Cinder?",
 		"Did you act in accordance with your vows, even when it cost you something precious?",
 		"Did you name another—enemy, ally, or shade—and in doing so alter their fate?",
 		"Did your pride reveal itself beneath the mask of humility?",
