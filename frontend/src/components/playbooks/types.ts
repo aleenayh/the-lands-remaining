@@ -56,7 +56,8 @@ export type CoreMoveState =
 			complications: string[];
 			candles: Record<number, Candle>;
 	  }
-	| { type: "lock-and-key"; checks: number[] };
+	| { type: "lock-and-key"; checks: number[] }
+	| { type: "famisher"; checks: number };
 
 export type Character = {
 	playbook: playbookKey;
@@ -93,6 +94,7 @@ export const playbookKeys = {
 	nameless: "nameless",
 	lockAndKey: "lock-and-key",
 	crownsPearl: "crowns-pearl",
+	famisher: "famisher",
 } as const;
 
 export type playbookKey = (typeof playbookKeys)[keyof typeof playbookKeys];

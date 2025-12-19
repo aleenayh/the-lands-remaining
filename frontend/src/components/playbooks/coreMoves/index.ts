@@ -3,6 +3,7 @@ import { type CoreMoveState, type playbookKey, playbookKeys } from "../types";
 import { CoreMoveCandleBearer } from "./CandleBearer";
 import { CoreMoveCrownsPearl } from "./CrownsPearl";
 import { CoreMoveLockAndKey } from "./LockAndKey";
+import { CoreMoveLoneFamisher } from "./LoneFamisher";
 import { CoreMoveNameless, legionNames } from "./Nameless";
 
 export const coreMoves: (
@@ -13,6 +14,7 @@ export const coreMoves: (
 		[playbookKeys.nameless]: CoreMoveNameless({ character }),
 		[playbookKeys.lockAndKey]: CoreMoveLockAndKey({ character }),
 		[playbookKeys.crownsPearl]: CoreMoveCrownsPearl({ character }),
+		[playbookKeys.famisher]: CoreMoveLoneFamisher({ character }),
 	};
 };
 
@@ -21,6 +23,7 @@ export const coreMoveTitles: Record<playbookKey, string> = {
 	[playbookKeys.nameless]: "The Nameless Legion Endures…",
 	[playbookKeys.lockAndKey]: "The Mouse in the Tower…",
 	[playbookKeys.crownsPearl]: "My Word, My Vow…",
+	[playbookKeys.famisher]: "There is no god greater than Hunger…",
 };
 
 export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
@@ -59,6 +62,11 @@ export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
 				whatStole: "",
 				checks: 0,
 				resolved: false,
+			};
+		case playbookKeys.famisher:
+			return {
+				type: "famisher",
+				checks: 0,
 			};
 	}
 }

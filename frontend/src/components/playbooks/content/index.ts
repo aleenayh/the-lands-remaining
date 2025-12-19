@@ -2,6 +2,7 @@ import { type PlaybookBase, playbookKeys } from "../types";
 import { CandleBearer } from "./candle-bearer";
 import { CrownsPearl } from "./crowns-pearl";
 import { LockAndKey } from "./lock-and-key";
+import { LoneFamisher } from "./lone-famisher";
 import { Nameless } from "./nameless";
 
 export const playbookBases: Record<
@@ -12,6 +13,7 @@ export const playbookBases: Record<
 	[playbookKeys.nameless]: Nameless,
 	[playbookKeys.lockAndKey]: LockAndKey,
 	[playbookKeys.crownsPearl]: CrownsPearl,
+	[playbookKeys.famisher]: LoneFamisher,
 };
 
 export const advancements: Record<number, string> = {
