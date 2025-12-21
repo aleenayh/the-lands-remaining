@@ -6,7 +6,6 @@ import React, {
 	useState,
 } from "react";
 import { useFirebase } from "../hooks/useFirebase";
-import { loadLocal, saveLocal } from "../utils/localStorage";
 import { defaultGameState } from "./defaults";
 import type { GameState, UserInfo } from "./types";
 
@@ -59,14 +58,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 		return newKey;
 	});
 
-	// Game state stored in React state
-	const [gameState, setGameState] = useState<GameState>(() => {
-		// Initialize from localStorage if available
-		const localState = loadLocal(gameHash);
-		return localState || defaultGameState;
-	});
-
-	// Track if we've initialized the game in Firebase
+	const [gameState, setGameState] = useState<GameState>(defaultGameState);
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false);
 
 	/**
@@ -99,7 +91,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 				mysteries: state.mysteries ?? defaultGameState.mysteries,
 			};
 			setGameState(mergedState);
-			saveLocal(mergedState, gameHash);
 			setFirebaseInitialized(true);
 		},
 	});
@@ -113,11 +104,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 			!firebaseInitialized &&
 			firebaseState === null
 		) {
-			const localState = loadLocal(gameHash);
-			const stateToUse = localState || { ...defaultGameState, gameHash };
-
-			console.log("Initializing Firebase with state:", stateToUse);
-			initializeGame(stateToUse)
+			initializeGame({ ...defaultGameState, gameHash })
 				.then(() => {
 					setFirebaseInitialized(true);
 				})
@@ -151,20 +138,36 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 		});
 	};
 
-	if (!gameState.players.some((player) => player.id === userInfo.id)) {
-		updateGameState({
-			players: [
-				...gameState.players,
-				{
-					id: userInfo.id,
-					name: userInfo.name,
-					role: userInfo.role,
-					character: null,
-					online: true,
-				},
-			],
+	/**
+	 * Add current user to players list after Firebase syncs
+	 * This must wait for firebaseInitialized to avoid overwriting existing players
+	 */
+	useEffect(() => {
+		if (!firebaseInitialized) return;
+
+		const userAlreadyExists = gameState.players.some(
+			(player) => player.id === userInfo.id,
+		);
+		if (userAlreadyExists) return;
+
+		const newPlayer = {
+			id: userInfo.id,
+			name: userInfo.name,
+			role: userInfo.role,
+			character: null,
+			online: true,
+		};
+
+		const updatedPlayers = [...gameState.players, newPlayer];
+
+		// Update local state
+		setGameState((prev) => ({ ...prev, players: updatedPlayers }));
+
+		// Send to Firebase
+		firebaseUpdateState({ players: updatedPlayers }).catch((error) => {
+			console.error("Failed to add player to Firebase:", error);
 		});
-	}
+	}, [firebaseInitialized, gameState.players, userInfo, firebaseUpdateState]);
 
 	// Context value
 	const value: GameContextValue = {
