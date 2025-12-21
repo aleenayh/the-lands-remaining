@@ -121,7 +121,7 @@ export function ConditionInput({
 	};
 
 	return (
-		<div className="flex-grow relative flex w-[60%] justify-evenly items-center gap-2">
+		<div className="flex-1 min-w-0 relative flex items-center gap-2">
 			<input
 				type="text"
 				value={localText}
@@ -129,12 +129,15 @@ export function ConditionInput({
 				onBlur={handleSave}
 				onKeyDown={handleKeyDown}
 				placeholder={placeholder}
-				className={`border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent flex-grow ${
+				className={`w-full min-w-0 border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent ${
 					isDirty ? "border-yellow-500/50" : "border-theme-border"
 				}`}
 			/>
 			{isDirty && (
-				<span className="text-yellow-500 text-xs" title="Unsaved - press Enter">
+				<span
+					className="text-yellow-500 text-xs shrink-0"
+					title="Unsaved - press Enter"
+				>
 					●
 				</span>
 			)}
@@ -144,8 +147,6 @@ export function ConditionInput({
 
 export function BlankCondition() {
 	return (
-		<div className="overflow-hidden font-mono whitespace-nowrap">
-			______________________________
-		</div>
+		<div className="flex-1 min-w-0 h-[1.5em] border-b border-theme-text-muted/30" />
 	);
 }

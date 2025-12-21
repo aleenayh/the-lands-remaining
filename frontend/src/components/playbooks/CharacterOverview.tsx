@@ -53,7 +53,7 @@ export function CharacterOverview() {
 				{/* Other players' playbooks - takes up ~60% width, shows up to 4 in a grid */}
 				{otherCharacters.length > 0 ? (
 					<div
-						className={`hidden  min-w-0 md:grid  gap-2 auto-rows-fr overflow-hidden ${user.role === PlayerRole.KEEPER ? "w-full grid-cols-4" : "w-[60%] grid-cols-3"}`}
+						className={`hidden  min-w-0 md:grid  gap-2 auto-rows-fr overflow-hidden ${user.role === PlayerRole.KEEPER ? "w-full grid-cols-4" : "w-[60%] grid-cols-[repeat(auto-fit,minmax(200px,1fr))]"}`}
 					>
 						{otherCharacters.map((character) => (
 							<div key={character.playerId} className="min-h-0 overflow-hidden">

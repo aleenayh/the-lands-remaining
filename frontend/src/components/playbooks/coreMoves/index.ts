@@ -2,6 +2,7 @@ import type { Character } from "../types";
 import { type CoreMoveState, type playbookKey, playbookKeys } from "../types";
 import { CoreMoveCandleBearer } from "./CandleBearer";
 import { CoreMoveCrownsPearl } from "./CrownsPearl";
+import { CoreMoveCruxDruid } from "./CruxDruid";
 import { CoreMoveLockAndKey } from "./LockAndKey";
 import { CoreMoveLoneFamisher } from "./LoneFamisher";
 import { CoreMoveNameless, legionNames } from "./Nameless";
@@ -15,6 +16,7 @@ export const coreMoves: (
 		[playbookKeys.lockAndKey]: CoreMoveLockAndKey({ character }),
 		[playbookKeys.crownsPearl]: CoreMoveCrownsPearl({ character }),
 		[playbookKeys.famisher]: CoreMoveLoneFamisher({ character }),
+		[playbookKeys.cruxDruid]: CoreMoveCruxDruid({ character }),
 	};
 };
 
@@ -24,6 +26,8 @@ export const coreMoveTitles: Record<playbookKey, string> = {
 	[playbookKeys.lockAndKey]: "The Mouse in the Tower…",
 	[playbookKeys.crownsPearl]: "My Word, My Vow…",
 	[playbookKeys.famisher]: "There is no god greater than Hunger…",
+	[playbookKeys.cruxDruid]:
+		"Do Not Let Me Hang Alone & Plant Me Where My Power Can Grow",
 };
 
 export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
@@ -66,6 +70,21 @@ export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
 		case playbookKeys.famisher:
 			return {
 				type: "famisher",
+				checks: 0,
+			};
+		case playbookKeys.cruxDruid:
+			return {
+				type: "crux-druid",
+				sapling: {
+					roots: "",
+					trunk: "",
+					bark: "",
+					sap: "",
+					branches: "",
+					leaves: "",
+					connection: "",
+				},
+				bodyParts: Array.from({ length: 6 }, () => ""),
 				checks: 0,
 			};
 	}

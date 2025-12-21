@@ -57,7 +57,21 @@ export type CoreMoveState =
 			candles: Record<number, Candle>;
 	  }
 	| { type: "lock-and-key"; checks: number[] }
-	| { type: "famisher"; checks: number };
+	| { type: "famisher"; checks: number }
+	| {
+			type: "crux-druid";
+			sapling: {
+				roots: string;
+				trunk: string;
+				bark: string;
+				sap: string;
+				branches: string;
+				leaves: string;
+				connection: string;
+			};
+			bodyParts: string[];
+			checks: number;
+	  };
 
 export type Character = {
 	playbook: playbookKey;
@@ -95,6 +109,7 @@ export const playbookKeys = {
 	lockAndKey: "lock-and-key",
 	crownsPearl: "crowns-pearl",
 	famisher: "famisher",
+	cruxDruid: "crux-druid",
 } as const;
 
 export type playbookKey = (typeof playbookKeys)[keyof typeof playbookKeys];
