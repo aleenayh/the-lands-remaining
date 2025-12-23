@@ -4,5 +4,5 @@ export const defaultGameState: GameState = {
 	gameHash: "",
 	mysteries: [],
 	players: [],
-	messages: [],
+	timestamp: 0,
 };

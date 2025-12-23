@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useGame } from "../../../context/GameContext";
 import { playbookBases } from "../content";
-import type { Character } from "../types";
+import type { Character, fireToComeKey, playbookKey } from "../types";
 
 export function Fires({ character }: { character: Character }) {
 	const {
@@ -11,10 +11,14 @@ export function Fires({ character }: { character: Character }) {
 	} = useGame();
 	const editable = id === character.playerId;
 
-	const onToggle = useCallback(
-		(checked: boolean, type: "old-fire" | "fire-to-come") => {
-			const updateKey = type === "old-fire" ? "oldFire" : "fireToCome";
+	const kindlingGateDisabled = gameState.players.some(
+		(player) =>
+			player.id !== character.playerId &&
+			player.character?.fireToCome["The Kindling Gate"] === true,
+	);
 
+	const onToggleOldFire = useCallback(
+		(checked: boolean) => {
 			updateGameState({
 				players: gameState.players.map((player) =>
 					player.id === character.playerId && player.character
@@ -22,9 +26,9 @@ export function Fires({ character }: { character: Character }) {
 								...player,
 								character: {
 									...player.character,
-									[updateKey]: checked
-										? character[updateKey] + 1
-										: character[updateKey] - 1,
+									oldFire: checked
+										? character.oldFire + 1
+										: character.oldFire - 1,
 								},
 							}
 						: player,
@@ -34,14 +38,33 @@ export function Fires({ character }: { character: Character }) {
 		[updateGameState, gameState.players, character],
 	);
 
-	const { fireToCome, oldFire } = playbookBases[character.playbook];
+	const onToggleFireToCome = useCallback(
+		(checked: boolean, key: fireToComeKey) => {
+			updateGameState({
+				players: gameState.players.map((player) =>
+					player.id === character.playerId
+						? {
+								...player,
+								character: {
+									...character,
+									fireToCome: { ...character.fireToCome, [key]: checked },
+								},
+							}
+						: player,
+				),
+			});
+		},
+		[updateGameState, gameState.players, character],
+	);
+
+	const { fireToCome, oldFire } =
+		playbookBases[character.playbook as playbookKey];
 	const markedOldFire = character.oldFire;
-	const markedFireToCome = character.fireToCome;
 
 	return (
 		<div className="flex gap-4">
 			<div className="w-1/2 flex flex-col gap-2">
-				<h3 className="text-sm font-bold text-theme-text-accent">
+				<h3 className="text-sm font-bold text-theme-text-accent text-center">
 					The Old Fire
 				</h3>
 				{editable && (
@@ -60,7 +83,7 @@ export function Fires({ character }: { character: Character }) {
 									type="checkbox"
 									checked={marked}
 									disabled={!editable}
-									onChange={(e) => onToggle(e.target.checked, "old-fire")}
+									onChange={(e) => onToggleOldFire(e.target.checked)}
 								/>
 								<label className="text-xs" htmlFor={fire}>
 									{editable && (
@@ -77,7 +100,7 @@ export function Fires({ character }: { character: Character }) {
 				</div>
 			</div>
 			<div className="w-1/2 flex flex-col gap-2">
-				<h3 className="text-sm font-bold text-theme-text-accent">
+				<h3 className="text-sm font-bold text-theme-text-accent text-center">
 					The Fire to Come
 				</h3>
 
@@ -87,23 +110,30 @@ export function Fires({ character }: { character: Character }) {
 						Otherwise, mark any box you wish.
 					</p>
 				)}
-				{Object.entries(fireToCome).map(([key, fire], i) => {
-					const marked = markedFireToCome >= i + 1; //zero indexed
+				{Object.entries(fireToCome).map(([key, fire]) => {
+					const marked = character.fireToCome[key as fireToComeKey];
+					const disabled = kindlingGateDisabled && key === "The Kindling Gate";
 					return (
 						<div key={fire} className="flex items-start gap-2 text-left">
 							<input
 								id={`fire-fire-${fire}`}
 								type="checkbox"
 								checked={marked}
-								disabled={!editable}
-								onChange={(e) => onToggle(e.target.checked, "fire-to-come")}
+								disabled={!editable || disabled}
+								onChange={(e) =>
+									onToggleFireToCome(e.target.checked, key as fireToComeKey)
+								}
 							/>
 							<label className="text-xs" htmlFor={`fire-fire-${fire}`}>
-								<strong>{key}</strong>
+								<strong
+									className={`${marked || disabled ? "text-theme-text-muted line-through" : ""}`}
+								>
+									{key}
+								</strong>
 								{editable ? ": " : " "}
 								{editable && (
 									<span
-										className={`${marked ? "text-theme-text-muted line-through" : ""}`}
+										className={`${marked || disabled ? "text-theme-text-muted line-through" : ""}`}
 									>
 										{fire}
 									</span>

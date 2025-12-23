@@ -10,7 +10,7 @@ export function RetireCharacterModal() {
 	const character = gameState.players.find(
 		(player) => player.id === id,
 	)?.character;
-	if (!character || character.fireToCome !== 0) {
+	if (!character || Object.values(character.fireToCome).includes(true)) {
 		return (
 			<Dialog.Root>
 				<Dialog.Trigger asChild className="DialogTrigger">

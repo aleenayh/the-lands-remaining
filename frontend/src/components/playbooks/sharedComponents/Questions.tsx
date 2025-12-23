@@ -56,18 +56,21 @@ export function Questions({ character }: { character: Character }) {
 					</span>
 				</label>
 			</div>
-			{Object.entries(questions).map(([key, value]) => {
-				const marked = markedQuestions[parseInt(key, 10)] === true;
+			{questions.map((value, index) => {
+				const marked = markedQuestions[index] === true;
 				return (
 					<div
-						key={`question-${key}`}
+						key={`question-${
+							// biome-ignore lint/suspicious/noArrayIndexKey: just boxes
+							index
+						}`}
 						className="flex items-center gap-2 text-left"
 					>
 						<input
 							type="checkbox"
 							checked={marked}
 							disabled={!editable}
-							onChange={(e) => onToggle(e.target.checked, parseInt(key, 10))}
+							onChange={(e) => onToggle(e.target.checked, index)}
 						/>
 						<label className="text-sm" htmlFor={value}>
 							<span

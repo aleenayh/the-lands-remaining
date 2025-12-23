@@ -5,7 +5,9 @@ import React, {
 	useEffect,
 	useState,
 } from "react";
+import toast from "react-hot-toast";
 import { useFirebase } from "../hooks/useFirebase";
+import { validateGameState } from "../utils/schemaValidation";
 import { defaultGameState } from "./defaults";
 import type { GameState, UserInfo } from "./types";
 
@@ -72,10 +74,26 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 	} = useFirebase({
 		gameHash,
 		onStateSync: (state: GameState) => {
+			//once per session, validate the received state to ensure it matches current code
+			const { state: validatedState, warnings } = validateGameState(state);
+
+			if (warnings.length > 0) {
+				toast.error(
+					`The expected game state did not match your last synced state. Some default values have been applied. 
+				
+				${warnings.length} default fields used: ${warnings.map((w) => w.field).join(", ")}`,
+					{ id: "schema-warnings" },
+				);
+				console.error(
+					`Game state schema warnings: ${warnings.map((w) => `${w.field}: Expected ${w.expected} -> Received ${w.received}`).join(", ")}`,
+				);
+			}
+
 			const mergedState: GameState = {
 				...defaultGameState,
-				...state,
+				...validatedState,
 			};
+
 			setGameState(mergedState);
 			setFirebaseInitialized(true);
 		},
@@ -104,24 +122,28 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 	 * Update game state locally AND send to Firebase
 	 */
 	const updateGameState = (updates: Partial<GameState>) => {
-		const newState = { ...gameState, ...updates };
+		try {
+			const newState = { ...gameState, ...updates };
 
-		if (updates.players) {
-			for (const player of updates.players) {
-				if (player.id === userInfo.id && player.role !== userInfo.role) {
-					localStorage.setItem("playerRole", player.role);
-					setUserInfo({ ...userInfo, role: player.role });
+			if (updates.players) {
+				for (const player of updates.players) {
+					if (player.id === userInfo.id && player.role !== userInfo.role) {
+						localStorage.setItem("playerRole", player.role);
+						setUserInfo({ ...userInfo, role: player.role });
+					}
 				}
 			}
+
+			// Update local state immediately (optimistic update)
+			setGameState(newState);
+
+			// Send to Firebase
+			firebaseUpdateState(updates).catch((error) => {
+				console.error("Failed to sync state to Firebase:", error);
+			});
+		} catch (error) {
+			console.error("Error updating game state:", error);
 		}
-
-		// Update local state immediately (optimistic update)
-		setGameState(newState);
-
-		// Send to Firebase
-		firebaseUpdateState(updates).catch((error) => {
-			console.error("Failed to sync state to Firebase:", error);
-		});
 	};
 
 	/**
@@ -163,6 +185,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 		updateGameState,
 		user: userInfo,
 	};
+
+	if (!firebaseInitialized) {
+		return <div>Loading...</div>;
+	}
 
 	return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };

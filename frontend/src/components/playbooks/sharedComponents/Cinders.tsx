@@ -13,24 +13,25 @@ export function Cinders({ character }: { character: Character }) {
 	const editable = id === character.playerId;
 	const { cinders } = playbookBases[character.playbook];
 	const markedCinders = character.cinders;
+	const kindlingGateMarked = character.fireToCome["The Kindling Gate"] === true;
 
 	const onToggle = useCallback(
 		(checked: boolean, key: number) => {
 			updateGameState({
-				players: gameState.players.map((player) =>
-					player.id === character.playerId && player.character
+				players: gameState.players.map((p) =>
+					p.id === character.playerId && p.character
 						? {
-								...player,
+								...p,
 								character: {
-									...player.character,
-									cinders: { ...player.character.cinders, [key]: checked },
+									...p.character,
+									cinders: { ...character.cinders, [key]: checked },
 								},
 							}
-						: player,
+						: p,
 				),
 			});
 		},
-		[updateGameState, gameState.players, character.playerId],
+		[updateGameState, gameState.players, character],
 	);
 
 	return (
@@ -59,34 +60,36 @@ export function Cinders({ character }: { character: Character }) {
 					</div>
 				);
 			})}
-			<Section title="The Kindling Gate" collapsible={true} minify>
-				<div className="text-sm italic text-theme-text-secondary">
-					If you have marked The Kindling Gate, track effects below.
-				</div>
-				<div className="flex gap-2 justify-center items-center">
-					{Array.from({ length: 6 }).map((_, index) => {
-						return (
-							<input
-								type="checkbox"
-								key={`kindling-gate-tracker-${
-									// biome-ignore lint/suspicious/noArrayIndexKey: just boxes
-									index
-								}`}
-								checked={markedCinders[index + 6] === true}
-								onChange={(e) => onToggle(e.target.checked, index + 6)}
-							/>
-						);
-					})}
-				</div>
-				<div className="text-sm text-theme-text-primary text-left">
-					Whenever you act in accordance with—or are negatively affected by—the
-					Herald Condition, mark a box. When all the boxes are marked, you can
-					unmark them to unmark the Cinder. The Herald Condition cannot be
-					cleared in the normal ways, but you can choose to clear it in order to
-					get an automatic 12+ on a roll. If you do this, cross out The Kindling
-					Gate and no longer mark these boxes.
-				</div>
-			</Section>
+			{kindlingGateMarked && (
+				<Section title="The Kindling Gate" collapsible={true} minify>
+					<div className="text-sm italic text-theme-text-secondary">
+						If you have marked The Kindling Gate, track effects below.
+					</div>
+					<div className="flex gap-2 justify-center items-center">
+						{Array.from({ length: 6 }).map((_, index) => {
+							return (
+								<input
+									type="checkbox"
+									key={`kindling-gate-tracker-${
+										// biome-ignore lint/suspicious/noArrayIndexKey: just boxes
+										index
+									}`}
+									checked={markedCinders[index + 6] === true}
+									onChange={(e) => onToggle(e.target.checked, index + 6)}
+								/>
+							);
+						})}
+					</div>
+					<div className="text-sm text-theme-text-primary text-left">
+						Whenever you act in accordance with—or are negatively affected
+						by—the Herald Condition, mark a box. When all the boxes are marked,
+						you can unmark them to unmark the Cinder. The Herald Condition
+						cannot be cleared in the normal ways, but you can choose to clear it
+						in order to get an automatic 12+ on a roll. If you do this, cross
+						out The Kindling Gate and no longer mark these boxes.
+					</div>
+				</Section>
+			)}
 		</div>
 	);
 }

@@ -13,6 +13,7 @@ import { Section } from "../sharedComponents/Section";
 import {
 	type Abilities,
 	type Character,
+	type fireToComeKey,
 	type PlaybookBase,
 	type playbookKey,
 	playbookKeys,
@@ -403,7 +404,37 @@ function constructCharacter(
 		9: false,
 	};
 
+	const cinders: Record<number, boolean> = {
+		1: false,
+		2: false,
+		3: false,
+		4: false,
+		5: false,
+		6: false,
+		7: false,
+		8: false,
+		9: false,
+		10: false,
+		11: false,
+	};
+
+	const questions: Record<number, boolean> = {
+		1: false,
+		2: false,
+		3: false,
+		4: false,
+		5: false,
+	};
+
 	const coreMoveState = generateCoreMoveState(playbookKey);
+
+	const fireToCome: Record<fireToComeKey, boolean> = {
+		"The Kindling Gate": false,
+		"The Tinder Arch": false,
+		"The Hearth's Fuel": false,
+		"The Ashen Passage": false,
+		"The Pyre's Crown": false,
+	};
 
 	return {
 		playbook: playbookKey,
@@ -412,27 +443,23 @@ function constructCharacter(
 		look: `${look1.charAt(0).toUpperCase() + look1.slice(1)}, ${look2}, ${look3}`,
 		ritual,
 		abilities: {
-			vitality: Number(vitality),
-			composure: Number(composure),
-			reason: Number(reason),
-			presence: Number(presence),
-			cinder: Number(cinder),
+			vitality,
+			composure,
+			reason,
+			presence,
+			cinder,
 		},
-		cinders: Object.fromEntries(
-			Object.keys(base.cinders).map((key) => [key, false]),
-		),
+		cinders,
 		relics: base.relics,
 		relicAspects,
 		oldFire: 0,
-		fireToCome: 0,
+		fireToCome,
 		advancements,
 		conditions,
 		moves: [],
 		coreMoveState,
 		experience: 0,
-		questions: Object.fromEntries(
-			Object.keys(base.questions).map((key) => [parseInt(key, 10), false]),
-		),
+		questions,
 	};
 }
 
