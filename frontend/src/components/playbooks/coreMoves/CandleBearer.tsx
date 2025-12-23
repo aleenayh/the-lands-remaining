@@ -46,9 +46,9 @@ export function CoreMoveCandleBearer({ character }: { character: Character }) {
 	if (coreMoveState.type !== "candle-bearer") return null;
 	return (
 		<div className="flex flex-col gap-2 text-left">
-			<h2 className="text-lg font-bold text-theme-text-accent text-center">
+			<h3 className="text-lg font-bold text-theme-text-accent text-center">
 				The Waxen Order Keeps the Flame…
-			</h2>
+			</h3>
 			<p>
 				You have the tools and ingredients necessary to craft magical candles.
 				Whenever you take a few hours to do so, mark Wax below and roll with
