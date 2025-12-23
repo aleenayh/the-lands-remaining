@@ -72,23 +72,9 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 	} = useFirebase({
 		gameHash,
 		onStateSync: (state: GameState) => {
-			// console.log("Received state from Firebase:", state);
-			// Merge with defaults to handle missing fields (Firebase drops empty arrays)
 			const mergedState: GameState = {
 				...defaultGameState,
 				...state,
-				players: (state.players ?? []).map((player) => ({
-					...player,
-					character: player.character
-						? {
-								...player.character,
-								conditions: player.character.conditions ?? [],
-								relicAspects: player.character.relicAspects ?? [],
-							}
-						: null,
-				})),
-				shrines: state.shrines ?? defaultGameState.shrines,
-				mysteries: state.mysteries ?? defaultGameState.mysteries,
 			};
 			setGameState(mergedState);
 			setFirebaseInitialized(true);

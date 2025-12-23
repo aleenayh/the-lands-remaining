@@ -1,6 +1,5 @@
 import type { Mystery } from "../components/mystery/types";
 import type { Character } from "../components/playbooks/types";
-import type { ShrineType } from "../components/shrine/details";
 
 export type UserInfo = {
 	id: string;
@@ -10,21 +9,10 @@ export type UserInfo = {
 
 export type GameState = {
 	gameHash: string;
-	land: Land;
 	mysteries: Mystery[];
-	shrines: Shrine[];
 	players: Player[];
 	messages: string[];
 };
-
-type Land = "forest" | "elegy";
-
-export type Shrine = {
-	id: ShrineType;
-	state: ShrineState;
-	color: string | null;
-};
-export type ShrineState = "available" | "active" | "completed" | "locked";
 
 type Player = {
 	id: string;

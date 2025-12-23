@@ -1,15 +1,8 @@
-import type { Mystery } from "../components/mystery/types";
-import type { GameState, Shrine } from "./types";
-
-const defaultMysteries: Mystery[] = [];
-
-const defaultShrines: Shrine[] = [];
+import type { GameState } from "./types";
 
 export const defaultGameState: GameState = {
 	gameHash: "",
-	land: "elegy",
-	shrines: defaultShrines,
-	mysteries: defaultMysteries,
+	mysteries: [],
 	players: [],
 	messages: [],
 };
