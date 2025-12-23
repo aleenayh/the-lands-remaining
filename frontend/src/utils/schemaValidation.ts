@@ -44,7 +44,7 @@ function fixFirebaseArrays(
 	if (Array.isArray(state)) {
 		if (
 			parentKey &&
-			["cinders", "questions", "advancements", "candles"].includes(parentKey)
+			["cinders", "advancements", "candles"].includes(parentKey)
 		) {
 			return arrayToRecord(state);
 		}
