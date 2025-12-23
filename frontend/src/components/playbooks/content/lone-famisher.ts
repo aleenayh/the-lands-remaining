@@ -134,11 +134,11 @@ export const LoneFamisher: PlaybookBase = {
 			"Pick a Cinder (do not mark it if it is unmarked) and cross out all others; tell the other Embers they cannot mark The Kindling Gate on their own sheets. Take the Condition: Herald of [Name of Cinder]. Whenever you act in accordance with—or are negatively affected by—the Condition, mark a box below. When all the boxes are marked, you can unmark them to unmark the Cinder. The Herald Condition cannot be cleared in the normal ways, but you can choose to clear it in order to get an automatic 12+ on a roll. If you do this, cross out The Kindling Gate.",
 		"The Tinder Arch":
 			"The Famishers destroyed entire bloodlines in their merciless raids, but there were those few who survived and carried on in spite of your barbarity. A descendant from one of these survivors has emerged and seeks vengeance. Name this descendant, and tell the Keeper to put them in play as a Danger.",
-		"The Hearth’s Fuel":
+		"The Hearth's Fuel":
 			"The rumbling of a great and terrible storm sends tremors through the skies all across the Lands. In the roar of thunder, you hear whispers from the past. Who is calling out to you, and what do they ask or demand of you as you get ever closer to reaching the Throne. Will you heed them when the time comes to ascend?",
 		"The Ashen Passage":
 			"Increase Cinder by 1 (max 3) and decrease another ability of your choice by 1.",
-		"The Pyre’s Crown":
+		"The Pyre's Crown":
 			"Narrate the moment you turn from the company and walk alone toward the Throne at the heart of the Old Capital. Then, at the end of this play session, read Ascend the Throne.",
 	},
 	ascendTheThrone: [
@@ -157,16 +157,16 @@ export const LoneFamisher: PlaybookBase = {
 			title: "…for ours is unforgiving…",
 			text: [
 				"When you take a Hunger Condition, roll with Composure. On a 10+, choose two Boons. On a 7-9, choose one Boon and one Complication.",
-				"Boons:",
-				"Rage ignites every vein, muscle, and tendon. Add 1 to your Vitality (max 4) while you have this Hunger Condition.",
-				"You have transcended the haze of bloodlust; you don’t take disadvantage on rolls made with Reason or Composure while you have this Hunger Condition.",
-				"The thrill of battle is invigorating; immediately clear all emotional or spiritual Conditions (not the Hunger Condition).",
-				"Your gluttony is ceaseless; mark a box on your Hunger track. ",
-				"Complications:",
-				"You endanger the nearest Ember; declare what part of them you'd love to eat, and then ask them to give you an appropriate Condition.",
-				"You rage attracts unwanted attention; tell the Keeper to immediately put a Danger in play.",
-				"Your strength is impressive, but not enough to inspire fear; you do not take advantage on rolls made with Presence while you have this Hunger Condition.",
-				"Your appetite is quickly waning; take the Condition: Fatigued.",
+				"<h2>Boons:</h2>",
+				"<li>Rage ignites every vein, muscle, and tendon. Add 1 to your Vitality (max 4) while you have this Hunger Condition.</li>",
+				"<li>You have transcended the haze of bloodlust; you don’t take disadvantage on rolls made with Reason or Composure while you have this Hunger Condition.</li>",
+				"<li>The thrill of battle is invigorating; immediately clear all emotional or spiritual Conditions (not the Hunger Condition).</li>",
+				"<li>Your gluttony is ceaseless; mark a box on your Hunger track.</li>",
+				"<h2>Complications:</h2>",
+				"<li>You endanger the nearest Ember; declare what part of them you'd love to eat, and then ask them to give you an appropriate Condition.</li>",
+				"<li>You rage attracts unwanted attention; tell the Keeper to immediately put a Danger in play.</li>",
+				"<li>Your strength is impressive, but not enough to inspire fear; you do not take advantage on rolls made with Presence while you have this Hunger Condition.</li>",
+				"<li>Your appetite is quickly waning; take the Condition: Fatigued.</li>",
 				"On a miss, describe your final moments of clarity before you succumb to your berserker nature, then retire this character; tell the Keeper they become an ongoing Danger.",
 			],
 		},
@@ -195,9 +195,9 @@ export const LoneFamisher: PlaybookBase = {
 			text: [
 				"You broke your Famisher oath by taking a secret Lover and entwining your heart with theirs. Though they have been lost to the Dimning, a piece of them remains with you. When you take this move, create the Lover’s Token using the procedure below, and then, during the next Start of Session, narrate a flashback to when your lover gifted it to you.",
 				"To create the Lover’s Token, circle one below for each Aspect, and add The Lover’s Token with your chosen Aspects to your Equipment.",
-				"Trinket: a simple iron ring, a leather pouch filled with dried flowers, an intricately braided leather cord, a piece of tattooed skin.",
-				"Lie: scalping a rival chieftain, disemboweling a general in front of their cavalry, pouring a traveling merchant’s molten jewelry down their own throat, butchering and eating a wayfarer alive.",
-				"Memory: the scent of your Lover’s sweat, the caress of your Lover’s fingertips, the taste of your Lover’s scarred lips, your Lover’s grunts of passion. ",
+				"<li>Trinket: a simple iron ring, a leather pouch filled with dried flowers, an intricately braided leather cord, a piece of tattooed skin.</li>",
+				"<li>Lie: scalping a rival chieftain, disemboweling a general in front of their cavalry, pouring a traveling merchant’s molten jewelry down their own throat, butchering and eating a wayfarer alive.</li>",
+				"<li>Memory: the scent of your Lover’s sweat, the caress of your Lover’s fingertips, the taste of your Lover’s scarred lips, your Lover’s grunts of passion. </li>",
 				"The Lover’s Token",
 				"In the time of the Old Fire, your Lover gifted you a <trinket>. Discretion was necessary, and so you explained to your tribesman it was a trophy, won by <lie>. When you hold it close to you, you instantly recall <memory>. ",
 				"When all three Aspects are marked, the Token is destroyed. Narrate a scene showing the destruction of this object. How does the loss of the Lover’s Token forever change you—do you find some new way to commemorate them, or do you finally let them go? Then, mark every unmarked box on Hunger.",

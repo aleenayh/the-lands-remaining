@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { useGame } from "../../../context/GameContext";
 import { PencilIconButton } from "../creation/PencilIconButton";
 import type { Character } from "../types";
+import { parseRelicText } from "../utils";
 import { BlankCondition, ConditionInput } from "./Conditions";
 
 export function Relics({ character }: { character: Character }) {
@@ -52,8 +53,8 @@ export function Relics({ character }: { character: Character }) {
 				globalAspectIndex = parsed.nextAspectIndex;
 
 				return (
-					<div key={relic.title} className="flex flex-col gap-1">
-						<h3 className="text-sm font-bold text-theme-text-accent">
+					<div key={relic.title} className="flex flex-col gap-1 text-left">
+						<h3 className="text-sm font-bold text-theme-text-accent text-center">
 							{relic.title}
 						</h3>
 						<p className="text-sm leading-relaxed">{parsed.elements}</p>
@@ -72,92 +73,6 @@ export function Relics({ character }: { character: Character }) {
 				);
 			})}
 		</div>
-	);
-}
-
-/**
- * Parse relic text and render <aspect> tags with checkboxes
- */
-export function parseRelicText(
-	text: string,
-	relicAspects: number[],
-	startIndex: number,
-	editable: boolean,
-	onToggle: (index: number) => void,
-): { elements: React.ReactNode; nextAspectIndex: number } {
-	const parts: React.ReactNode[] = [];
-	let currentIndex = startIndex;
-	let lastEnd = 0;
-
-	// Match all <aspect>...</aspect> patterns
-	const regex = /<aspect>(.*?)<\/aspect>/g;
-	let match = regex.exec(text);
-
-	while (match !== null) {
-		// Add text before this aspect
-		if (match.index > lastEnd) {
-			parts.push(text.slice(lastEnd, match.index));
-		}
-
-		const aspectText = match[1];
-		const aspectIndex = currentIndex;
-		const isChecked = relicAspects[aspectIndex] === 1;
-
-		parts.push(
-			<AspectSpan
-				key={`aspect-${aspectIndex}`}
-				text={aspectText}
-				checked={isChecked}
-				editable={editable}
-				onToggle={() => onToggle(aspectIndex)}
-			/>,
-		);
-
-		currentIndex++;
-		lastEnd = match.index + match[0].length;
-		match = regex.exec(text);
-	}
-
-	// Add remaining text after last aspect
-	if (lastEnd < text.length) {
-		parts.push(text.slice(lastEnd));
-	}
-
-	return { elements: parts, nextAspectIndex: currentIndex };
-}
-
-function AspectSpan({
-	text,
-	checked,
-	editable,
-	onToggle,
-}: {
-	text: string;
-	checked: boolean;
-	editable: boolean;
-	onToggle: () => void;
-}) {
-	return (
-		<span>
-			<button
-				type="button"
-				onClick={onToggle}
-				disabled={!editable}
-				className={`inline-block align-middle w-3 h-3 border rounded-sm text-[8px] leading-[0.6rem] text-center mr-0.5 ${
-					checked
-						? "bg-theme-accent-primary border-theme-accent-primary text-white"
-						: "border-theme-border-accent bg-transparent"
-				} ${editable ? "cursor-pointer hover:border-theme-accent-primary" : "cursor-default opacity-70"}`}
-				aria-label={checked ? "Uncheck aspect" : "Check aspect"}
-			>
-				{checked && "✓"}
-			</button>
-			<strong
-				className={`${checked ? "line-through opacity-60" : ""} text-theme-text-accent font-extrabold`}
-			>
-				{text}
-			</strong>
-		</span>
 	);
 }
 

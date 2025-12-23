@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useGame } from "../../../context/GameContext";
-import { parseRelicText } from "../sharedComponents/Relics";
 import type { Character } from "../types";
+import { parseRelicText } from "../utils";
 
 export function CoreMoveLockAndKey({ character }: { character: Character }) {
 	const {
@@ -46,9 +46,9 @@ export function CoreMoveLockAndKey({ character }: { character: Character }) {
 
 	return (
 		<div className="flex flex-col gap-2 text-left">
-			<h2 className="text-center text-lg font-bold text-theme-text-accent">
+			<h3 className="text-sm font-bold text-theme-text-accent text-center">
 				The Mouse in the Tower…
-			</h2>
+			</h3>
 			<p>
 				You have mastered a form of martial arts inspired by a story told to
 				small children raised in your order. The Aspects of the story function

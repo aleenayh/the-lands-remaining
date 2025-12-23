@@ -98,9 +98,9 @@ export function CoreMoveLoneFamisher({ character }: { character: Character }) {
 
 	return (
 		<div className="flex flex-col gap-2 text-left">
-			<h2 className="text-center text-lg font-bold text-theme-text-accent">
+			<h3 className="text-sm font-bold text-theme-text-accent text-center">
 				There is no god greater than Hunger…
-			</h2>
+			</h3>
 			<p>
 				When you use violence to get what you want, when you fell a creature in
 				bloody battle, or when an Ember move or the Keeper instructs you to do

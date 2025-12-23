@@ -1,11 +1,12 @@
 import { Dialog } from "radix-ui";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Flame } from "../../../components/candle/Flame";
 import { useGame } from "../../../context/GameContext";
+import { colorFromTheme } from "../../colors";
 import { PencilIconButton } from "../creation/PencilIconButton";
 import { BlankCondition, ConditionInput } from "../sharedComponents/Conditions";
 import type { Character } from "../types";
+import { Flame } from "./candle/Flame";
 
 export function CoreMoveCandleBearer({ character }: { character: Character }) {
 	const {
@@ -424,8 +425,7 @@ function Candle({ character, index }: { character: Character; index: number }) {
 					>
 						{candle.checks >= index + 1 ? (
 							<div className="h-8 w-8 flex justify-center items-center -ml-[0.50rem] mt-2">
-								{/* TODO: get color based on theme */}
-								<Flame color={"Olive"} />
+								<Flame color={colorFromTheme()} />
 							</div>
 						) : (
 							<div className="h-8 w-8 flex justify-center items-center -ml-[0.50rem] mt-2" />

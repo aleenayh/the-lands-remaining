@@ -13,11 +13,11 @@ export function Extras({ character }: { character: Character }) {
 				<p className="text-xs text-theme-text-secondary">{character.look}</p>
 			</div>
 			<Section title="Story" collapsible={true}>
-				<p className="flex flex-col gap-2 text-sm text-theme-text-secondary">
+				<div className="flex flex-col gap-2 text-sm text-theme-text-secondary">
 					{base.intro.map((intro) => (
 						<p key={intro}>{intro}</p>
 					))}
-				</p>
+				</div>
 			</Section>
 		</div>
 	);
