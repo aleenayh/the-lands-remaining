@@ -77,9 +77,9 @@ export function CoreMoveCrownsPearl({ character }: { character: Character }) {
 
 	return (
 		<div className="flex flex-col gap-2 text-left">
-			<h2 className="text-center text-lg font-bold text-theme-text-accent">
+			<h3 className="text-sm font-bold text-theme-text-accent text-center">
 				My Word, My Vow…
-			</h2>
+			</h3>
 			<p>
 				Take the Condition: Mute. It cannot be cleared. You may communicate
 				simple concepts to your fellow Embers with gestures—or writing, if you

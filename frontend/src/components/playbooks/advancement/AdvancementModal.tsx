@@ -8,6 +8,7 @@ import { coreMoveTitles } from "../coreMoves";
 import { constructAspectArray } from "../creation/CharacterCreateForm";
 import { orderAbilities } from "../sharedComponents/AbilityBoxes";
 import type { Abilities, Character } from "../types";
+import { parseStaticText } from "../utils";
 
 export function AdvancementModal() {
 	const {
@@ -237,10 +238,11 @@ function MoveSelector({
 	advancementIndex: number | null;
 }) {
 	const { gameState, updateGameState } = useGame();
+	const base = playbookBases[character.playbook];
 	const existingMoves =
 		gameState.players.find((player) => player.id === character.playerId)
 			?.character?.moves ?? [];
-	const moves = playbookBases[character.playbook].moves;
+	const moves = base.moves;
 	const [selectedMove, setSelectedMove] = useState<string | null>(null);
 
 	const onComfirm = () => {
@@ -304,19 +306,22 @@ function MoveSelector({
 					return null;
 				}
 				return (
-					<div key={move.title}>
+					<div
+						key={move.title}
+						className="flex flex-col w-full justify-center gap-2"
+					>
 						<button
 							onClick={() => setSelectedMove(move.title)}
 							type="button"
 							disabled={existingMoves.some((m) => m.title === move.title)}
-							className={`${selectedMove === move.title ? "bg-theme-bg-accent text-theme-text-primary" : "bg-theme-bg-secondary text-theme-text-secondary"}`}
+							className={`mx-auto text-center ${selectedMove === move.title ? "bg-theme-bg-accent text-theme-text-primary" : "bg-theme-bg-secondary text-theme-text-secondary"}`}
 						>
 							{move.title}
 						</button>
 						{selectedMove === move.title && (
 							<div className="flex flex-col gap-2 text-sm">
 								{move.text.map((line) => (
-									<div key={line}>{line}</div>
+									<div key={line}>{parseStaticText(line)}</div>
 								))}
 							</div>
 						)}

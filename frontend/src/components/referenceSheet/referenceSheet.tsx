@@ -109,8 +109,7 @@ export function ReferenceSheet({
 								<p>
 									When you explore the environment, question others, or
 									otherwise gather information, describe how you’re doing so and
-									roll with an appropriate ability. *On a hit, you find a Clue.
-									The Keeper will tell you what it is.
+									roll with an appropriate ability.
 								</p>
 								<ul className="list-disc list-inside text-sm">
 									<li>

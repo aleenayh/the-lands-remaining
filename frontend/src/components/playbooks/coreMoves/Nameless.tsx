@@ -4,10 +4,10 @@ import type { Character } from "../types";
 
 export function CoreMoveNameless({ character }: { character: Character }) {
 	return (
-		<div className="flex flex-col gap-2 text-left">
-			<h2 className="text-lg font-bold text-theme-text-accent text-center">
+		<div className="flex flex-col gap-2 text-left justify-center">
+			<h3 className="text-sm font-bold text-theme-text-accent text-center">
 				The Nameless Legion Endures…
-			</h2>
+			</h3>
 			<p>
 				The remnants of the Nameless Legion endure as a corps of specters that
 				reveal themselves when called upon by you. These spectral knights appear

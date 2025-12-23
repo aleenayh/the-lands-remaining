@@ -162,9 +162,9 @@ export const Nameless: PlaybookBase = {
 			title: "…And the Fallen May Rest.”",
 			text: [
 				"Whenever you Make Camp, any number of summoned knights are actually squires. Each squire serving in this way can do one of the following (your choice; each can be selected more than once):",
-				"Mend equipment (unmark a single Aspect)",
-				"Tend wounds (clear an additional physical Condition)",
-				"Sing a song or recite poetry (clear an additional emotional or spiritual Condition)",
+				"<li>Mend equipment (unmark a single Aspect)</li>",
+				"<li>Tend wounds (clear an additional physical Condition)</li>",
+				"<li>Sing a song or recite poetry (clear an additional emotional or spiritual Condition)</li>",
 				"Each squire must be named after performing their service. When dawn comes, the squires are gone; only the warmth of their service remains.",
 			],
 		},

@@ -3,7 +3,7 @@ import { useGame } from "../../../context/GameContext";
 import { playbookBases } from "../content";
 import { coreMoves } from "../coreMoves";
 import type { Character } from "../types";
-import { parseRelicText } from "./Relics";
+import { parseRelicText } from "../utils";
 
 export function Moves({ character }: { character: Character }) {
 	const coreMove = coreMoves(character)[character.playbook];
@@ -119,7 +119,9 @@ function MoveDisplay({
 
 	return (
 		<div className="flex flex-col justify-center gap-1">
-			<h3 className="text-sm font-bold text-theme-text-accent">{move.title}</h3>
+			<h3 className="text-sm font-bold text-theme-text-accent text-center">
+				{move.title}
+			</h3>
 			{content &&
 				content.length > 0 &&
 				content.map((line, lineIndex) => {

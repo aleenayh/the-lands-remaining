@@ -132,11 +132,11 @@ export const CrownsPearl: PlaybookBase = {
 			"Pick a Cinder (do not mark it if it is unmarked) and cross out all others; tell the other Embers they cannot mark The Kindling Gate on their own sheets. Take the Condition: Herald of [Name of Cinder]. Whenever you act in accordance with—or are negatively affected by—the Condition, mark a box below. When all the boxes are marked, you can unmark them to unmark the Cinder. The Herald Condition cannot be cleared in the normal ways, but you can choose to clear it in order to get an automatic 12+ on a roll. If you do this, cross out The Kindling Gate.",
 		"The Tinder Arch":
 			"Tell the story of the Leviathan. What were they before the Dimning, and why will they not rest until you specifically are destroyed? Take the Condition: Marked by the Leviathan; the Condition cannot be cleared in the normal ways.",
-		"The Hearth’s Fuel":
+		"The Hearth's Fuel":
 			"A group of horrible, warped aquatic gaunts come across something from the Pearl Court, half-buried in the sand. What do they discover that once belonged to you? Narrate a scene of their religious attachment to the object. If mergaunt are present in a Mystery, they will present you with a task. So long as you do what they want, they will not be a Danger for you.",
 		"The Ashen Passage":
 			"Increase Cinder by 1 (max 3) and decrease another ability of your choice by 1.",
-		"The Pyre’s Crown":
+		"The Pyre's Crown":
 			"Narrate the moment you turn from the company and walk alone toward the Throne at the heart of the Old Capital. Then, at the end of this play session, read Ascend the Throne.",
 	},
 	ascendTheThrone: [
@@ -166,10 +166,10 @@ export const CrownsPearl: PlaybookBase = {
 			title: "…I Will Find Thy Foes…",
 			text: [
 				"When you swim aimlessly through the water in the proximity of an active Mystery, unshackling your mind from all worldly concerns and letting it drift through the expanse, roll with Cinder. On a hit, you come across an enemy, or evidence of an enemy’s passing. You may ask the Keeper two of the following:",
-				"How has humanity treated them? The Keeper will answer in the form of a Clue.",
-				"What do they want from _______? The Keeper will answer in the form of a Clue.",
-				"What are they afraid of? You gain advantage on an associated roll if you use this information against them.",
-				"Have they been chained, physically or metaphorically? If the Keeper says no, ask a different question. If the Keeper says yes, and you take the time to unburden them, physically or symbolically, you may mark one box beneath “My Word is My Vow.” If you have already regained your voice, you may unmark an Aspect of the Song of Storm and Silver.",
+				"<li>How has humanity treated them? The Keeper will answer in the form of a Clue.</li>",
+				"<li>What do they want from _______? The Keeper will answer in the form of a Clue.</li>",
+				"<li>What are they afraid of? You gain advantage on an associated roll if you use this information against them.</li>",
+				"<li>Have they been chained, physically or metaphorically? If the Keeper says no, ask a different question. If the Keeper says yes, and you take the time to unburden them, physically or symbolically, you may mark one box beneath “My Word is My Vow.” If you have already regained your voice, you may unmark an Aspect of the Song of Storm and Silver.</li>",
 				"On a 7-9, the Keeper may place you or a Side Character in peril, or ask something of you in return.",
 			],
 		},
@@ -177,14 +177,14 @@ export const CrownsPearl: PlaybookBase = {
 			title: "…I Will Walk Thy Lands In Triumph and Tumult.”",
 			text: [
 				"The Sea Witch Casylda taught you a ritual to temporarily replace your tail fluke with human legs. When you are unobserved and you enact your ritual, roll Cinder. On a hit, you become passably human for a time; you grow hair if you had none, your fins and scales retract, your pupils change shape, but most importantly, you may walk on two feet as landwalkers do. Additionally, choose one benefit. On a 10+, choose two:",
-				"Your Presence increases by 1 (Max 4) while the magic lasts.",
-				"You will stumble across a Clue; the Keeper will tell you what it is.",
-				"Your form is considered quite charming. Someone will do a small task for you.",
-				"You will learn something about an upcoming trouble or obstacle; roll with advantage the first time you act on this information.",
+				"<li>Your Presence increases by 1 (Max 4) while the magic lasts.</li>",
+				"<li>You will stumble across a Clue; the Keeper will tell you what it is.</li>",
+				"<li>Your form is considered quite charming. Someone will do a small task for you.</li>",
+				"<li>You will learn something about an upcoming trouble or obstacle; roll with advantage the first time you act on this information.</li>",
 				"Then, choose one drawback:",
-				"The spell fades before you want it to.",
-				"It is incredibly painful: take the Condition Walking on Knives.",
-				"A nearby Danger is drawn by the use of magic.",
+				"<li>The spell fades before you want it to.</li>",
+				"<li>It is incredibly painful: take the Condition Walking on Knives.</li>",
+				"<li>A nearby Danger is drawn by the use of magic.</li>",
 				"On a 12+, if you are Mute, you may mark one box on “My Word is My Vow…”. If you have already regained your voice, you may unmark an Aspect of the Song of Storm and Silver.",
 			],
 		},
