@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useGame } from "../../context/GameContext";
 import { resetGameToDefaults } from "../../lib/firebase";
+import { ReactComponent as Logo } from "../assets/tlr-logo.svg";
 import { Section } from "../playbooks/sharedComponents/Section";
 import { ReactComponent as CogIcon } from "./cog.svg";
 import { GameInfo } from "./GameInfo";
@@ -42,6 +43,8 @@ export function SettingsPane({
 						>
 							X
 						</button>
+						<Logo className="w-1/3 h-auto mx-auto mb-4" />
+
 						<h1 className="text-2xl font-bold text-theme-text-accent mb-10">
 							Settings
 						</h1>

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { ReactComponent as Logo } from "../assets/tlr-logo.svg";
 import { ControlledSection } from "../playbooks/sharedComponents/Section";
 import { ReactComponent as BookIcon } from "./book.svg";
 
@@ -42,6 +43,7 @@ export function ReferenceSheet({
 						>
 							X
 						</button>
+						<Logo className="w-1/3 h-auto mx-auto mb-4" />
 						<h1 className="text-2xl font-bold text-theme-text-accent">
 							Reference Sheet
 						</h1>
