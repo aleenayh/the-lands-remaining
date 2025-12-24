@@ -21,18 +21,16 @@ const playerSchema = z.object({
 	role: z
 		.enum([PlayerRole.KEEPER, PlayerRole.PLAYER])
 		.catch(catchWithWarning("player.role", PlayerRole.PLAYER)),
-	character: characterSchema
-		.nullable()
-		.catch(catchWithWarning("player.character", null)),
+	//no warning - null character is valid but dropped by firebase
+	character: characterSchema.nullable().catch(null),
 });
 
 export const gameStateSchema = z.object({
 	gameHash: z.string().catch(catchWithWarning("gameHash", "")),
-	mysteries: z
-		.array(mysterySchema)
-		.catch(catchWithWarning("mysteries", [])),
+	//no catchWithWarning for mysteries - empty array is valid, but dropped by firebase
+	mysteries: z.array(mysterySchema).catch([]),
 	players: z.array(playerSchema).catch(catchWithWarning("players", [])),
-	timestamp: z.number().catch(catchWithWarning("timestamp", 0)),
+	timestamp: z.coerce.date().catch(catchWithWarning("timestamp", new Date())),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

@@ -185,7 +185,8 @@ export const characterSchema = z.object({
 				lines: z.array(z.string()).optional(),
 			}),
 		)
-		.catch(catchWithWarning("character.moves", [])),
+		//no warning - empty moves array is valid, but dropped by firebase
+		.catch([]),
 	coreMoveState: coreMoveStateSchema,
 	advancements: z.record(z.string(), z.boolean()).catch(
 		catchWithWarning("character.advancements", {
@@ -226,15 +227,14 @@ export const characterSchema = z.object({
 		.array(z.number())
 		.catch(catchWithWarning("character.relicAspects", [0])),
 	experience: z.number().catch(catchWithWarning("character.experience", 0)),
-	questions: z.record(z.string(), z.boolean()).catch(
-		catchWithWarning("character.questions", {
-			1: false,
-			2: false,
-			3: false,
-			4: false,
-			5: false,
-		}),
-	),
+	//no warning - false record is valid but dropped by firebase
+	questions: z.record(z.string(), z.boolean()).catch({
+		1: false,
+		2: false,
+		3: false,
+		4: false,
+		5: false,
+	}),
 });
 
 export type Character = z.infer<typeof characterSchema>;

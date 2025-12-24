@@ -19,6 +19,7 @@ export const mysterySchema = z.object({
 	title: z.string().catch(catchWithWarning("mystery.title", "Mystery")),
 	questions: z
 		.array(questionSchema)
+		.optional()
 		.catch(catchWithWarning("mystery.questions", [])),
 	theme: z
 		.nativeEnum(MysteryTheme)
