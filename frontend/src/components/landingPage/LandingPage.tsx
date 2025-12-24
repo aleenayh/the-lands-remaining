@@ -5,6 +5,7 @@ import {
 	generateGameHash,
 	nameToPlayerId,
 } from "../../lib/firebase";
+import { ReactComponent as Logo } from "../assets/tlr-logo.svg";
 
 type LandingStep =
 	| "name"
@@ -165,7 +166,7 @@ export function LandingPage({
 		<div className="App flex items-center justify-center p-8">
 			<div className="max-w-md w-full flex flex-col gap-6">
 				<h1 className="text-3xl font-bold text-center text-theme-text-accent">
-					The Lands Remaining
+					<Logo className="w-1/2 h-auto mx-auto" />
 				</h1>
 
 				{error && (
