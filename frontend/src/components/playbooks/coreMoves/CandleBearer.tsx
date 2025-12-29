@@ -46,7 +46,7 @@ export function CoreMoveCandleBearer({ character }: { character: Character }) {
 	if (coreMoveState.type !== "candle-bearer") return null;
 	return (
 		<div className="flex flex-col gap-2 text-left">
-			<h3 className="text-lg font-bold text-theme-text-accent text-center">
+			<h3 className="text-sm font-bold text-theme-text-accent text-center">
 				The Waxen Order Keeps the Flame…
 			</h3>
 			<p>

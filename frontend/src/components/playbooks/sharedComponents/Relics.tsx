@@ -2,6 +2,7 @@ import { Dialog } from "radix-ui";
 import { useCallback, useState } from "react";
 import { useGame } from "../../../context/GameContext";
 import { AddRelicForm } from "../advancement/RewardModal";
+import { constructAspectArray } from "../creation/CharacterCreateForm";
 import { PencilIconButton } from "../creation/PencilIconButton";
 import type { Character } from "../types";
 import { parseRelicText } from "../utils";
@@ -19,7 +20,12 @@ export function Relics({ character }: { character: Character }) {
 		(aspectIndex: number) => {
 			if (!editable) return;
 
-			const currentAspects = character.relicAspects ?? [];
+			let currentAspects = character.relicAspects;
+			//should never be empty; this means we failed zod validation and need to reconstruct before mutation
+			if (currentAspects.length === 0) {
+				currentAspects = constructAspectArray(character.relics);
+			}
+
 			const newAspects = [...currentAspects];
 			newAspects[aspectIndex] = newAspects[aspectIndex] === 1 ? 0 : 1;
 

@@ -216,16 +216,16 @@ export const characterSchema = z.object({
 	relics: z
 		.array(
 			z.object({
-				title: z.string(),
-				text: z.string(),
-				extraLines: z.number(),
+				title: z.string().catch("Relic"),
+				text: z.string().catch(""),
+				extraLines: z.coerce.number().catch(0),
 			}),
 		)
 		.catch(catchWithWarning("character.relics", [])),
 	/** Tracks which relic aspects are checked. Array of 0|1 values in order of appearance. */
 	relicAspects: z
 		.array(z.number())
-		.catch(catchWithWarning("character.relicAspects", [0])),
+		.catch(catchWithWarning("character.relicAspects", [])),
 	experience: z.number().catch(catchWithWarning("character.experience", 0)),
 
 	questions: z.record(z.string(), z.boolean()).catch(
