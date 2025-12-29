@@ -218,7 +218,7 @@ export const characterSchema = z.object({
 			z.object({
 				title: z.string().catch("Relic"),
 				text: z.string().catch(""),
-				extraLines: z.number().catch(0),
+				extraLines: z.coerce.number().catch(0),
 			}),
 		)
 		.catch(catchWithWarning("character.relics", [])),
