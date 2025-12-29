@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { catchWithWarning } from "../../utils/schemaValidation";
+import { moonStartPosition } from "./coreMoves/HowlingTroubadour";
 
 export const abilitiesSchema = z.object({
 	vitality: z.number(),
@@ -123,6 +124,11 @@ export const coreMoveStateSchema = z.discriminatedUnion("type", [
 		bodyParts: z.array(z.string()),
 		checks: z.number(),
 	}),
+	z.object({
+		type: z.literal("howling-troubadour"),
+		moonPosition: z.number().catch(moonStartPosition),
+		tinderBoxes: z.number().catch(0),
+	}),
 ]);
 
 export type CoreMoveState = z.infer<typeof coreMoveStateSchema>;
@@ -134,6 +140,7 @@ export const playbookKeys = {
 	crownsPearl: "crowns-pearl",
 	famisher: "famisher",
 	cruxDruid: "crux-druid",
+	howlingTroubadour: "howling-troubadour",
 } as const;
 
 const playbookKeysTuple = [
@@ -143,6 +150,7 @@ const playbookKeysTuple = [
 	"crowns-pearl",
 	"famisher",
 	"crux-druid",
+	"howling-troubadour",
 ] as const;
 
 export type playbookKey = (typeof playbookKeys)[keyof typeof playbookKeys];
@@ -163,13 +171,42 @@ const defaultAbilities: Abilities = {
 	cinder: -2,
 };
 
+const customTextFieldsSchema = z.object({
+	questionDefinitions: z
+		.array(z.string())
+		.optional()
+		.catch(catchWithWarning("customTextFields.questionDefinitions", undefined)),
+	oldFire: z
+		.array(z.string())
+		.optional()
+		.catch(catchWithWarning("customTextFields.oldFire", undefined)),
+	fireToCome: z
+		.array(z.string())
+		.optional()
+		.catch(catchWithWarning("customTextFields.fireToCome", undefined)),
+	cinderDefinitions: z
+		.array(z.string())
+		.optional()
+		.catch(catchWithWarning("customTextFields.cinderDefinitions", undefined)),
+});
+
+export type CustomTextFields = z.infer<typeof customTextFieldsSchema>;
+
 export const characterSchema = z.object({
 	playbook: z.enum(playbookKeysTuple),
 	playerId: z.string(),
 	name: z.string(),
 	look: z.string().catch(catchWithWarning("character.look", "")),
 	ritual: z.string().catch(catchWithWarning("character.ritual", "")),
-	oldFire: z.number().catch(catchWithWarning("character.oldFire", 0)),
+	oldFire: z.record(z.string(), z.boolean()).catch(
+		catchWithWarning("character.oldFire", {
+			1: false,
+			2: false,
+			3: false,
+			4: false,
+			5: false,
+		}),
+	),
 	fireToCome: z
 		.record(z.enum(fireToComeKeysTuple), z.boolean())
 		.catch(catchWithWarning("character.fireToCome", fireToComeDefault)),
@@ -227,7 +264,6 @@ export const characterSchema = z.object({
 		.array(z.number())
 		.catch(catchWithWarning("character.relicAspects", [])),
 	experience: z.number().catch(catchWithWarning("character.experience", 0)),
-
 	questions: z.record(z.string(), z.boolean()).catch(
 		catchWithWarning("character.questions", {
 			1: false,
@@ -237,6 +273,7 @@ export const characterSchema = z.object({
 			5: false,
 		}),
 	),
+	customTextFields: customTextFieldsSchema.optional().catch(undefined),
 });
 
 export type Character = z.infer<typeof characterSchema>;
