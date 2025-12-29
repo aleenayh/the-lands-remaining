@@ -83,16 +83,17 @@ export const coreMoveStateSchema = z.discriminatedUnion("type", [
 	z.object({
 		type: z.literal("nameless"),
 		legion: z.array(z.boolean()),
+		durableLegionnaires: z.array(z.string()).catch(["", "", ""]),
 	}),
 	z.object({
 		type: z.literal("crowns-pearl"),
-		checks: z.number(),
+		checks: z.number().catch(0),
 		whatStole: z.string(),
-		resolved: z.boolean(),
+		resolved: z.boolean().catch(false),
 	}),
 	z.object({
 		type: z.literal("candle-bearer"),
-		wax: z.number(),
+		wax: z.number().catch(0),
 		complications: z.array(z.string()),
 		candles: z.record(
 			z.string(),

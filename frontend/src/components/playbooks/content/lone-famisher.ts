@@ -107,19 +107,19 @@ export const LoneFamisher: PlaybookBase = {
 		{
 			title: "The Glutmaw Helm",
 			text: "<aspect>A helmet crafted with scraps of rotting leather, scavenged iron, and purloined teeth from beast and man alike.</aspect> The helm is more emblematic than functional, serving as <aspect>a symbol of the Famishers’ irrepressible hunger</aspect> that blinds the wearer to all but <aspect>the object of their fury</aspect>. ",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 		{
 			title: "The Thirsting Greataxe",
 			text: "Forged using <aspect>bone and jagged steel</aspect>, Famishers were said to hack through prey in a <aspect>blood-drunk frenzy</aspect> when wielding this massive axe. As an old Famisher proverb decrees: <aspect>“a dry blade is a dead blade”</aspect>. ",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 		{
 			title: "The Famisher Hunting Horn",
 			text: "Famishers preferred bombastic raids over furtive ones, and often signaled their arrival with instruments made from <aspect>the horns of beasts that have long been hunted into extinction</aspect>. It is said the <aspect>inhuman shrieking sound it created could startle <aspect>thunder from the heavens with a single note</aspect>. ",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 	],
@@ -149,7 +149,7 @@ export const LoneFamisher: PlaybookBase = {
 
 		"Finally, you reach it: the Throne. A gilded heart spread open and devoid of life. Your blood races with anticipation. It is waiting for you to claim it.  ",
 
-		"<strong>Narrate what will happen should you ascend the Throne of the Old King.</strong>",
+		"<strong>Narrate what will happen should you ascend the Throne of the Hidden King.</strong>",
 
 		"Will you grant these dying lands a merciful end by snuffing out the last of its light for good?",
 

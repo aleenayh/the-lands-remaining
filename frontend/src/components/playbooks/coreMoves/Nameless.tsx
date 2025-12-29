@@ -1,5 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 import { useGame } from "../../../context/GameContext";
+import { PencilIconButton } from "../creation/PencilIconButton";
+import { BlankCondition, ConditionInput } from "../sharedComponents/Conditions";
 import type { Character } from "../types";
 
 export function CoreMoveNameless({ character }: { character: Character }) {
@@ -39,8 +42,8 @@ export function CoreMoveNameless({ character }: { character: Character }) {
 			<ul className="ml-4 list-disc list-inside">
 				<li>On a 10+, roll a die; that many knights appear.</li>
 				<li>
-					On a 7-9, roll a die; that many knights appear, but all but one must
-					be named immediately.{" "}
+					On a 7-9, roll a die; that many knights appear, but one must be named
+					immediately.{" "}
 				</li>
 				<li>
 					On a miss, roll a die; that many knights appear, and all must be named
@@ -48,9 +51,14 @@ export function CoreMoveNameless({ character }: { character: Character }) {
 				</li>
 				<li>
 					On a 12+, roll a die; that many knights appear, and one will stay
-					longer than the rest (they can help with two actions instead of one).
+					after it is named. Write the name of the knight who stays on one of
+					the lines below; that knight can grant its assist bonus once per play
+					session. You can have up to three lingering knights. These knights
+					will only be released from their burdens when you ascend the Throne of
+					the Hidden King.
 				</li>
 			</ul>
+			<DurableLegionnaires character={character} />
 			<p>
 				All summoned knights must be named before this move can be used again.
 			</p>
@@ -176,3 +184,71 @@ export const legionNames = [
 	"Vann the Dying-Light",
 	"Caera the Last",
 ];
+
+function DurableLegionnaires({ character }: { character: Character }) {
+	const { coreMoveState } = character;
+	const {
+		updateGameState,
+		gameState,
+		user: { id },
+	} = useGame();
+	const [showEdit, setShowEdit] = useState<Record<number, boolean>>({
+		0: false,
+		1: false,
+		2: false,
+	});
+	if (coreMoveState.type !== "nameless") return null;
+	const editable = id === character.playerId;
+	const durableLegionnaires = coreMoveState.durableLegionnaires;
+
+	const handleSaveDurableLegionnaire = (index: number, value: string) => {
+		const newDurableLegionnaires = [...durableLegionnaires];
+		newDurableLegionnaires[index] = value;
+		coreMoveState.durableLegionnaires = newDurableLegionnaires;
+		updateGameState({
+			players: gameState.players.map((player) =>
+				player.id === character.playerId && player.character
+					? { ...player, character: { ...player.character, coreMoveState } }
+					: player,
+			),
+		});
+	};
+
+	return (
+		<div className="flex flex-col text-xs gap-1 justify-stretch items-stretch">
+			{Array.from({ length: 3 }).map((_, index) => (
+				<div
+					key={`legionnaire-${index}-${durableLegionnaires[index]}}`}
+					className="inline-flex justify-between items-center gap-2"
+				>
+					<span className="text-sm text-theme-text-secondary">◆</span>
+					{showEdit[index] ? (
+						<ConditionInput
+							placeholder="Add legionnaire..."
+							condition={durableLegionnaires[index] ?? ""}
+							onSave={(value) => handleSaveDurableLegionnaire(index, value)}
+						/>
+					) : (
+						<div className="flex-grow w-[60%] flex gap-2 items-center ">
+							{durableLegionnaires[index] === "" ? (
+								<BlankCondition />
+							) : (
+								<span className="flex-grow w-[60%] text-md text-theme-text-primary flex justify-start">
+									{durableLegionnaires[index]}
+								</span>
+							)}
+						</div>
+					)}
+					{editable && (
+						<PencilIconButton
+							isEditing={showEdit[index]}
+							setIsEditing={() =>
+								setShowEdit({ ...showEdit, [index]: !showEdit[index] })
+							}
+						/>
+					)}
+				</div>
+			))}
+		</div>
+	);
+}

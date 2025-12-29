@@ -4,15 +4,14 @@ export const ElegyMysteries: MysteryContent[] = [
 	{
 		title: "Elegy",
 		intro: [
-			"You have awoken here, pulled from your tomb by the faint warmth of the Old Fire still pulsing in your chest. The sea that surrounds you—as much as you can make out in the fog—is gray and still. At the island’s center rises the Mourning Tower, tall and black against the mist. The nuns there can tell you more about this world, and help you in your future trials, but the Tower’s doors are sealed. Additionally, the only way off the island, the only way to reach the Lands Remaining, is the little boat called the Pale Crossing, but you must first learn to call it. ",
+			"You have awoken here, pulled from your tomb by the faint warmth of the Old Fire still pulsing in your chest. The sea that surrounds you—as much as you can make out in the fog—is gray and still. At the island’s center rises the Mourning Tower, tall and black against the mist. The nuns there can tell you more about this world, and help you in your future trials, but the Tower’s doors are sealed. Additionally, the only way off the island, the only way to reach the Lands Remaining, is the little boat called Pale Crossing, but you must first learn to call it. ",
 		],
 		questionsAndOpportunities: [
 			{
-				question:
-					"How can we call the Pale Crossing back to the shores of Elegy?",
+				question: "How can we call Pale Crossing back to the shores of Elegy?",
 				complexity: 6,
 				opportunity:
-					"Call the Pale Crossing and immediately engage in a Struggle against the Boatman. Then, resolve the Mystery by taking the Journey to the Lands Remaining aboard the Pale Crossing.",
+					"Call Pale Crossing and immediately engage in a Struggle against the Boatman. Then, resolve the Mystery by taking the Journey to the Lands Remaining aboard Pale Crossing.",
 			},
 			{
 				question: "How do we open the doors to the Mourning Tower?",

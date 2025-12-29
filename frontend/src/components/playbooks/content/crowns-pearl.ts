@@ -105,19 +105,19 @@ export const CrownsPearl: PlaybookBase = {
 		{
 			title: "The Coral Horn",
 			text: "A spiraling horn of coral in the likeness of a spiked conch shell, azure merfolk runes etched in its surface. When sounded in or near the water, it summons a kelpie, appearing like a charcoal black horse with kelp tangled in its mane. <aspect>It has the strength of ten horses</aspect>. Your kelpie can carry you anywhere so long as it remains in view of a body of water, but <aspect>it will drown anyone else who attempts to ride it</aspect>. Having carried you in your wedding procession, <aspect>it knows the difference between a regret and a mistake</aspect>.",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 		{
 			title: "The Gem of Drowned Flame",
 			text: "A brilliant sphere of blue encapsulating what looks like <aspect>a frozen explosion, perhaps a shard of the Old Flame itself</aspect>. Worn as a necklace, but can be set in a tiara. Those who accept an invitation to stare into it are <aspect>lulled into a pleasant waking sleep, amenable to suggestion</aspect>. It is said to be <aspect>the key to a sunken vault of merfolk treasure</aspect>.",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 		{
 			title: "The Sea Witch’s Quiver",
 			text: "<aspect>A quiver containing arrows fletched by fish fins instead of feathers</aspect>. <aspect>They fly true, even when fired underwater</aspect>. The arrows stored in this quiver are anointed with sea urchin oil that can <aspect>petrify the dead or poison the living</aspect>.",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 	],
@@ -147,7 +147,7 @@ export const CrownsPearl: PlaybookBase = {
 
 		"And there it sits before you: a silly old chair, with its silly little legs. As if in coronation, the sky begins to release a vanguard of fat droplets, the first pummeling of rain that will lash these stones for weeks, and into months, until naught a statue or fresco remains above the waterline. The lapping tides will gorge themselves on this falling sea, until this Old Kingdom finally joins with yours beneath the waves.",
 
-		"<strong>Narrate what will happen should you drown the Throne of the Old King.</strong>",
+		"<strong>Narrate what will happen should you drown the Throne of the Hidden King.</strong>",
 
 		"Do you take command of the stunted and monstrous things in the deep, forging an Undersea Empire to wage war against any who cling to dry land? Do you begin the laborious process of rebuilding the Kingdom Beneath the Waves, reef by strangled reef? Or do you eventually pull the tides back, swallowing the sins of the old world into the darkness of the abyss to let the landwalkers begin again, on beaches as fresh as a new dawn?",
 	],

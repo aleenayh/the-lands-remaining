@@ -105,19 +105,19 @@ export const HowlingTroubadour: PlaybookBase = {
 		{
 			title: "The Red Gittern",
 			text: "A gittern carved from the wood of an ancient tree and <aspect>stained in the blood of the carver’s murdered spouse</aspect>. Said to be imbued with Fae-magic, when plucked it <aspect>entrances all who listen</aspect>, even <aspect>lulling dangerous beasts into a deep sleep.</aspect>",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 		{
 			title: "The Wolf King's Coda",
 			text: "A silver bladed dagger that <aspect>sings through the air in a crisp, clear note</aspect>. Stories tell that it <aspect>never fails to find its mark deep in the chest of the most dangerous foe</aspect>, even if <aspect>its victim is not the intended one.</aspect>",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 		{
 			title: "Howling Choirbook",
 			text: "A tome bound in the skin of a wolf-slayer that contains the stories and songs from multiple lands. Embellished and dramatic, these tales illustrate <aspect>how the world once was</aspect>, <aspect>how it is now</aspect>, and <aspect>how it could be if the Wolf-King rises again.</aspect>",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 	],

@@ -104,19 +104,19 @@ export const LockAndKey: PlaybookBase = {
 		{
 			title: "Burgular's Tools",
 			text: "A bundle of tools in <aspect>a waterproof roll</aspect>, including <aspect>tar paper</aspect>, <aspect>a file & lockpicks</aspect>, and <aspect>a small mirror on an extendible handle</aspect>. ",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 		{
 			title: "Traveling Cloak",
 			text: "A sturdy cloak with <aspect>a matte coating that drinks light</aspect>. The interior side is lined with <aspect>dozens of small pockets for hiding things</aspect>. Many of these pockets contain <aspect>small, helpful—and sometimes unusual—trinkets</aspect>.",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 		{
 			title: "Quick Change Kit",
 			text: "An outfit that <aspect>can be quickly modified to one of several halfway decent disguises</aspect>. The kit includes <aspect>stage make-up</aspect> and <aspect>prosthetic clay</aspect>.",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 	],
