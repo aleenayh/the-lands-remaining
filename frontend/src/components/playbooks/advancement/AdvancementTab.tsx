@@ -1,5 +1,6 @@
 import { Extras } from "../sharedComponents/Extras";
 import type { Character } from "../types";
+import { AdjustmentModal } from "./AdjustModal";
 import { AdvancementModal } from "./AdvancementModal";
 import { AscendTheThroneModal } from "./AscendModal";
 import { RetireCharacterModal } from "./RetireModal";
@@ -13,6 +14,7 @@ export function AdvancementTab({ character }: { character: Character }) {
 				<RewardModal />
 				<RetireCharacterModal />
 				<AscendTheThroneModal />
+				<AdjustmentModal />
 			</div>
 			<Extras character={character} />
 		</div>
