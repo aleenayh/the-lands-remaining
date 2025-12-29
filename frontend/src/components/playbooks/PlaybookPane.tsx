@@ -31,7 +31,7 @@ export function PlaybookPane({ character }: { character: Character }) {
 				<Section title="Moves" collapsible={true}>
 					<Moves character={character} />
 				</Section>
-				<Section title="Relics" collapsible={true}>
+				<Section title="Relics & Equipment" collapsible={true}>
 					<Relics character={character} />
 				</Section>
 				<Section title="Fires & Cinders" collapsible={true}>

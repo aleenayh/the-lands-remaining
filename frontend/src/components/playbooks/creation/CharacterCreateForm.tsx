@@ -9,6 +9,7 @@ import { useGame } from "../../../context/GameContext";
 import { PlayerRole } from "../../../context/types";
 import { playbookBases } from "../content";
 import { generateCoreMoveState } from "../coreMoves";
+import { Vows } from "../sharedComponents/Extras";
 import { Section } from "../sharedComponents/Section";
 import {
 	type Abilities,
@@ -163,6 +164,7 @@ export function CharacterCreateForm({
 						{base.intro.map((intro) => (
 							<p key={intro}>{intro}</p>
 						))}{" "}
+						<Vows playbook={playbookKey} />
 					</div>
 				</div>
 			</Section>

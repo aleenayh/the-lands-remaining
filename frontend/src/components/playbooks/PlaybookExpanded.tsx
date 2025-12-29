@@ -17,7 +17,7 @@ const tabsConfig = (character: Character) => [
 		component: <Moves character={character} />,
 	},
 	{
-		label: "Relics",
+		label: "Relics & Equipment",
 		component: <Relics character={character} />,
 	},
 	{

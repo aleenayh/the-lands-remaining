@@ -159,7 +159,7 @@ export const CandleBearer: PlaybookBase = {
 	],
 	moves: [
 		{
-			title: "...And Our Hearts Burn Unafraid.",
+			title: "…And Our Hearts Burn Unafraid.",
 			text: [
 				"You can mark Wax to burn candles whose scent and light ease the worries and invigorate the hearts of your companions. When you do so, any Ember (including you) in the effective area ignores the effects of all Conditions so long as they are in the area. The size of the area depends on how many Wax boxes you mark.",
 				"<li>1 Wax — A small room or short corridor.</li>",
@@ -175,13 +175,13 @@ export const CandleBearer: PlaybookBase = {
 			],
 		},
 		{
-			title: "...In Shadow We Seek…",
+			title: "…In Shadow We Seek…",
 			text: [
 				"You can mark Wax to burn a candle whose flame will always flicker toward what you seek. If you do, name a person, place, or object that might reasonably be found within a mile or two. The candle will lead you there safely.",
 			],
 		},
 		{
-			title: "...And I Am a Beacon Most Lonely.",
+			title: "…And I Am a Beacon Most Lonely.",
 			text: [
 				"When you walk through a Location with no other Embers present, the light of your candle acting as a beacon to the dark things in the world, roll with Cinder. On a hit, a Danger or Threat is drawn to you. You may ask them two questions from the list below. They will not answer directly, but in the form of a Clue. On a 10+, the Threat or Danger departs as soon as the questions are answered.",
 				"<li>Where is your lair?</li>",

@@ -174,7 +174,7 @@ export const CrownsPearl: PlaybookBase = {
 			],
 		},
 		{
-			title: "…I Will Walk Thy Lands In Triumph and Tumult.”",
+			title: "…I Will Walk Thy Lands In Triumph and Tumult.",
 			text: [
 				"The Sea Witch Casylda taught you a ritual to temporarily replace your tail fluke with human legs. When you are unobserved and you enact your ritual, roll Cinder. On a hit, you become passably human for a time; you grow hair if you had none, your fins and scales retract, your pupils change shape, but most importantly, you may walk on two feet as landwalkers do. Additionally, choose one benefit. On a 10+, choose two:",
 				"<li>Your Presence increases by 1 (Max 4) while the magic lasts.</li>",

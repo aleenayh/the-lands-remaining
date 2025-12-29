@@ -154,7 +154,7 @@ export const LoneFamisher: PlaybookBase = {
 	],
 	moves: [
 		{
-			title: "…for ours is unforgiving…",
+			title: "…For ours is unforgiving…",
 			text: [
 				"When you take a Hunger Condition, roll with Composure. On a 10+, choose two Boons. On a 7-9, choose one Boon and one Complication.",
 				"<h2>Boons:</h2>",
@@ -171,7 +171,7 @@ export const LoneFamisher: PlaybookBase = {
 			],
 		},
 		{
-			title: "…unquenchable…",
+			title: "…Unquenchable…",
 			text: [
 				"When you take this move, during the next Start of Session, narrate a flashback showing the first time you witnessed the terrible, bloody power of the Red Want, the most sacred artifact of the Famishers. Then, tell the Embers there’s a new Question that can be pursued, and that any Clues gained can be directed to this Question.",
 				"Where is the Red Want hidden? (Complexity 4)",
@@ -185,13 +185,13 @@ export const LoneFamisher: PlaybookBase = {
 			],
 		},
 		{
-			title: "…unstoppable…",
+			title: "…Unstoppable…",
 			text: [
 				"You can focus on a single Quarry and will not stop until they are felled. If you do so, mark Hunger and tell the other players who (or what) your Quarry is; you may only have one Quarry at a time. You take advantage on any rolls associated with hunting, capturing, and killing the Quarry until it is destroyed or ceases to be a threat (such as resolving a related Mystery). This advantage can be stacked with other effects, giving you up to double advantage (roll four dice and take the two highest).",
 			],
 		},
 		{
-			title: "“…and we will forsake all things that do not serve it!”",
+			title: "…And we will forsake all things that do not serve it!",
 			text: [
 				"You broke your Famisher oath by taking a secret Lover and entwining your heart with theirs. Though they have been lost to the Dimning, a piece of them remains with you. When you take this move, create the Lover’s Token using the procedure below, and then, during the next Start of Session, narrate a flashback to when your lover gifted it to you.",
 				"To create the Lover’s Token, circle one below for each Aspect, and add The Lover’s Token with your chosen Aspects to your Equipment.",

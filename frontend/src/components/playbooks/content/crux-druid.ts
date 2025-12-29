@@ -176,7 +176,7 @@ export const CruxDruid: PlaybookBase = {
 			],
 		},
 		{
-			title: "…And Let the World Remember Me When I’m Gone.”",
+			title: "…And Let the World Remember Me When I’m Gone.",
 			text: [
 				"You form a psychic bond with all your living Oracles when facing a powerful foe, and can sacrifice them instantly, drawing on the surge of power created by their deaths to summon nature to your side. ",
 				"During a Struggle, you can avoid a single die roll by marking all the remaining boxes on an Oracle and describing how the power of the sacrifice causes nature to intervene on your behalf. You can also re-direct questions posed to other Embers in the Struggle to you for this purpose. You can use this move as many times as you wish during a Struggle so long as there are living Oracles to sacrifice. ",

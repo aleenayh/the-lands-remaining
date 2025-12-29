@@ -159,7 +159,7 @@ export const Nameless: PlaybookBase = {
 			],
 		},
 		{
-			title: "…And the Fallen May Rest.”",
+			title: "…And the Fallen May Rest.",
 			text: [
 				"Whenever you Make Camp, any number of summoned knights are actually squires. Each squire serving in this way can do one of the following (your choice; each can be selected more than once):",
 				"<li>Mend equipment (unmark a single Aspect)</li>",
