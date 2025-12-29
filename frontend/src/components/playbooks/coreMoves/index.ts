@@ -44,7 +44,7 @@ export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
 				{ length: legionNames.length },
 				() => false,
 			);
-			return { type: "nameless", legion };
+			return { type: "nameless", legion, durableLegionnaires: ["", "", ""] };
 		}
 		case playbookKeys.candleBearer:
 			return {

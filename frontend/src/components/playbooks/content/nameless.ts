@@ -7,7 +7,7 @@ export const Nameless: PlaybookBase = {
 
 		"But no vow is strong enough to hold back pride. The Legion’s virtue curdled to vanity; its humility became hunger. You remember the halls where your brothers and sisters ate in silence, each secretly yearning for notoriety. You remember the moment when the Old Fire grew cold to you.",
 
-		"Now, in this age of ruin, you rise again—a commander without name, bearing the arms of a forgotten host. The ghosts of your comrades follow, pale and patient, waiting for release. You can call them when the need is great, but each spirit must be named before it fades, freed at last from the burden of humility. You seek the truth of your Legion’s fall, and perhaps, redemption. And when you stand before the Throne of the Old King, you will take a name for yourself—one so true and terrible it will burn across the world.",
+		"Now, in this age of ruin, you rise again—a commander without name, bearing the arms of a forgotten host. The ghosts of your comrades follow, pale and patient, waiting for release. You can call them when the need is great, but each spirit must be named before it fades, freed at last from the burden of humility. You seek the truth of your Legion’s fall, and perhaps, redemption. And when you stand before the Throne of the Hidden King, you will take a name for yourself—one so true and terrible it will burn across the world.",
 	],
 	names: [
 		"Shield",
@@ -84,20 +84,20 @@ export const Nameless: PlaybookBase = {
 		{
 			title: "Name-Taker",
 			text: "<aspect>A long sword of flawless steel</aspect>, its blade etched with names from hilt to tip—every life the knight has taken. When drawn, <aspect>the blade hums low, a chorus of quiet voices repeating the names inscribed upon it.</aspect> Some say the sword grows heavier with each name, <aspect>burdened not by guilt, but by identity.</aspect>",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 		{
 			title: "Vowplate",
 			text: "<aspect>A suit of burnished steel</aspect> without crest or mark, <aspect>every plate engraved on the inside with the oaths of the Nameless Legion.</aspect> They say <aspect>no vow sworn while wearing it can be broken</aspect>—that the gods themselves will intercede if necessary.",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 
 		{
 			title: "The Banner of the Nameless Legion",
 			text: "A length of pale cloth that has never borne sigil or bright color. Once, <aspect>it led a thousand knights who refused to march beneath any emblem.</aspect> In its blankness they found purity; in its emptiness, pride. When unfurled, <aspect>the air grows still and the world seems to hold its breath.</aspect> On the battlefield, it was said that <aspect>its nothingness was so profound, even the Old Fire dimmed when the banner was raised.</aspect>",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 	],
@@ -133,7 +133,7 @@ export const Nameless: PlaybookBase = {
 
 		"The Throne stands before you—vast, waiting, hollow as a tomb.",
 		"When you place your hand upon its arm, the metal is warm, as if remembering you.",
-		"Narrate what will happen should you ascend the Throne of the Old King.",
+		"Narrate what will happen should you ascend the Throne of the Hidden King.",
 		" ",
 
 		"What becomes of your vows as you sit—do they dissolve like ash, or blaze into new commandments for the world?",
@@ -151,14 +151,14 @@ export const Nameless: PlaybookBase = {
 		{
 			title: "…That Brothers May Stand…",
 			text: [
-				"Up to three summoned knights will not disappear when named; write their names on the lines below. Hereafter, these named knights will appear during Struggles; you can direct them to assist with action connected to a single die roll during the Struggle (yours or another Ember’s). All must be directed to the same action; add 1 to the roll for each knight. These knights will only be released from their burdens when you ascend the Throne of the Old King.",
+				"Up to three summoned knights will not disappear when named; write their names on the lines below. Hereafter, these named knights will appear during Struggles only; you can direct them to assist with action connected to a single die roll during the Struggle (yours or another Ember’s). All must be directed to the same action; add 1 to the roll for each knight. These knights will only be released from their burdens when you ascend the Throne of the Hidden King.",
 			],
 			extraLines: 3,
 		},
 		{
 			title: "…That No Foe Shall Pass…",
 			text: [
-				"You can summon ten members of the Legion who will act as a phalanx against your enemies. Whenever you and any other number of Embers face a deadly encounter that is not a Struggle, you can describe how the phalanx intercedes on your behalf or otherwise gets you to safety. The phalanx can also be used to bypass all die rolls during the first movement of a Struggle; describe how they help the Embers survive the danger. In either case, each knight must be named when the smoke clears and silence returns.",
+				"You can summon ten members of the Legion who will act as a phalanx against your enemies. Whenever you and any other number of Embers face a deadly encounter that is not a Struggle, you can describe how the phalanx intercedes on your behalf or otherwise gets you to safety. The phalanx can also be used to bypass all die rolls during the first movement of a Struggle; describe how they help the Embers survive the danger of the first movement. In either case, each knight must be named when the smoke clears and silence returns.",
 			],
 		},
 		{

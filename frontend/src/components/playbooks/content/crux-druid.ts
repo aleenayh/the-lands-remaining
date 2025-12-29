@@ -109,19 +109,19 @@ export const CruxDruid: PlaybookBase = {
 		{
 			title: "Harrow the Martyr-Catcher",
 			text: "An <aspect>iron sickle attached to a long chain</aspect>. A weapon from the ancient world, it is thought to contain <aspect>the life force of the first crux druid, Harrow the Martyr-Catcher</aspect>. Some say it does its dark work independent of the desires of its wielder, and <aspect>can only be satisfied if the whole world hangs</aspect>.",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 		{
 			title: "The Heartwood Nails",
 			text: "A bundle of <aspect>iron spikes</aspect>, each forged with a vein of heartwood: <aspect>ash for healing and rebirth</aspect>, <aspect>blackthorn for dispelling magic</aspect>, <aspect>silver birch for punishment</aspect>, and <aspect>yew to purify the dead</aspect>.",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 		{
 			title: "The Tenderbark Confessor",
 			text: "Sometimes called the Rib-Rake, this is <aspect>a long staff twisted with vines and flowers</aspect>, nails roughly hammered along its length. It ends in <aspect>a claw of sharpened branches and iron splints</aspect>, used to peel skin and muscle from bone. They say its “tenderbark embrace” is <aspect>the most exquisite pain known to man or beast</aspect>.",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 	],
@@ -145,7 +145,7 @@ export const CruxDruid: PlaybookBase = {
 			"Narrate the moment you turn from the company and walk alone toward the Throne at the heart of the Old Capital. Then, at the end of this play session, read Ascend the Throne",
 	},
 	ascendTheThrone: [
-		"You carry the grafted ash sapling into the Old Capital. The tree is heavy with blood, bone, and memory. The halls resist you—stone cracks, iron weeps rust, the obsidian dead turn their faces away—but the land beneath the city listens. The Throne of the Old King waits, split and hollow, a wound where rule once sat.",
+		"You carry the grafted ash sapling into the Old Capital. The tree is heavy with blood, bone, and memory. The halls resist you—stone cracks, iron weeps rust, the obsidian dead turn their faces away—but the land beneath the city listens. The Throne of the Hidden King waits, split and hollow, a wound where rule once sat.",
 
 		"You place the sapling in the Throne’s hollow. Roots immediately stir, threading into marble and gold as if they were loam. The Throne groans and yields. Branches spread where crowns once hovered. Pillars split. The ceiling vanishes into leaf and shadow. Over time, the Capital becomes a forested nave, and the voices you fed to the land rise—not in screams, but in chorus.",
 		"There will be no more kings.",

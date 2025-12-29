@@ -131,19 +131,19 @@ export const CandleBearer: PlaybookBase = {
 		{
 			title: "The Burning Branch",
 			text: "A <aspect>heavy, staff-like candelabra made of iron</aspect>. When used to <aspect>light the way in the dark places of the world</aspect>, its dozen or so candles <aspect>cannot be extinguished</aspect>.",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 		{
 			title: "The Nullwick",
 			text: "A candle-snuffer with the <aspect>vows of the Waxen Order engraved upon it in reverse</aspect>. It can <aspect>extinguish a flame no bigger than a campfire</aspect> from several paces away, <aspect>creating an unusually deep and complete darkness</aspect>.",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 		{
 			title: "The Ever-Crucible",
 			text: "A ceramic vessel, cool to the touch, containing <aspect>a heat that burns ten times hotter than a forge</aspect>. It is said to contain <aspect>all that remains of the Old Fire</aspect>.",
-			extraLines: 2,
+			extraLines: 3,
 			type: "relic",
 		},
 	],
@@ -186,7 +186,7 @@ export const CandleBearer: PlaybookBase = {
 		{
 			title: "…And I Am a Beacon Most Lonely.",
 			text: [
-				"When you walk through a Location with no other Embers present, the light of your candle acting as a beacon to the dark things in the world, roll with Cinder. On a hit, a Danger or Threat is drawn to you. You may ask them two questions from the list below. They will not answer directly, but in the form of a Clue. On a 10+, the Threat or Danger departs as soon as the questions are answered.",
+				"When you walk through a Location with no other Embers present, the light of your candle acting as a beacon to the dark things in the world, roll with Cinder. On a hit, a Danger or other threatening entity is drawn to you. You may ask them two questions from the list below. They will not answer directly, but in the form of a Clue. On a 10+, the Threat or Danger departs as soon as the questions are answered.",
 				"<li>Where is your lair?</li>",
 				"<li>How can I get you to ________?</li>",
 				"<li>What do you intend to do?</li>",

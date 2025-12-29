@@ -60,8 +60,8 @@ export function CoreMoveCandleBearer({ character }: { character: Character }) {
 					write it on an empty candle space.
 				</li>
 				<li>
-					On a 7-9, as above, but also pick a complication and write it below
-					the Aspect.
+					On a 7-9, as above, but the Keeper will also pick a complication;
+					write it below the Aspect.
 				</li>
 				<li>
 					On a miss, as 7-9, but the candle is poorly made; cross out two of the
@@ -70,8 +70,12 @@ export function CoreMoveCandleBearer({ character }: { character: Character }) {
 				<li>On a 12+, create two candles (the same or different).</li>
 			</ul>
 			<p>
-				To get the benefit of a candle’s Aspect, you must allow it to burn for a
-				short time.
+				So long as you let the candle burn for a short period of time, you get
+				access to whatever feat or benefit is implied by the candle’s Aspect,
+				with no need to mark the Aspect, and are also subject to any
+				complications while burning it. The Aspect can be marked to get the
+				normal mechanical benefits of marking an Aspect. You lose the candle
+				once all boxes are marked.
 			</p>
 			<h3 className="text-center font-bold text-theme-text-accent">Aspects:</h3>
 			<ul className="list-disc list-inside ml-4">
@@ -129,17 +133,19 @@ export function CoreMoveCandleBearer({ character }: { character: Character }) {
 				When you take a few hours to do so, unmark all Wax and work with the
 				Keeper to define a new complication that might arise because of the
 				source of the Wax, and write it on a blank line under complications,
-				above.
+				above. Once all complications are filled in, if you ever need to add a
+				new one, stoke the Fire and then replace an existing complication with
+				the new one.
 			</p>
 		</div>
 	);
 }
 const aspects = [
-	"Bar a place or portal to [a specific person or type of non-human creature.]",
-	"Stare into the flame to observe another place or time.",
-	"The flame causes someone looking at it to be open to suggestion.",
-	"The candle’s scent causes everyone in a small space to fall asleep.",
-	"Light and shadow warp into an illusion of an object or non-human creature.",
+	"Bar a place or portal to [a specific person or type of non-human creature]",
+	"Stare into the flame to observe another place or time",
+	"The flame causes someone looking at it to be open to suggestion",
+	"The candle’s scent causes everyone in a small space to fall asleep",
+	"Light and shadow warp into an illusion of an object or non-human creature",
 ];
 
 function Complications({ character }: { character: Character }) {
@@ -307,7 +313,7 @@ function CandleCreateForm({
 							</div>
 						))}
 						<h3 className="text-center font-bold text-theme-text-accent">
-							Select a Complication
+							Have your Keeper Select a Complication
 						</h3>
 						<p className="text-center text-sm italic text-theme-text-secondary">
 							(on a roll of 9 or lower)
@@ -413,8 +419,8 @@ function Candle({ character, index }: { character: Character; index: number }) {
 		});
 	};
 	return (
-		<div className="flex gap-2 text-left">
-			<div className="w-1/5 py-1 flex items-center">
+		<div className="flex gap-0 text-left items-center border border-theme-border-accent rounded-md px-2">
+			<div className="w-auto flex items-start justify-start mb-2">
 				{Array.from({ length: 3 }).map((_, index) => (
 					<div
 						key={`check-${
@@ -435,24 +441,27 @@ function Candle({ character, index }: { character: Character; index: number }) {
 							type="checkbox"
 							disabled={!editable}
 							checked={candle.checks >= index + 1}
-							className={`${candle.checks >= index + 1 ? "hidden" : ""}`}
+							className={"h-24 w-8 aspect-auto"}
 							onChange={(e) => markCandle(e.target.checked)}
 						/>
 					</div>
 				))}
 			</div>
 			<div className="w-4/5 flex flex-col justify-start items-start text-left">
-				<p>{candle.aspect}</p>
-				<p>{candle.complication}</p>
-				{candle.checks >= 3 && (
-					<button
-						type="button"
-						className="bg-theme-bg-secondary italic text-xs hover:bg-theme-bg-accent hover:text-theme-text-accent text-theme-text-primary rounded-lg px-2"
-						onClick={() => removeCandle()}
-					>
-						remove candle
-					</button>
-				)}
+				<p>
+					{candle.aspect}
+					{candle.complication &&
+						`, and ${candle.complication.charAt(0).toLowerCase() + candle.complication.slice(1)}`}
+					{candle.checks >= 3 && (
+						<button
+							type="button"
+							className="ml-4 bg-theme-bg-secondary text-xs hover:bg-theme-bg-accent hover:text-theme-text-accent text-theme-text-primary rounded-lg px-2"
+							onClick={() => removeCandle()}
+						>
+							REMOVE
+						</button>
+					)}
+				</p>
 			</div>
 		</div>
 	);
