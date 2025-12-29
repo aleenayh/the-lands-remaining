@@ -62,6 +62,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 
 	const [gameState, setGameState] = useState<GameState>(defaultGameState);
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false);
+	const [warningsShown, setWarningsShown] = useState<string[]>([]);
 
 	/**
 	 * Firebase connection with state sync callback
@@ -76,12 +77,21 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 		onStateSync: (state: GameState) => {
 			const { state: validatedState, warnings } = validateGameState(state);
 			if (warnings.length > 0) {
-				toast.error(
-					`The expected game state did not match your last synced state. Some default values have been applied. 
+				const newWarnings = warnings.filter(
+					(w) => !warningsShown.includes(w.field),
+				);
+				if (newWarnings.length > 0) {
+					toast.error(
+						`The expected game state did not match your last synced state. Some default values have been applied. 
 				
 				${warnings.length} default fields used: ${warnings.map((w) => w.field).join(", ")}`,
-					{ id: "schema-warnings" },
-				);
+						{ id: "schema-warnings" },
+					);
+					setWarningsShown((prev) => [
+						...prev,
+						...warnings.map((w) => w.field),
+					]);
+				}
 				console.error(
 					`Game state schema warnings: ${warnings.map((w) => `${w.field}: Expected ${w.expected} -> Received ${w.received}`).join(", ")}`,
 				);
