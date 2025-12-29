@@ -438,6 +438,10 @@ function constructCharacter(
 		"The Pyre's Crown": false,
 	};
 
+	const oldFire = Object.fromEntries(
+		base.oldFire.map((_, index) => [index, false]),
+	);
+
 	return {
 		playbook: playbookKey,
 		playerId,
@@ -454,7 +458,7 @@ function constructCharacter(
 		cinders,
 		relics: base.relics,
 		relicAspects,
-		oldFire: 0,
+		oldFire,
 		fireToCome,
 		advancements,
 		conditions,

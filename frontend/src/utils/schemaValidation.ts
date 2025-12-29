@@ -82,12 +82,12 @@ function fixFirebaseArrays(
 	}
 
 	// Check if this array should be converted to a record
-	// (cinders, questions, advancements, candles are the affected fields)
+	// (cinders, questions, advancements, candles, oldFire are the affected fields)
 	// Note: mystery.questions is a legitimate array, only character.questions needs conversion
 	if (Array.isArray(state)) {
 		if (
 			parentKey &&
-			["cinders", "advancements", "candles"].includes(parentKey)
+			["cinders", "advancements", "candles", "oldFire"].includes(parentKey)
 		) {
 			return arrayToRecord(state);
 		}

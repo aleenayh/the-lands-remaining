@@ -3,6 +3,10 @@ import { type CoreMoveState, type playbookKey, playbookKeys } from "../types";
 import { CoreMoveCandleBearer } from "./CandleBearer";
 import { CoreMoveCrownsPearl } from "./CrownsPearl";
 import { CoreMoveCruxDruid } from "./CruxDruid";
+import {
+	CoreMoveHowlingTroubadour,
+	moonStartPosition,
+} from "./HowlingTroubadour";
 import { CoreMoveLockAndKey } from "./LockAndKey";
 import { CoreMoveLoneFamisher } from "./LoneFamisher";
 import { CoreMoveNameless, legionNames } from "./Nameless";
@@ -17,6 +21,7 @@ export const coreMoves: (
 		[playbookKeys.crownsPearl]: CoreMoveCrownsPearl({ character }),
 		[playbookKeys.famisher]: CoreMoveLoneFamisher({ character }),
 		[playbookKeys.cruxDruid]: CoreMoveCruxDruid({ character }),
+		[playbookKeys.howlingTroubadour]: CoreMoveHowlingTroubadour({ character }),
 	};
 };
 
@@ -28,6 +33,8 @@ export const coreMoveTitles: Record<playbookKey, string> = {
 	[playbookKeys.famisher]: "There is no god greater than Hunger…",
 	[playbookKeys.cruxDruid]:
 		"Do Not Let Me Hang Alone… & …Plant Me Where My Power Can Grow.",
+	[playbookKeys.howlingTroubadour]:
+		"Under Two Moons… & …In Service of the Wolf King…",
 };
 
 export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
@@ -86,6 +93,12 @@ export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
 				},
 				bodyParts: Array.from({ length: 6 }, () => ""),
 				checks: 0,
+			};
+		case playbookKeys.howlingTroubadour:
+			return {
+				type: "howling-troubadour",
+				moonPosition: moonStartPosition,
+				tinderBoxes: 0,
 			};
 	}
 }

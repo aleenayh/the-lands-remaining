@@ -1,6 +1,6 @@
 import { playbookBases } from "../content";
 import { coreMoveTitles } from "../coreMoves";
-import { type Character, type playbookKey, playbookKeys } from "../types";
+import type { Character, playbookKey } from "../types";
 import { Section } from "./Section";
 
 export function Extras({ character }: { character: Character }) {
@@ -25,13 +25,20 @@ export function Extras({ character }: { character: Character }) {
 	);
 }
 
-export function Vows({ playbook }: { playbook: playbookKey }) {
+export function Vows({
+	playbook,
+}: {
+	playbook: Exclude<playbookKey, "custom">;
+}) {
 	const base = playbookBases[playbook];
-	const coreMoveTitle =
-		playbook === playbookKeys.cruxDruid
-			? ["Do Not Let Me Hang Alone…", "…Plant Me Where My Power Can Grow."]
-			: [coreMoveTitles[playbook]];
-	const vows = [...coreMoveTitle, ...base.moves.map((move) => move.title)];
+	let coreMoveTitle: string | string[] = coreMoveTitles[playbook];
+	if (coreMoveTitle.includes("&")) {
+		coreMoveTitle = coreMoveTitle.split("&").map((title) => title.trim());
+	}
+	const vows = [
+		...(Array.isArray(coreMoveTitle) ? coreMoveTitle : [coreMoveTitle]),
+		...base.moves.map((move) => move.title),
+	];
 	return (
 		<div className="flex flex-col justify-center items-center gap-0 text-left">
 			{vows.map((vow) => (
