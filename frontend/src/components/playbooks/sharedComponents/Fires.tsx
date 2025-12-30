@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useGame } from "../../../context/GameContext";
-import { playbookBases } from "../content";
+import { customFieldOrFallback, playbookBases } from "../content";
 import {
 	type Character,
 	type fireToComeKey,
@@ -62,7 +62,14 @@ export function Fires({ character }: { character: Character }) {
 	);
 
 	const { fireToCome, oldFire } =
-		playbookBases[character.playbook as playbookKey];
+		character.playbook === playbookKeys.custom
+			? {
+					fireToCome: customFieldOrFallback(character, "fireToComeDefinitions")
+						.value as Record<fireToComeKey, string>,
+					oldFire: customFieldOrFallback(character, "oldFireDefinitions")
+						.value as string[],
+				}
+			: playbookBases[character.playbook as playbookKey];
 	const markedOldFire = character.oldFire;
 
 	return (

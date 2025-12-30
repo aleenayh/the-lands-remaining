@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useGame } from "../../../context/GameContext";
-import { playbookBases } from "../content";
-import type { Character } from "../types";
+import { customFieldOrFallback, playbookBases } from "../content";
+import { type Character, playbookKeys } from "../types";
 
 export function Questions({ character }: { character: Character }) {
 	const {
@@ -10,7 +10,13 @@ export function Questions({ character }: { character: Character }) {
 		user: { id },
 	} = useGame();
 	const editable = id === character.playerId;
-	const { questions } = playbookBases[character.playbook];
+	const { questions } =
+		character.playbook === playbookKeys.custom
+			? {
+					questions: customFieldOrFallback(character, "questionDefinitions")
+						.value as string[],
+				}
+			: playbookBases[character.playbook];
 	const markedQuestions = character.questions;
 
 	const onToggle = useCallback(

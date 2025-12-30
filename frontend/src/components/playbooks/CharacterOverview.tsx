@@ -6,6 +6,7 @@ import { KeeperSummary } from "../keeper/KeeperSummary";
 import { CopyInvite } from "../settings/GameInfo";
 import { playbookBases } from "./content";
 import { CharacterCreateForm } from "./creation/CharacterCreateForm";
+import { CustomCreateForm } from "./creation/CustomCreateForm";
 import { PlaybookExpanded } from "./PlaybookExpanded";
 import { PlaybookPane } from "./PlaybookPane";
 import { type Character, type playbookKey, playbookKeys } from "./types";
@@ -105,7 +106,11 @@ function CharacterCreationStarter({ onCollapse }: { onCollapse: () => void }) {
 						← Back to Embers
 					</button>
 					<div className="flex-1 overflow-y-auto min-h-0">
-						<CharacterCreateForm playbookKey={key} />
+						{key === playbookKeys.custom ? (
+							<CustomCreateForm />
+						) : (
+							<CharacterCreateForm playbookKey={key} />
+						)}
 					</div>
 				</>
 			) : (
