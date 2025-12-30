@@ -13,7 +13,9 @@ import { CoreMoveNameless, legionNames } from "./Nameless";
 
 export const coreMoves: (
 	character: Character,
-) => Record<playbookKey, React.ReactNode> = (character: Character) => {
+) => Record<Exclude<playbookKey, "custom">, React.ReactNode> = (
+	character: Character,
+) => {
 	return {
 		[playbookKeys.candleBearer]: CoreMoveCandleBearer({ character }),
 		[playbookKeys.nameless]: CoreMoveNameless({ character }),
@@ -25,7 +27,7 @@ export const coreMoves: (
 	};
 };
 
-export const coreMoveTitles: Record<playbookKey, string> = {
+export const coreMoveTitles: Record<Exclude<playbookKey, "custom">, string> = {
 	[playbookKeys.candleBearer]: "The Waxen Order Keeps the Flame…",
 	[playbookKeys.nameless]: "The Nameless Legion Endures…",
 	[playbookKeys.lockAndKey]: "The Mouse in the Tower…",
@@ -100,5 +102,7 @@ export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
 				moonPosition: moonStartPosition,
 				tinderBoxes: 0,
 			};
+		case playbookKeys.custom:
+			return { type: "custom" };
 	}
 }

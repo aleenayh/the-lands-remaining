@@ -1,6 +1,6 @@
 import { playbookBases } from "../content";
 import { coreMoveTitles } from "../coreMoves";
-import type { Character, playbookKey } from "../types";
+import { type Character, type playbookKey, playbookKeys } from "../types";
 import { Section } from "./Section";
 
 export function Extras({ character }: { character: Character }) {
@@ -13,14 +13,16 @@ export function Extras({ character }: { character: Character }) {
 				<h3 className="text-sm font-bold text-theme-text-accent">Look:</h3>
 				<p className="text-xs text-theme-text-secondary">{character.look}</p>
 			</div>
-			<Section title="Story" collapsible={true}>
-				<div className="flex flex-col gap-2 text-sm text-theme-text-secondary">
-					{base.intro.map((intro) => (
-						<p key={intro}>{intro}</p>
-					))}
-					<Vows playbook={character.playbook} />
-				</div>
-			</Section>
+			{character.playbook !== playbookKeys.custom && (
+				<Section title="Story" collapsible={true}>
+					<div className="flex flex-col gap-2 text-sm text-theme-text-secondary">
+						{base.intro.map((intro) => (
+							<p key={intro}>{intro}</p>
+						))}
+						<Vows playbook={character.playbook} />
+					</div>
+				</Section>
+			)}
 		</div>
 	);
 }

@@ -47,7 +47,7 @@ type CharacterCreateFormInputs = {
 export function CharacterCreateForm({
 	playbookKey,
 }: {
-	playbookKey: playbookKey;
+	playbookKey: Exclude<playbookKey, "custom">;
 }) {
 	const { updateGameState, user, gameState } = useGame();
 	const base: PlaybookBase = playbookBases[playbookKey];

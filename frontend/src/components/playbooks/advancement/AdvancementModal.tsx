@@ -7,7 +7,7 @@ import { advancements, playbookBases } from "../content";
 import { coreMoveTitles } from "../coreMoves";
 import { constructAspectArray } from "../creation/CharacterCreateForm";
 import { orderAbilities } from "../sharedComponents/AbilityBoxes";
-import type { Abilities, Character } from "../types";
+import { type Abilities, type Character, playbookKeys } from "../types";
 import { parseStaticText } from "../utils";
 
 export function AdvancementModal() {
@@ -58,6 +58,10 @@ export function AdvancementModal() {
 				break;
 			case 5:
 			case 6:
+				if (character.playbook === playbookKeys.custom) {
+					setStep("write-custom-move");
+					break;
+				}
 				setStep("select-move");
 				break;
 			case 7:
@@ -283,12 +287,14 @@ function MoveSelector({
 	return (
 		<div className="flex flex-col gap-2 justify-center items-center">
 			<h2>Your Current Moves</h2>
-			<div
-				key={coreMoveTitles[character.playbook]}
-				className="flex flex-col text-theme-text-muted"
-			>
-				{coreMoveTitles[character.playbook]}
-			</div>
+			{character.playbook !== playbookKeys.custom && (
+				<div
+					key={coreMoveTitles[character.playbook]}
+					className="flex flex-col text-theme-text-muted"
+				>
+					{coreMoveTitles[character.playbook]}
+				</div>
+			)}
 			{existingMoves.length > 0 && (
 				<div className="flex flex-col text-theme-text-muted">
 					{existingMoves.map((move) => (

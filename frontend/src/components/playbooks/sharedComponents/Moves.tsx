@@ -2,11 +2,14 @@ import { useCallback, useState } from "react";
 import { useGame } from "../../../context/GameContext";
 import { playbookBases } from "../content";
 import { coreMoves } from "../coreMoves";
-import type { Character } from "../types";
+import { type Character, playbookKeys } from "../types";
 import { parseRelicText } from "../utils";
 
 export function Moves({ character }: { character: Character }) {
-	const coreMove = coreMoves(character)[character.playbook];
+	const coreMove =
+		character.playbook === playbookKeys.custom
+			? null
+			: coreMoves(character)[character.playbook];
 	const otherMoves = character.moves ? character.moves : [];
 
 	return (

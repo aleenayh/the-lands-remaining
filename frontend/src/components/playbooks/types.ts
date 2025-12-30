@@ -131,6 +131,9 @@ export const coreMoveStateSchema = z.discriminatedUnion("type", [
 		moonPosition: z.number().catch(moonStartPosition),
 		tinderBoxes: z.number().catch(0),
 	}),
+	z.object({
+		type: z.literal("custom"),
+	}),
 ]);
 
 export type CoreMoveState = z.infer<typeof coreMoveStateSchema>;
@@ -143,6 +146,7 @@ export const playbookKeys = {
 	famisher: "famisher",
 	cruxDruid: "crux-druid",
 	howlingTroubadour: "howling-troubadour",
+	custom: "custom",
 } as const;
 
 const playbookKeysTuple = [
@@ -153,6 +157,7 @@ const playbookKeysTuple = [
 	"famisher",
 	"crux-druid",
 	"howling-troubadour",
+	"custom",
 ] as const;
 
 export type playbookKey = (typeof playbookKeys)[keyof typeof playbookKeys];
@@ -178,14 +183,16 @@ const customTextFieldsSchema = z.object({
 		.array(z.string())
 		.optional()
 		.catch(catchWithWarning("customTextFields.questionDefinitions", undefined)),
-	oldFire: z
+	oldFireDefinitions: z
 		.array(z.string())
 		.optional()
-		.catch(catchWithWarning("customTextFields.oldFire", undefined)),
-	fireToCome: z
+		.catch(catchWithWarning("customTextFields.oldFireDefinitions", undefined)),
+	fireToComeDefinitions: z
 		.array(z.string())
 		.optional()
-		.catch(catchWithWarning("customTextFields.fireToCome", undefined)),
+		.catch(
+			catchWithWarning("customTextFields.fireToComeDefinitions", undefined),
+		),
 	cinderDefinitions: z
 		.array(z.string())
 		.optional()
@@ -220,8 +227,8 @@ export const characterSchema = z.object({
 			z.object({
 				title: z.string(),
 				text: z.array(z.string()).optional(), //only necessary for custom moves
-				checks: z.array(z.number()).optional(),
-				lines: z.array(z.string()).optional(),
+				checks: z.array(z.number()).optional().catch([]),
+				lines: z.array(z.string()).optional().catch([]),
 			}),
 		)
 		//no warning - empty moves array is valid, but dropped by firebase
@@ -276,7 +283,7 @@ export const characterSchema = z.object({
 			5: false,
 		}),
 	),
-	customTextFields: customTextFieldsSchema.optional().catch(undefined),
+	customTextFields: customTextFieldsSchema.optional().catch({}),
 });
 
 export type Character = z.infer<typeof characterSchema>;

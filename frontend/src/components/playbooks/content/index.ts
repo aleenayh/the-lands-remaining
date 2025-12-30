@@ -13,34 +13,34 @@ import { LockAndKey } from "./lock-and-key";
 import { LoneFamisher } from "./lone-famisher";
 import { Nameless } from "./nameless";
 
-// const blankPlaybook: PlaybookBase = {
-// 	title: "Community-Created Ember",
-// 	intro: [],
-// 	names: [],
-// 	honorifics: [],
-// 	look: [],
-// 	rituals: [],
-// 	questions: [],
-// 	abilities: {
-// 		vitality: 0,
-// 		composure: 0,
-// 		reason: 0,
-// 		presence: 0,
-// 		cinder: -2,
-// 	},
-// 	cinders: {},
-// 	relics: [],
-// 	oldFire: [],
-// 	fireToCome: {
-// 		"The Kindling Gate": "",
-// 		"The Tinder Arch": "",
-// 		"The Hearth's Fuel": "",
-// 		"The Ashen Passage": "",
-// 		"The Pyre's Crown": "",
-// 	},
-// 	ascendTheThrone: [],
-// 	moves: [],
-// };
+const blankPlaybook: PlaybookBase = {
+	title: "Community-Created Ember",
+	intro: [],
+	names: [],
+	honorifics: [],
+	look: [],
+	rituals: [],
+	questions: [],
+	abilities: {
+		vitality: 0,
+		composure: 0,
+		reason: 0,
+		presence: 0,
+		cinder: -2,
+	},
+	cinders: {},
+	relics: [],
+	oldFire: [],
+	fireToCome: {
+		"The Kindling Gate": "",
+		"The Tinder Arch": "",
+		"The Hearth's Fuel": "",
+		"The Ashen Passage": "",
+		"The Pyre's Crown": "",
+	},
+	ascendTheThrone: [],
+	moves: [],
+};
 
 export const playbookBases: Record<
 	(typeof playbookKeys)[keyof typeof playbookKeys],
@@ -53,6 +53,7 @@ export const playbookBases: Record<
 	[playbookKeys.famisher]: LoneFamisher,
 	[playbookKeys.cruxDruid]: CruxDruid,
 	[playbookKeys.howlingTroubadour]: HowlingTroubadour,
+	[playbookKeys.custom]: blankPlaybook,
 };
 
 export const advancements: Record<number, string> = {
@@ -81,7 +82,7 @@ export function customFieldOrFallback(
 	}
 
 	switch (key) {
-		case "fireToCome": {
+		case "fireToComeDefinitions": {
 			//record <fireToComeKey, string>
 			const strippedOfKeys = rawText.map((text) => text.split(":")[1].trim());
 			const record = Object.fromEntries(
@@ -91,13 +92,13 @@ export function customFieldOrFallback(
 				]),
 			);
 			return {
-				key: "fireToCome",
+				key: "fireToComeDefinitions",
 				value: record as Record<fireToComeKey, string>,
 			};
 		}
-		case "oldFire":
+		case "oldFireDefinitions":
 			//string[]
-			return { key: "oldFire", value: rawText as string[] };
+			return { key: "oldFireDefinitions", value: rawText as string[] };
 		case "questionDefinitions":
 			//string[]
 			return { key: "questionDefinitions", value: rawText as string[] };

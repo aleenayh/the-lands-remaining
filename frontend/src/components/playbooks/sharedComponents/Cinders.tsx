@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useGame } from "../../../context/GameContext";
-import { playbookBases } from "../content";
-import type { Character } from "../types";
+import { customFieldOrFallback, playbookBases } from "../content";
+import { type Character, playbookKeys } from "../types";
 import { Section } from "./Section";
 
 export function Cinders({ character }: { character: Character }) {
@@ -11,7 +11,10 @@ export function Cinders({ character }: { character: Character }) {
 		user: { id },
 	} = useGame();
 	const editable = id === character.playerId;
-	const { cinders } = playbookBases[character.playbook];
+	const { cinders } =
+		character.playbook === playbookKeys.custom
+			? { cinders: customFieldOrFallback(character, "cinderDefinitions").value }
+			: playbookBases[character.playbook];
 	const markedCinders = character.cinders;
 	const kindlingGateMarked = character.fireToCome["The Kindling Gate"] === true;
 
