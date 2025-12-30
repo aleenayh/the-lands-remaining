@@ -111,7 +111,9 @@ export function CharacterCreateForm({
 				title={
 					playbookKey === playbookKeys.nameless
 						? "Choose A Nickname"
-						: "Choose A Name"
+						: playbookKey === playbookKeys.howlingTroubadour
+							? "Choose a Nom de Plume"
+							: "Choose A Name"
 				}
 			>
 				{playbookKey === playbookKeys.crownsPearl && (
