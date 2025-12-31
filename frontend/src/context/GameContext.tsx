@@ -30,6 +30,7 @@ interface GameProviderProps {
 	children: ReactNode;
 	gameHash: string;
 	userInfo: UserInfo;
+	startingState: GameState | null;
 }
 
 /**
@@ -46,6 +47,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 	children,
 	gameHash,
 	userInfo: initialUserInfo,
+	startingState,
 }) => {
 	const [userInfo, setUserInfo] = useState<UserInfo>(initialUserInfo);
 	// Session key - unique identifier for this user/browser
@@ -60,7 +62,9 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 		return newKey;
 	});
 
-	const [gameState, setGameState] = useState<GameState>(defaultGameState);
+	const [gameState, setGameState] = useState<GameState>(
+		startingState || defaultGameState,
+	);
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false);
 	const [warningsShown, setWarningsShown] = useState<string[]>([]);
 
@@ -116,7 +120,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 			!firebaseInitialized &&
 			firebaseState === null
 		) {
-			initializeGame({ ...defaultGameState, gameHash })
+			initializeGame({ ...gameState, gameHash })
 				.then(() => {
 					setFirebaseInitialized(true);
 				})
@@ -124,7 +128,14 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 					console.error("Failed to initialize game:", error);
 				});
 		}
-	}, [status, firebaseInitialized, firebaseState, gameHash, initializeGame]);
+	}, [
+		status,
+		firebaseInitialized,
+		firebaseState,
+		gameHash,
+		initializeGame,
+		gameState,
+	]);
 
 	/**
 	 * Update game state locally AND send to Firebase

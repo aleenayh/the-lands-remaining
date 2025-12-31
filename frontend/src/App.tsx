@@ -5,7 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { Game } from "./components/Game";
 import { LandingPage } from "./components/landingPage/LandingPage";
 import { GameProvider } from "./context/GameContext";
-import { PlayerRole, type UserInfo } from "./context/types";
+import { type GameState, PlayerRole, type UserInfo } from "./context/types";
 import ErrorBoundary from "./ErrorBoundary";
 import { nameToPlayerId } from "./lib/firebase";
 
@@ -16,6 +16,7 @@ function App() {
 	const savedName = localStorage.getItem("playerName") || "";
 	const savedRole = localStorage.getItem("playerRole") as PlayerRole | null;
 	const [gameHash, setGameHash] = useState<string | null>(initialGameHash);
+	const [startingState, setStartingState] = useState<GameState | null>(null);
 	const [userName, setUserName] = useState<string | null>(savedName ?? null);
 	const userRole = savedRole ?? PlayerRole.PLAYER;
 	const [userId, setUserId] = useState<string | null>(
@@ -33,6 +34,7 @@ function App() {
 				userId={userId}
 				setUserName={setUserName}
 				setUserId={setUserId}
+				setStartingState={setStartingState}
 			/>
 		);
 	}
@@ -46,7 +48,11 @@ function App() {
 	return (
 		<div className="App">
 			<ErrorBoundary>
-				<GameProvider gameHash={gameHash} userInfo={userInfo}>
+				<GameProvider
+					gameHash={gameHash}
+					userInfo={userInfo}
+					startingState={startingState}
+				>
 					<Tooltip.Provider>
 						<Toaster />
 						<Game />

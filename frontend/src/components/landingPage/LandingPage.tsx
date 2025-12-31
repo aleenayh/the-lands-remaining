@@ -1,10 +1,13 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { type GameState, gameStateSchema } from "../../context/types";
 import {
 	checkGameExists,
 	createNewGame,
 	generateGameHash,
 	nameToPlayerId,
 } from "../../lib/firebase";
+import { validateGameState } from "../../utils/schemaValidation";
 import { ReactComponent as Logo } from "../assets/tlr-logo.svg";
 
 type LandingStep =
@@ -13,6 +16,7 @@ type LandingStep =
 	| "join-from-query"
 	| "join-enter-hash"
 	| "join-confirm-name"
+	| "upload-game-file"
 	| "creating"
 	| "joining";
 
@@ -22,12 +26,14 @@ export function LandingPage({
 	userId,
 	setUserName,
 	setUserId,
+	setStartingState,
 }: {
 	setGameHash: (hash: string) => void;
 	userName: string | null;
 	userId: string | null;
 	setUserName: (name: string) => void;
 	setUserId: (id: string) => void;
+	setStartingState: (state: GameState) => void;
 }) {
 	const firstStep = userName && userId ? "choose" : "name";
 	const [step, setStep] = useState<LandingStep>(firstStep);
@@ -74,6 +80,24 @@ export function LandingPage({
 
 			setUserId(playerId);
 			setUserName(playerName.trim());
+			setGameHash(newHash);
+		} catch (err) {
+			console.error("Failed to create game:", err);
+			setError("Failed to create game. Please try again.");
+			setStep("choose");
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	const handleCreateGameFromFile = async (gameState: GameState) => {
+		setIsLoading(true);
+		setError(null);
+		setStep("creating");
+
+		try {
+			const newHash = generateGameHash();
+			setStartingState(gameState);
 			setGameHash(newHash);
 		} catch (err) {
 			console.error("Failed to create game:", err);
@@ -189,6 +213,15 @@ export function LandingPage({
 						onBack={() => setStep("name")}
 						onCreateGame={handleCreateGame}
 						onJoinGame={() => setStep("join-enter-hash")}
+						onUploadGameFile={() => setStep("upload-game-file")}
+					/>
+				)}
+
+				{step === "upload-game-file" && (
+					<UploadGameFileStep
+						isLoading={isLoading}
+						onBack={() => setStep("choose")}
+						onSubmit={handleCreateGameFromFile}
 					/>
 				)}
 
@@ -270,11 +303,13 @@ function ChooseStep({
 	onBack,
 	onCreateGame,
 	onJoinGame,
+	onUploadGameFile,
 }: {
 	playerName: string;
 	onBack: () => void;
 	onCreateGame: () => void;
 	onJoinGame: () => void;
+	onUploadGameFile: () => void;
 }) {
 	return (
 		<div className="flex flex-col gap-4">
@@ -303,6 +338,17 @@ function ChooseStep({
 			>
 				<span className="font-bold">Join Existing Game</span>
 				<span className="text-sm opacity-70">Enter a game code to join</span>
+			</button>
+
+			<button
+				type="button"
+				onClick={onUploadGameFile}
+				className="px-4 py-4 rounded-lg bg-theme-bg-secondary border border-theme-border text-theme-text-primary hover:bg-theme-bg-secondary transition-colors flex flex-col items-center gap-1"
+			>
+				<span className="font-bold">Create Game from File</span>
+				<span className="text-sm opacity-70">
+					Use a previously downloaded game file to restart your game
+				</span>
 			</button>
 
 			<button
@@ -381,6 +427,81 @@ function JoinHashStep({
 				className="px-4 py-3 rounded-lg bg-theme-bg-accent text-theme-text-accent hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
 			>
 				{isLoading ? "Checking..." : "Join Game"}
+			</button>
+			<button
+				type="button"
+				onClick={onBack}
+				className="text-theme-text-muted hover:text-theme-text-secondary text-sm transition-colors"
+			>
+				← Back
+			</button>
+		</div>
+	);
+}
+
+function UploadGameFileStep({
+	isLoading,
+	onBack,
+	onSubmit,
+}: {
+	isLoading: boolean;
+	onBack: () => void;
+	onSubmit: (gameState: GameState) => void;
+}) {
+	const [gameState, setGameState] = useState<GameState | null>(null);
+	const [isParsing, setIsParsing] = useState(false);
+
+	const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setIsParsing(true);
+		const file = e.target.files?.[0];
+		if (file) {
+			try {
+				file.text().then((text) => {
+					const gameState = gameStateSchema.parse(JSON.parse(text));
+					const validatedGameState = validateGameState(gameState);
+					if (validatedGameState.warnings.length > 0) {
+						toast.error(
+							`Warning! Some fields from your file did not match expected game structure, and default values were used: ${validatedGameState.warnings.map((w) => w.field).join(", ")}`,
+							{ id: "game-file-warnings" },
+						);
+						console.warn(
+							`Warning! Some fields from your file did not match expected game structure, and default values were used: ${validatedGameState.warnings.map((w) => `${w.field}: Expected ${w.expected} -> Received ${w.received}`).join(", ")}`,
+						);
+					}
+					setGameState(validatedGameState.state);
+					setIsParsing(false);
+				});
+			} catch (e) {
+				console.error("Error parsing game state:", e);
+				setIsParsing(false);
+			}
+		} else {
+			setIsParsing(false);
+		}
+	};
+	return (
+		<div className="flex flex-col gap-4">
+			<p className="text-center text-theme-text-secondary">
+				Upload your game file below.
+			</p>
+			<p className="text-theme-text-secondary text-sm text-left">
+				If you didn't rename the file, it should look something like:
+				"TLR-game-abc123.json"
+			</p>
+			<input
+				name="game-file-input"
+				type="file"
+				accept=".json"
+				onChange={handleFileUpload}
+				className="px-4 py-3 rounded-lg bg-theme-bg-secondary border border-theme-border text-theme-text-primary placeholder:text-theme-text-muted focus:outline-none focus:border-theme-border-accent font-mono text-center"
+			/>
+			<button
+				type="button"
+				disabled={!gameState || isLoading || isParsing}
+				onClick={() => gameState && onSubmit(gameState)}
+				className="px-4 py-3 rounded-lg bg-theme-bg-accent text-theme-text-accent hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+			>
+				{isParsing ? "Reading file..." : "Create Game"}
 			</button>
 			<button
 				type="button"
