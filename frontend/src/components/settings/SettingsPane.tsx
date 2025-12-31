@@ -72,7 +72,7 @@ function ThemeSelector() {
 	return (
 		<div>
 			<h2 className="text-lg font-bold text-theme-text-accent">Change Theme</h2>
-			<div className="flex flex-col gap-2">
+			<div className="flex flex-col md:grid md:grid-cols-2 gap-2 justify-center items-center md:justify-start text-left">
 				<label htmlFor="forest">
 					<input
 						type="radio"

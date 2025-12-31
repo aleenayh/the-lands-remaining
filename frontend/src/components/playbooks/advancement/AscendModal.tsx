@@ -1,6 +1,7 @@
 import { Dialog } from "radix-ui";
 import { useState } from "react";
 import { useGame } from "../../../context/GameContext";
+import { downloadCharacterJSON } from "../../../utils/download";
 import { playbookBases } from "../content";
 
 export function AscendTheThroneModal() {
@@ -9,6 +10,7 @@ export function AscendTheThroneModal() {
 	const {
 		gameState,
 		updateGameState,
+		gameHash,
 		user: { id },
 	} = useGame();
 	const character = gameState.players.find(
@@ -30,6 +32,14 @@ export function AscendTheThroneModal() {
 			),
 		});
 	};
+
+	const downloadCharacter = () => {
+		downloadCharacterJSON(
+			character,
+			`TLR-${gameHash}-character-${character.name.toLowerCase().replace(/ /g, "-")}.json`,
+		);
+	};
+
 	const ascendTheThroneContent =
 		playbookBases[character.playbook].ascendTheThrone;
 
@@ -85,6 +95,17 @@ export function AscendTheThroneModal() {
 									PERMANENT
 								</strong>
 								.
+							</p>
+							<p className="inline text-left">
+								Before continuing, you may{" "}
+								<button
+									type="button"
+									onClick={downloadCharacter}
+									className="text-theme-text-accent underline hover:text-theme-text-secondary transition-colors"
+								>
+									download your character file
+								</button>{" "}
+								to use when returning to Ambarell.
 							</p>
 							<div className="flex flex-row gap-4">
 								<div className="mx-auto w-1/3 gap-4 flex justify-center items-center">

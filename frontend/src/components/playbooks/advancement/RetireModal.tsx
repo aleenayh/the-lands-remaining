@@ -1,10 +1,12 @@
 import { Dialog } from "radix-ui";
 import { useGame } from "../../../context/GameContext";
+import { downloadCharacterJSON } from "../../../utils/download";
 
 export function RetireCharacterModal() {
 	const {
 		gameState,
 		updateGameState,
+		gameHash,
 		user: { id },
 	} = useGame();
 	const character = gameState.players.find(
@@ -61,6 +63,13 @@ export function RetireCharacterModal() {
 		});
 	};
 
+	const downloadCharacter = () => {
+		downloadCharacterJSON(
+			character,
+			`TLR-${gameHash}-character-${character.name.toLowerCase().replace(/ /g, "-")}.json`,
+		);
+	};
+
 	return (
 		<Dialog.Root>
 			<Dialog.Trigger asChild className="DialogTrigger">
@@ -94,6 +103,18 @@ export function RetireCharacterModal() {
 								PERMANENT
 							</strong>
 							.
+						</p>
+
+						<p className="inline text-left">
+							Before retiring, you may{" "}
+							<button
+								type="button"
+								onClick={downloadCharacter}
+								className="text-theme-text-accent underline hover:text-theme-text-secondary transition-colors"
+							>
+								download your character file
+							</button>{" "}
+							to use when returning to Ambarell.
 						</p>
 					</div>
 					<div className="mx-auto w-2/3 gap-4 flex justify-center items-center">

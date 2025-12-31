@@ -1,9 +1,10 @@
 import { toast } from "react-hot-toast";
 import { useGame } from "../../context/GameContext";
+import { downloadGameStateJSON } from "../../utils/download";
 import { ReactComponent as CopyIcon } from "./copy.svg";
 
 export function GameInfo() {
-	const { gameHash, user } = useGame();
+	const { gameHash, user, gameState } = useGame();
 
 	const copyToClipboard = () => {
 		navigator.clipboard.writeText(gameHash);
@@ -12,6 +13,10 @@ export function GameInfo() {
 	const backToLanding = () => {
 		localStorage.removeItem("playerRole");
 		window.location.href = "/";
+	};
+
+	const clickDownload = () => {
+		downloadGameStateJSON(gameState, `TLR-game-${gameHash}.json`);
 	};
 
 	return (
@@ -37,6 +42,19 @@ export function GameInfo() {
 			>
 				Join a different game
 			</button>
+			<p className="text-theme-text-secondary text-sm inline text-left">
+				Games are considered active if they have been used during the last 3
+				months. Inactive games are periodically removed. If you want to take a
+				longer break,{" "}
+				<button
+					type="button"
+					onClick={clickDownload}
+					className="text-theme-text-accent underline hover:text-theme-text-secondary transition-colors"
+				>
+					download your game file
+				</button>{" "}
+				to use when re-starting your game.
+			</p>
 		</div>
 	);
 }
