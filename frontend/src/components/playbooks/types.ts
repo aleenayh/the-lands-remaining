@@ -12,6 +12,14 @@ export const abilitiesSchema = z.object({
 
 export type Abilities = z.infer<typeof abilitiesSchema>;
 
+export const abilitiesKeys = {
+	vitality: "vitality",
+	composure: "composure",
+	reason: "reason",
+	presence: "presence",
+	cinder: "cinder",
+} as const;
+
 export const fireToComeKeys = {
 	"The Kindling Gate": "The Kindling Gate",
 	"The Tinder Arch": "The Tinder Arch",

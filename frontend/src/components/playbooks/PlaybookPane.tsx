@@ -5,7 +5,7 @@ import { ExperienceTracker } from "./sharedComponents/ExperienceTracker";
 import { Extras } from "./sharedComponents/Extras";
 import { Fires } from "./sharedComponents/Fires";
 import { Moves } from "./sharedComponents/Moves";
-import { PlayerPill } from "./sharedComponents/PlayerPill";
+import { PlayerPill, DiceIndicator } from "./sharedComponents/PlayerPill";
 import { Questions } from "./sharedComponents/Questions";
 import { Relics } from "./sharedComponents/Relics";
 import { Section } from "./sharedComponents/Section";
@@ -17,6 +17,7 @@ export function PlaybookPane({ character }: { character: Character }) {
 			aria-label={`Ember for ${character.name}`}
 			className="border-2 border-theme-border-accent bg-theme-bg-primary rounded-lg p-4 h-full flex flex-col gap-2 overflow-hidden relative"
 		>
+			<DiceIndicator playerId={character.playerId} />
 			<PlayerPill playerId={character.playerId} />
 			<h2 className="text-lg whitespace-normal text-balance font-bold text-theme-text-accent shrink-0 truncate mx-10">
 				{character.name}

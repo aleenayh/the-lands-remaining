@@ -171,7 +171,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 			name: userInfo.name,
 			role: userInfo.role,
 			character: null,
-			online: true,
+			lastRoll: null,
 		};
 
 		const updatedPlayers = [...gameState.players, newPlayer];

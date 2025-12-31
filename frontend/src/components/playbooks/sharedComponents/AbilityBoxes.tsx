@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Dialog } from "radix-ui";
 import { useId, useState } from "react";
+import { useGame } from "../../../context/GameContext";
 import type { Abilities, Abilities as AbilityType } from "../types";
 
 export function AbilityBoxes({
@@ -89,7 +90,11 @@ export function AbilityBox({
 	const [total, setTotal] = useState<number | null>(null);
 	const [bounceValue, setBounceValue] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
-
+	const {
+		gameState,
+		updateGameState,
+		user: { id: playerId },
+	} = useGame();
 	const calcTotal = (diceToCalc: Die[]) => {
 		setTimeout(() => {
 			const result = diceToCalc
@@ -97,10 +102,36 @@ export function AbilityBox({
 				.reduce((acc, die) => acc + die.value, 0);
 			const thisTotal = result + value;
 			setTotal(thisTotal);
+			updateGameState({
+				players: gameState.players.map((player) =>
+					player.id === playerId
+						? {
+								...player,
+								lastRoll: {
+									roll: thisTotal,
+									type: ability,
+									timestamp: new Date(),
+								},
+							}
+						: player,
+				),
+			});
 		}, 1500);
 	};
 
 	const handleRoll = () => {
+		//update timestamp immediately allows other players to see that you're "rolling"
+		//zero is an impossible roll, we use it to indicate in process of rolling
+		updateGameState({
+			players: gameState.players.map((player) =>
+				player.id === playerId
+					? {
+							...player,
+							lastRoll: { roll: 0, type: ability, timestamp: new Date() },
+						}
+					: player,
+			),
+		});
 		setTotal(null);
 		setBounceValue(false);
 		const numDice = rollType === "regular" ? 2 : 3;

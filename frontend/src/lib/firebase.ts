@@ -79,7 +79,7 @@ export async function createNewGame(
 			{
 				id: player.id,
 				name: player.name,
-				online: true,
+				lastRoll: null,
 				role: PlayerRole.PLAYER,
 				character: null,
 			},

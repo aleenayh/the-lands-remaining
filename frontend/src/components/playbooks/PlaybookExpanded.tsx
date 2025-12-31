@@ -6,6 +6,7 @@ import { Conditions } from "./sharedComponents/Conditions";
 import { ExperienceTracker } from "./sharedComponents/ExperienceTracker";
 import { Fires } from "./sharedComponents/Fires";
 import { Moves } from "./sharedComponents/Moves";
+import { DiceIndicator } from "./sharedComponents/PlayerPill";
 import { Questions } from "./sharedComponents/Questions";
 import { Relics } from "./sharedComponents/Relics";
 import { Section } from "./sharedComponents/Section";
@@ -46,7 +47,8 @@ export function PlaybookExpanded({ character }: { character: Character }) {
 	);
 
 	return (
-		<div className="border-2 border-theme-border-accent bg-theme-bg-primary rounded-lg p-4 h-full flex flex-col gap-2 overflow-hidden">
+		<div className="border-2 border-theme-border-accent bg-theme-bg-primary rounded-lg p-4 h-full flex flex-col gap-2 overflow-hidden relative">
+			<DiceIndicator playerId={character.playerId} />
 			<h1 className="text-2xl font-bold text-center text-theme-text-accent shrink-0 whitespace-normal text-balance">
 				{character.name}
 			</h1>

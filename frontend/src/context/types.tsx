@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { dominionSchema, mysterySchema } from "../components/mystery/types";
-import { characterSchema } from "../components/playbooks/types";
+import { abilitiesKeys, characterSchema } from "../components/playbooks/types";
 import { catchWithWarning } from "../utils/schemaValidation";
 
 export enum PlayerRole {
@@ -14,10 +14,16 @@ export const userInfoSchema = z.object({
 	role: z.enum([PlayerRole.KEEPER, PlayerRole.PLAYER]),
 });
 
+const rollSchema = z.object({
+	roll: z.number().catch(0),
+	type: z.enum(Object.keys(abilitiesKeys)).catch(abilitiesKeys.vitality),
+	timestamp: z.coerce.date().catch(new Date()),
+});
+
 const playerSchema = z.object({
 	id: z.string(),
 	name: z.string(),
-	online: z.boolean().catch(catchWithWarning("player.online", false)),
+	lastRoll: rollSchema.nullable().catch(null),
 	role: z
 		.enum([PlayerRole.KEEPER, PlayerRole.PLAYER])
 		.catch(catchWithWarning("player.role", PlayerRole.PLAYER)),

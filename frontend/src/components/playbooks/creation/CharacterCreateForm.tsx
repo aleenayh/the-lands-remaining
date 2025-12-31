@@ -92,7 +92,7 @@ export function CharacterCreateForm({
 						{
 							id: user.id,
 							name: user.name,
-							online: true,
+							lastRoll: null,
 							role: PlayerRole.PLAYER,
 							character,
 						},
