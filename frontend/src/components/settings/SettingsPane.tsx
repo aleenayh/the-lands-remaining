@@ -148,9 +148,9 @@ function Credits() {
 					onClick={() => {
 						window.location.href = "mailto:aleenayunuba@gmail.com";
 					}}
-					className="underline text-blue-600 hover:text-blue-800"
+					className="underline text-theme-text-primary hover:text-theme-accent-primary transition-colors"
 				>
-					let me know
+					let me know.
 				</button>
 			</p>
 
