@@ -32,8 +32,8 @@ const playerSchema = z.object({
 });
 
 const safetySchema = z.object({
-	lines: z.array(z.string()).optional().catch(undefined),
-	veils: z.array(z.string()).optional().catch(undefined),
+	lines: z.array(z.string()).catch([]),
+	veils: z.array(z.string()).catch([]),
 });
 
 export const gameStateSchema = z.object({
@@ -44,7 +44,7 @@ export const gameStateSchema = z.object({
 	supplicants: z.array(z.string()).optional().catch(undefined),
 	players: z.array(playerSchema).catch(catchWithWarning("players", [])),
 	timestamp: z.coerce.date().catch(catchWithWarning("timestamp", new Date())),
-	safety: safetySchema.optional().catch(undefined),
+	safety: safetySchema.catch({ lines: [], veils: [] }),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

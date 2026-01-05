@@ -143,7 +143,15 @@ function Credits() {
 				Site designed and maintained by{" "}
 				<a href="https://github.com/aleenayh">Aleena Yunuba.</a> If you
 				encounter accessibility issues, please{" "}
-				<a href="mailto:aleenayunuba@gmail.com">let me know</a>.
+				<button
+					type="button"
+					onClick={() => {
+						window.location.href = "mailto:aleenayunuba@gmail.com";
+					}}
+					className="underline text-blue-600 hover:text-blue-800"
+				>
+					let me know
+				</button>
 			</p>
 
 			<p>

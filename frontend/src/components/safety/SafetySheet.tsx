@@ -69,11 +69,11 @@ function Divider() {
 
 function LinesAndVeils() {
 	const { gameState, updateGameState } = useGame();
-	const { lines, veils } = gameState.safety || { lines: [], veils: [] };
+	const { lines, veils } = gameState.safety;
 
 	const remove = (type: "line" | "veil", text: string) => {
-		const newLines = lines?.filter((line) => line !== text) ?? [];
-		const newVeils = veils?.filter((veil) => veil !== text) ?? [];
+		const newLines = lines.filter((line) => line !== text);
+		const newVeils = veils.filter((veil) => veil !== text);
 		updateGameState({
 			safety: {
 				lines: newLines,
@@ -203,7 +203,7 @@ function EditLineOrVeilForm({
 			text: text,
 		},
 	});
-	const { lines, veils } = gameState.safety || { lines: [], veils: [] };
+	const { lines, veils } = gameState.safety;
 
 	const edit = (data: { text: string }) => {
 		const newLines =
@@ -216,8 +216,8 @@ function EditLineOrVeilForm({
 				: veils;
 		updateGameState({
 			safety: {
-				lines: newLines || [],
-				veils: newVeils || [],
+				lines: newLines,
+				veils: newVeils,
 			},
 		});
 		toast.success(
@@ -246,7 +246,7 @@ function EditLineOrVeilForm({
 
 function AddLineOrVeilForm() {
 	const { gameState, updateGameState } = useGame();
-	const { lines, veils } = gameState.safety || { lines: [], veils: [] };
+	const { lines, veils } = gameState.safety;
 	const { register, handleSubmit, reset } = useForm<{
 		text: string;
 		type: "line" | "veil";
@@ -264,8 +264,8 @@ function AddLineOrVeilForm() {
 			formInput.type === "veil" ? [...(veils || []), formInput.text] : veils;
 		updateGameState({
 			safety: {
-				lines: newLines ?? [],
-				veils: newVeils ?? [],
+				lines: newLines,
+				veils: newVeils,
 			},
 		});
 		toast.success(
