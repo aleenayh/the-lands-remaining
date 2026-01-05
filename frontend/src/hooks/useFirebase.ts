@@ -2,9 +2,23 @@ import { off, onValue, ref, set, update } from "firebase/database";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { GameState } from "../context/types";
 import { db } from "../lib/firebase";
+import { compareVersions, getLocalSchemaVersion } from "../utils/versionCheck";
 
 // Connection status type
 type ConnectionStatus = "connecting" | "connected" | "disconnected" | "error";
+
+// Custom error for version mismatch
+export class VersionMismatchError extends Error {
+	constructor(
+		public localVersion: string,
+		public remoteVersion: string,
+	) {
+		super(
+			`Schema version mismatch: local ${localVersion} vs remote ${remoteVersion}`,
+		);
+		this.name = "VersionMismatchError";
+	}
+}
 
 interface UseFirebaseOptions {
 	gameHash: string;
@@ -16,6 +30,8 @@ interface UseFirebaseReturn {
 	gameState: GameState | null;
 	updateGameState: (updates: Partial<GameState>) => Promise<void>;
 	initializeGame: (initialState: GameState) => Promise<void>;
+	isPaused: boolean;
+	firebaseSchemaVersion: string | null;
 }
 
 /**
@@ -33,8 +49,13 @@ export const useFirebase = ({
 }: UseFirebaseOptions): UseFirebaseReturn => {
 	const [status, setStatus] = useState<ConnectionStatus>("connecting");
 	const [gameState, setGameState] = useState<GameState | null>(null);
+	const [isPaused, setIsPaused] = useState(false);
+	const [firebaseSchemaVersion, setFirebaseSchemaVersion] = useState<
+		string | null
+	>(null);
 	const gameRefPath = `games/${gameHash}`;
 	const onStateSyncRef = useRef(onStateSync);
+	const localSchemaVersion = getLocalSchemaVersion();
 
 	// Keep the callback ref up to date
 	useEffect(() => {
@@ -57,6 +78,9 @@ export const useFirebase = ({
 
 				if (data) {
 					setGameState(data);
+					// Extract and store schema version from Firebase
+					const remoteVersion = data.schemaVersion || "";
+					setFirebaseSchemaVersion(remoteVersion);
 					if (onStateSyncRef.current) {
 						onStateSyncRef.current(data);
 					}
@@ -76,11 +100,53 @@ export const useFirebase = ({
 	}, [gameRefPath]);
 
 	/**
+	 * Tab visibility management - pause all sync when tab is hidden
+	 */
+	useEffect(() => {
+		const handleVisibilityChange = () => {
+			if (document.visibilityState === "hidden") {
+				setIsPaused(true);
+			} else if (document.visibilityState === "visible") {
+				// On focus, check version before resuming
+				// Version check will be handled by GameContext
+				setIsPaused(false);
+			}
+		};
+
+		document.addEventListener("visibilitychange", handleVisibilityChange);
+
+		return () => {
+			document.removeEventListener("visibilitychange", handleVisibilityChange);
+		};
+	}, []);
+
+	/**
 	 * Update game state with partial updates
 	 * Encodes data to be Firebase-safe before sending
+	 * Checks version and pause status before allowing updates
 	 */
 	const updateGameState = useCallback(
 		async (updates: Partial<GameState>): Promise<void> => {
+			// Block updates if sync is paused (tab is hidden)
+			if (isPaused) {
+				console.warn("Update blocked: sync is paused (tab is hidden)");
+				return;
+			}
+
+			// Check version mismatch
+			if (firebaseSchemaVersion !== null) {
+				const versionMatch = compareVersions(
+					localSchemaVersion,
+					firebaseSchemaVersion,
+				);
+				if (!versionMatch) {
+					throw new VersionMismatchError(
+						localSchemaVersion,
+						firebaseSchemaVersion,
+					);
+				}
+			}
+
 			const gameRef = ref(db, gameRefPath);
 			const timestamp = new Date().toISOString();
 
@@ -94,7 +160,7 @@ export const useFirebase = ({
 				throw error;
 			}
 		},
-		[gameRefPath],
+		[gameRefPath, isPaused, firebaseSchemaVersion, localSchemaVersion],
 	);
 
 	/**
@@ -125,5 +191,7 @@ export const useFirebase = ({
 		gameState,
 		updateGameState,
 		initializeGame,
+		isPaused,
+		firebaseSchemaVersion,
 	};
 };

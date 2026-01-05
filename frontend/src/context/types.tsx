@@ -45,6 +45,7 @@ export const gameStateSchema = z.object({
 	players: z.array(playerSchema).catch(catchWithWarning("players", [])),
 	timestamp: z.coerce.date().catch(catchWithWarning("timestamp", new Date())),
 	safety: safetySchema.catch({ lines: [], veils: [] }),
+	schemaVersion: z.string().catch(""),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

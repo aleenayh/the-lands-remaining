@@ -1,3 +1,4 @@
+import { getLocalSchemaVersion } from "../utils/versionCheck";
 import type { GameState } from "./types";
 
 export const defaultGameState: GameState = {
@@ -10,4 +11,5 @@ export const defaultGameState: GameState = {
 		lines: [],
 		veils: [],
 	},
+	schemaVersion: getLocalSchemaVersion(),
 };

@@ -1,13 +1,16 @@
 import React, {
 	createContext,
 	type ReactNode,
+	useCallback,
 	useContext,
 	useEffect,
 	useState,
 } from "react";
 import toast from "react-hot-toast";
-import { useFirebase } from "../hooks/useFirebase";
+import { VersionMismatchModal } from "../components/shared/VersionMismatchModal";
+import { useFirebase, VersionMismatchError } from "../hooks/useFirebase";
 import { validateGameState } from "../utils/schemaValidation";
+import { getLocalSchemaVersion } from "../utils/versionCheck";
 import { defaultGameState } from "./defaults";
 import type { GameState, UserInfo } from "./types";
 
@@ -67,6 +70,15 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 	);
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false);
 	const [warningsShown, setWarningsShown] = useState<string[]>([]);
+	const [showVersionMismatchModal, setShowVersionMismatchModal] =
+		useState(false);
+	const localSchemaVersion = getLocalSchemaVersion();
+	// Track if we've migrated schemaVersion for this game to avoid multiple writes
+	const schemaVersionMigratedRef = React.useRef(false);
+	// Store update function in ref so it can be accessed in callbacks
+	const firebaseUpdateStateRef = React.useRef<
+		((updates: Partial<GameState>) => Promise<void>) | null
+	>(null);
 
 	/**
 	 * Firebase connection with state sync callback
@@ -76,6 +88,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 		gameState: firebaseState,
 		updateGameState: firebaseUpdateState,
 		initializeGame,
+		isPaused,
+		firebaseSchemaVersion,
 	} = useFirebase({
 		gameHash,
 		onStateSync: (state: GameState) => {
@@ -93,7 +107,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 					);
 					setWarningsShown((prev) => [
 						...prev,
-						...warnings.map((w) => w.field),
+						...newWarnings.map((w) => w.field),
 					]);
 				}
 				console.error(
@@ -108,8 +122,75 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 
 			setGameState(mergedState);
 			setFirebaseInitialized(true);
+
+			// Migrate existing games: set schemaVersion if missing or empty
+			// Only do this once per game session to avoid unnecessary writes
+			if (
+				localSchemaVersion &&
+				(!validatedState.schemaVersion ||
+					validatedState.schemaVersion === "") &&
+				!schemaVersionMigratedRef.current &&
+				firebaseUpdateStateRef.current
+			) {
+				schemaVersionMigratedRef.current = true;
+				// Update Firebase with current schema version
+				// This happens asynchronously and won't block the UI
+				firebaseUpdateStateRef
+					.current({ schemaVersion: localSchemaVersion })
+					.catch((error) => {
+						console.error(
+							"Failed to migrate schemaVersion for existing game:",
+							error,
+						);
+						// Reset flag so we can retry on next sync
+						schemaVersionMigratedRef.current = false;
+					});
+			}
+
+			// Check version on sync
+			if (validatedState.schemaVersion && localSchemaVersion) {
+				if (validatedState.schemaVersion !== localSchemaVersion) {
+					setShowVersionMismatchModal(true);
+				}
+			}
 		},
 	});
+
+	// Keep the update function ref in sync
+	useEffect(() => {
+		firebaseUpdateStateRef.current = firebaseUpdateState;
+	}, [firebaseUpdateState]);
+
+	/**
+	 * Check version mismatch and show modal if needed
+	 */
+	const checkVersionMismatch = useCallback(() => {
+		if (firebaseSchemaVersion && localSchemaVersion) {
+			if (firebaseSchemaVersion !== localSchemaVersion) {
+				setShowVersionMismatchModal(true);
+				return true;
+			}
+		}
+		return false;
+	}, [firebaseSchemaVersion, localSchemaVersion]);
+
+	/**
+	 * Tab visibility handler - check version on focus
+	 */
+	useEffect(() => {
+		const handleVisibilityChange = () => {
+			if (document.visibilityState === "visible" && !isPaused) {
+				// Tab became visible, check version
+				checkVersionMismatch();
+			}
+		};
+
+		document.addEventListener("visibilitychange", handleVisibilityChange);
+
+		return () => {
+			document.removeEventListener("visibilitychange", handleVisibilityChange);
+		};
+	}, [checkVersionMismatch, isPaused]);
 
 	/**
 	 * On Firebase connect: Initialize game if it doesn't exist
@@ -120,7 +201,12 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 			!firebaseInitialized &&
 			firebaseState === null
 		) {
-			initializeGame({ ...gameState, gameHash })
+			const initialState: GameState = {
+				...gameState,
+				gameHash,
+				schemaVersion: localSchemaVersion,
+			};
+			initializeGame(initialState)
 				.then(() => {
 					setFirebaseInitialized(true);
 				})
@@ -135,12 +221,18 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 		gameHash,
 		initializeGame,
 		gameState,
+		localSchemaVersion,
 	]);
 
 	/**
 	 * Update game state locally AND send to Firebase
 	 */
 	const updateGameState = (updates: Partial<GameState>) => {
+		// Check version before allowing updates
+		if (checkVersionMismatch()) {
+			return;
+		}
+
 		try {
 			const newState = { ...gameState, ...updates };
 
@@ -158,7 +250,11 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 
 			// Send to Firebase
 			firebaseUpdateState(updates).catch((error) => {
-				console.error("Failed to sync state to Firebase:", error);
+				if (error instanceof VersionMismatchError) {
+					setShowVersionMismatchModal(true);
+				} else {
+					console.error("Failed to sync state to Firebase:", error);
+				}
 			});
 		} catch (error) {
 			console.error("Error updating game state:", error);
@@ -209,7 +305,16 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 		return <div>Loading...</div>;
 	}
 
-	return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
+	return (
+		<>
+			<GameContext.Provider value={value}>{children}</GameContext.Provider>
+			<VersionMismatchModal
+				isOpen={showVersionMismatchModal}
+				localVersion={localSchemaVersion}
+				remoteVersion={firebaseSchemaVersion || ""}
+			/>
+		</>
+	);
 };
 
 /**
