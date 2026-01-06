@@ -316,9 +316,10 @@ function SelectOrEdit({
 }) {
 	const id = useId();
 	const [isEditing, setIsEditing] = useState(false);
+	const [allOptions, setAllOptions] = useState(options);
 	const { ref, onChange, ...rest } = register(name);
 
-	if (options.length === 0) {
+	if (allOptions.length === 0) {
 		return (
 			<input
 				{...register(name)}
@@ -327,6 +328,15 @@ function SelectOrEdit({
 			/>
 		);
 	}
+
+	const handleBlur = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+	) => {
+		const value = e.target.value;
+		setAllOptions((prevOptions) => [...prevOptions, value]);
+		onChange(e);
+		setIsEditing(false);
+	};
 
 	return (
 		<div className="inline-flex items-center gap-1 flex-grow">
@@ -340,10 +350,10 @@ function SelectOrEdit({
 					id={id}
 					type="text"
 					onChange={onChange}
-					onBlur={() => setIsEditing(false)}
+					onBlur={handleBlur}
 					onKeyDown={(e) => {
 						if (e.key === "Enter" || e.key === "Escape") {
-							setIsEditing(false);
+							e.preventDefault();
 						}
 					}}
 					className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent flex-grow"
@@ -354,7 +364,7 @@ function SelectOrEdit({
 					id={id}
 					className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent flex-grow"
 				>
-					{options.map((option) => (
+					{allOptions.map((option) => (
 						<option key={option} value={option}>
 							{option}
 						</option>
