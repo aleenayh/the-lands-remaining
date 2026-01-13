@@ -3,9 +3,7 @@ import { catchWithWarning } from "../../utils/schemaValidation";
 
 export const questionSchema = z.object({
 	text: z.string(),
-	opportunity: z
-		.string()
-		.catch(catchWithWarning("mystery.question.opportunity", "")),
+	opportunity: z.string().optional().catch(undefined),
 	complexity: z.coerce
 		.number()
 		.catch(catchWithWarning("mystery.question.coplexity", 2)),

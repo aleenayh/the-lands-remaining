@@ -173,10 +173,12 @@ export function Countdown({ mystery }: { mystery: Mystery }) {
 										(Complexity: {question.complexity})
 									</span>
 								</div>
-								<div className="text-sm text-theme-text-secondary text-left">
-									<span className="italic">Opportunity:</span>{" "}
-									{question.opportunity}
-								</div>
+								{question.opportunity && (
+									<div className="text-sm text-theme-text-secondary text-left">
+										<span className="italic">Opportunity:</span>{" "}
+										{question.opportunity}
+									</div>
+								)}
 								{role === PlayerRole.KEEPER && (
 									<div className="flex flex-col gap-2 justify-center items-center">
 										<Tooltip.Root>
