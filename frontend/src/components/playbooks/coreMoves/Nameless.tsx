@@ -1,8 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
 import { useGame } from "../../../context/GameContext";
-import { PencilIconButton } from "../creation/PencilIconButton";
-import { BlankCondition, ConditionInput } from "../sharedComponents/Conditions";
+import { EditableLine } from "../../shared/EditableLine";
 import type { Character } from "../types";
 
 export function CoreMoveNameless({ character }: { character: Character }) {
@@ -192,11 +190,6 @@ function DurableLegionnaires({ character }: { character: Character }) {
 		gameState,
 		user: { id },
 	} = useGame();
-	const [showEdit, setShowEdit] = useState<Record<number, boolean>>({
-		0: false,
-		1: false,
-		2: false,
-	});
 	if (coreMoveState.type !== "nameless") return null;
 	const editable = id === character.playerId;
 	const durableLegionnaires = coreMoveState.durableLegionnaires;
@@ -217,37 +210,13 @@ function DurableLegionnaires({ character }: { character: Character }) {
 	return (
 		<div className="flex flex-col text-xs gap-1 justify-stretch items-stretch">
 			{Array.from({ length: 3 }).map((_, index) => (
-				<div
+				<EditableLine
 					key={`legionnaire-${index}-${durableLegionnaires[index]}}`}
-					className="inline-flex justify-between items-center gap-2"
-				>
-					<span className="text-sm text-theme-text-secondary">◆</span>
-					{showEdit[index] ? (
-						<ConditionInput
-							placeholder="Add legionnaire..."
-							condition={durableLegionnaires[index] ?? ""}
-							onSave={(value) => handleSaveDurableLegionnaire(index, value)}
-						/>
-					) : (
-						<div className="flex-grow w-[60%] flex gap-2 items-center ">
-							{durableLegionnaires[index] === "" ? (
-								<BlankCondition />
-							) : (
-								<span className="flex-grow w-[60%] text-md text-theme-text-primary flex justify-start">
-									{durableLegionnaires[index]}
-								</span>
-							)}
-						</div>
-					)}
-					{editable && (
-						<PencilIconButton
-							isEditing={showEdit[index]}
-							setIsEditing={() =>
-								setShowEdit({ ...showEdit, [index]: !showEdit[index] })
-							}
-						/>
-					)}
-				</div>
+					text={durableLegionnaires[index] ?? ""}
+					editable={editable}
+					onSave={handleSaveDurableLegionnaire}
+					index={index}
+				/>
 			))}
 		</div>
 	);

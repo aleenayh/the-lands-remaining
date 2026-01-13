@@ -1,12 +1,11 @@
 import { Dialog } from "radix-ui";
 import { useCallback, useState } from "react";
 import { useGame } from "../../../context/GameContext";
+import { EditableLine } from "../../shared/EditableLine";
 import { AddRelicForm } from "../advancement/RewardModal";
 import { constructAspectArray } from "../creation/CharacterCreateForm";
-import { PencilIconButton } from "../creation/PencilIconButton";
 import type { Character } from "../types";
 import { parseRelicText } from "../utils";
-import { BlankCondition, ConditionInput } from "./Conditions";
 
 export function Relics({ character }: { character: Character }) {
 	const {
@@ -73,7 +72,7 @@ export function Relics({ character }: { character: Character }) {
 								{editable &&
 									relic.extraLines > 0 &&
 									Array.from({ length: relic.extraLines }).map((_, index) => (
-										<EditableLine
+										<EditableLineWrapper
 											relic={relic}
 											key={`extra-line-${
 												// biome-ignore lint/suspicious/noArrayIndexKey: order unimportant
@@ -106,7 +105,7 @@ export function Relics({ character }: { character: Character }) {
 								{editable &&
 									relic.extraLines > 0 &&
 									Array.from({ length: relic.extraLines }).map((_, index) => (
-										<EditableLine
+										<EditableLineWrapper
 											relic={relic}
 											key={`extra-line-${
 												// biome-ignore lint/suspicious/noArrayIndexKey: order unimportant
@@ -151,12 +150,11 @@ export function Relics({ character }: { character: Character }) {
 	);
 }
 
-function EditableLine({
+function EditableLineWrapper({
 	relic,
 }: {
 	relic: { title: string; text: string; extraLines: number };
 }) {
-	const [showEdit, setShowEdit] = useState(false);
 	const {
 		updateGameState,
 		gameState,
@@ -185,27 +183,15 @@ function EditableLine({
 					: player,
 			),
 		});
-		setShowEdit(false);
 	};
 
 	return (
-		<div className="flex gap-2 items-center">
-			{showEdit ? (
-				<ConditionInput
-					condition={""}
-					placeholder={`Add aspect...`}
-					onSave={onSave}
-				/>
-			) : (
-				<div className="flex-grow w-[70%] md:w-full">
-					<BlankCondition />
-				</div>
-			)}
-			<PencilIconButton
-				isEditing={showEdit}
-				setIsEditing={() => setShowEdit(!showEdit)}
-			/>
-		</div>
+		<EditableLine
+			text={""}
+			editable={true}
+			onSave={(_, value) => onSave(value)}
+			index={0}
+		/>
 	);
 }
 
