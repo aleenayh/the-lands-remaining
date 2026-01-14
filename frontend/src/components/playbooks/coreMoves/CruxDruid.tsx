@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { useGame } from "../../../context/GameContext";
 import { ReactComponent as SaplingSvg } from "../../assets/sapling.svg";
-import { PencilIconButton } from "../creation/PencilIconButton";
-import { BlankCondition, ConditionInput } from "../sharedComponents/Conditions";
+import { EditableLine } from "../../shared/EditableLine";
 import type { Character } from "../types";
 
 export function CoreMoveCruxDruid({ character }: { character: Character }) {
@@ -198,7 +196,6 @@ function BodyPartList({
 	character: Character;
 	handleBodyPartChange: (index: number, value: string) => void;
 }) {
-	const [showEdit, setShowEdit] = useState<boolean[]>(Array(6).fill(false));
 	const {
 		gameState,
 		user: { id },
@@ -206,15 +203,9 @@ function BodyPartList({
 	const editable = gameState.players.some(
 		(player) => player.id === id && player.character?.playbook === "crux-druid",
 	);
-	const bodyParts =
-		character.coreMoveState.type === "crux-druid"
-			? character.coreMoveState.bodyParts
-			: [];
 	if (character.coreMoveState.type !== "crux-druid") return null;
+	const { bodyParts } = character.coreMoveState;
 
-	const handleSaveCondition = (index: number, value: string) => {
-		handleBodyPartChange(index, value);
-	};
 	return (
 		<div className="flex flex-col gap-2 w-full">
 			<h3 className="text-center text-md font-bold text-theme-text-accent">
@@ -223,38 +214,14 @@ function BodyPartList({
 			<div className="w-full flex flex-col gap-2 px-2">
 				{Array.from({ length: 6 }).map((_, index) => {
 					const viscera = bodyParts[index] ?? "";
-					const showBlank = viscera === "";
 					return (
-						<div
+						<EditableLine
 							key={`viscera-${index}-${viscera}}`}
-							className="w-full min-w-0 flex justify-between items-center gap-2"
-						>
-							{showEdit[index] ? (
-								<ConditionInput
-									condition={viscera}
-									placeholder="Add body part..."
-									onSave={(value) => handleSaveCondition(index, value)}
-								/>
-							) : (
-								<div className="flex-1 min-w-0 flex gap-2 items-center">
-									{showBlank ? (
-										<BlankCondition />
-									) : (
-										<span className="text-md text-theme-text-primary break-words overflow-wrap-anywhere">
-											{viscera}
-										</span>
-									)}
-								</div>
-							)}
-							{editable && (
-								<PencilIconButton
-									isEditing={showEdit[index]}
-									setIsEditing={() =>
-										setShowEdit({ ...showEdit, [index]: !showEdit[index] })
-									}
-								/>
-							)}
-						</div>
+							text={viscera}
+							editable={editable}
+							onSave={handleBodyPartChange}
+							index={index}
+						/>
 					);
 				})}
 			</div>
@@ -359,11 +326,9 @@ function SaplingInput({
 		gameState,
 		user: { id },
 	} = useGame();
-	const [showEdit, setShowEdit] = useState(false);
 	const editable = gameState.players.some(
 		(player) => player.id === id && player.character?.playbook === "crux-druid",
 	);
-	const showBlank = value === "";
 
 	return (
 		<div className="shrink-0 flex flex-col gap-0">
@@ -372,34 +337,13 @@ function SaplingInput({
 					{label.toLowerCase()}
 				</p>
 			)}
-			<div
+			<EditableLine
 				key={`sapling-${label}-${value}}`}
-				className="w-full min-w-0 flex justify-between items-center gap-2"
-			>
-				{showEdit ? (
-					<ConditionInput
-						placeholder={label}
-						condition={value}
-						onSave={(value) => onChange(value)}
-					/>
-				) : (
-					<div className="flex-1 min-w-0 flex gap-2 items-center">
-						{showBlank ? (
-							<BlankCondition />
-						) : (
-							<span className="text-md text-theme-text-primary break-words overflow-wrap-anywhere">
-								{value}
-							</span>
-						)}
-					</div>
-				)}
-				{editable && (
-					<PencilIconButton
-						isEditing={showEdit}
-						setIsEditing={() => setShowEdit(!showEdit)}
-					/>
-				)}
-			</div>
+				text={value}
+				editable={editable}
+				onSave={(_, value) => onChange(value)}
+				index={0}
+			/>
 		</div>
 	);
 }

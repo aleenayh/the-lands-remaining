@@ -3,8 +3,7 @@ import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useGame } from "../../../context/GameContext";
 import { colorFromTheme } from "../../colors";
-import { PencilIconButton } from "../creation/PencilIconButton";
-import { BlankCondition, ConditionInput } from "../sharedComponents/Conditions";
+import { EditableLine } from "../../shared/EditableLine";
 import type { Character } from "../types";
 import { Flame } from "./candle/Flame";
 
@@ -154,13 +153,6 @@ function Complications({ character }: { character: Character }) {
 		updateGameState,
 		user: { id },
 	} = useGame();
-	const [showEdit, setShowEdit] = useState<Record<number, boolean>>({
-		0: false,
-		1: false,
-		2: false,
-		3: false,
-		4: false,
-	});
 	const editable = id === character.playerId;
 	const { coreMoveState } = character;
 	if (coreMoveState.type !== "candle-bearer") return null;
@@ -190,39 +182,14 @@ function Complications({ character }: { character: Character }) {
 		<div className="flex flex-col gap-1 text-sm w-[70%] ml-4">
 			{Array.from({ length: 5 }).map((_, index) => {
 				const complication = coreMoveState.complications?.[index] ?? "";
-				const showBlank = complication === "";
 				return (
-					<div
+					<EditableLine
 						key={`complication-${index}-${complication}}`}
-						className="inline-flex justify-between items-center gap-2"
-					>
-						<span className="text-sm text-theme-text-secondary">◆</span>
-						{showEdit[index] ? (
-							<ConditionInput
-								condition={complication}
-								onSave={(value) => handleSaveComplication(index, value)}
-								placeholder="Add complication..."
-							/>
-						) : (
-							<div className="flex-grow w-[70%] md:w-full flex gap-2 items-center ">
-								{showBlank ? (
-									<BlankCondition />
-								) : (
-									<span className="text-md text-theme-text-primary flex justify-start">
-										{complication}
-									</span>
-								)}
-							</div>
-						)}
-						{editable && (
-							<PencilIconButton
-								isEditing={showEdit[index]}
-								setIsEditing={() =>
-									setShowEdit({ ...showEdit, [index]: !showEdit[index] })
-								}
-							/>
-						)}
-					</div>
+						text={complication}
+						editable={editable}
+						onSave={handleSaveComplication}
+						index={index}
+					/>
 				);
 			})}
 		</div>
