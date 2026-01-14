@@ -160,6 +160,7 @@ function CustomMysteryForm({
 				<input
 					type="text"
 					{...register("title")}
+					required
 					className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
 				/>
 				<Divider />
@@ -172,42 +173,47 @@ function CustomMysteryForm({
 					</label>
 					{watch("questions").map((question: Question, index: number) => (
 						<div
-							className="flex flex-col md:flex-row items-center gap-2"
+							className="flex flex-col items-center gap-2"
 							// biome-ignore lint/suspicious/noArrayIndexKey: order unimportant
 							key={`question-${index}`}
 						>
-							<div className="flex gap-2 items-center w-full md:w-auto">
-								<label htmlFor={`questions.${index}.text`}>Text</label>
-								<input
-									type="text"
-									defaultValue={question.text}
-									{...register(`questions.${index}.text`)}
-									className="flex-grow border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
-								/>
+							<div className="flex items-center gap-2 w-full">
+								<div className="flex gap-2 items-center w-full">
+									<label htmlFor={`questions.${index}.text`}>Text</label>
+									<input
+										type="text"
+										defaultValue={question.text}
+										{...register(`questions.${index}.text`)}
+										required
+										className="flex-grow border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
+									/>
+								</div>
+								<div className="flex gap-2 items-center w-fit">
+									<label htmlFor={`questions.${index}.complexity`}>
+										Complexity
+									</label>
+									<input
+										type="number"
+										defaultValue={question.complexity}
+										{...register(`questions.${index}.complexity`)}
+										min={1}
+										max={10}
+										className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
+									/>
+								</div>
 							</div>
-							<div className="flex gap-2 items-center w-full md:w-auto">
-								<label htmlFor={`questions.${index}.complexity`}>
-									Complexity
-								</label>
-								<input
-									type="number"
-									defaultValue={question.complexity}
-									{...register(`questions.${index}.complexity`)}
-									min={1}
-									max={10}
-									className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
-								/>
-							</div>
-							<div className="flex gap-2 items-center w-full md:w-auto">
-								<label htmlFor={`questions.${index}.opportunity`}>
-									Opportunity
-								</label>
-								<input
-									type="text"
-									defaultValue={question.opportunity}
-									{...register(`questions.${index}.opportunity`)}
-									className="flex-grow border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
-								/>
+							<div className="w-full flex flex-col md:flex-row items-center gap-2">
+								<div className="flex gap-2 items-center w-full">
+									<label htmlFor={`questions.${index}.opportunity`}>
+										Opportunity
+									</label>
+									<input
+										type="text"
+										defaultValue={question.opportunity}
+										{...register(`questions.${index}.opportunity`)}
+										className="w-full flex-grow border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
+									/>
+								</div>
 							</div>
 						</div>
 					))}
@@ -251,7 +257,7 @@ function CustomMysteryForm({
 						<input
 							type="number"
 							{...register("countdownTotal")}
-							min={1}
+							min={0}
 							max={20}
 							className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
 						/>
@@ -386,6 +392,13 @@ function Divider() {
 }
 
 function Preview({ type, total }: { type: MysteryTheme; total: number }) {
+	if (total === 0) {
+		return (
+			<div className="flex justify-center items-center">
+				<p className="text-center italic">No countdown visible to Embers</p>
+			</div>
+		);
+	}
 	return (
 		<div className="flex gap-3 min-h-[100px] justify-center items-center mx-auto py-10">
 			{" "}
