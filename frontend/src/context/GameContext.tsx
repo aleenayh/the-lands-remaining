@@ -10,7 +10,10 @@ import toast from "react-hot-toast";
 import { VersionMismatchModal } from "../components/shared/VersionMismatchModal";
 import { useFirebase, VersionMismatchError } from "../hooks/useFirebase";
 import { validateGameState } from "../utils/schemaValidation";
-import { getLocalSchemaVersion } from "../utils/versionCheck";
+import {
+	getLocalSchemaVersion,
+	shouldBlockVersionMismatch,
+} from "../utils/versionCheck";
 import { defaultGameState } from "./defaults";
 import type { GameState, UserInfo } from "./types";
 
@@ -149,7 +152,12 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 
 			// Check version on sync
 			if (validatedState.schemaVersion && localSchemaVersion) {
-				if (validatedState.schemaVersion !== localSchemaVersion) {
+				if (
+					shouldBlockVersionMismatch(
+						localSchemaVersion,
+						validatedState.schemaVersion,
+					)
+				) {
 					setShowVersionMismatchModal(true);
 				}
 			}
@@ -166,7 +174,9 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 	 */
 	const checkVersionMismatch = useCallback(() => {
 		if (firebaseSchemaVersion && localSchemaVersion) {
-			if (firebaseSchemaVersion !== localSchemaVersion) {
+			if (
+				shouldBlockVersionMismatch(localSchemaVersion, firebaseSchemaVersion)
+			) {
 				setShowVersionMismatchModal(true);
 				return true;
 			}
