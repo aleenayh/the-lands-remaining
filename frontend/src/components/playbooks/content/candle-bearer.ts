@@ -151,7 +151,6 @@ export const CandleBearer: PlaybookBase = {
 	fireToCome,
 	ascendTheThrone: [
 		"Word has passed through the ruins and graveyards: the Candle-Bearer has reached the Throne. The pilgrims arrive barefoot, shivering, eyes alight with fever. Some carry candles, others carry knives. None speak. They kneel, and when they rise, they begin the work.",
-
 		"They strip away your robes first—folding them neatly, as if for burial—and smear your skin with unguent wax gone gray with age. The air fills with the scent of tallow and salt. The Burning Branch is placed across your shoulders like a yoke.",
 		"Then the pouring begins.",
 		"At first the wax is merely warm, running down your arms and chest in pale ribbons, sealing each breath against your ribs. But the pilgrims bring more—pots of molten wax black with smoke, ladles carved from bone—and the warmth becomes pain. It pools in the hollows of your eyes, in the crease of your mouth. It fills your ears until the world goes silent.",

@@ -1,3 +1,4 @@
+import { Divider } from "../shared/Divider";
 import { AbilityBoxes } from "./sharedComponents/AbilityBoxes";
 import { Cinders } from "./sharedComponents/Cinders";
 import { Conditions } from "./sharedComponents/Conditions";
@@ -5,7 +6,7 @@ import { ExperienceTracker } from "./sharedComponents/ExperienceTracker";
 import { Extras } from "./sharedComponents/Extras";
 import { Fires } from "./sharedComponents/Fires";
 import { Moves } from "./sharedComponents/Moves";
-import { PlayerPill, DiceIndicator } from "./sharedComponents/PlayerPill";
+import { DiceIndicator, PlayerPill } from "./sharedComponents/PlayerPill";
 import { Questions } from "./sharedComponents/Questions";
 import { Relics } from "./sharedComponents/Relics";
 import { Section } from "./sharedComponents/Section";
@@ -28,19 +29,23 @@ export function PlaybookPane({ character }: { character: Character }) {
 				</Section>
 				<AbilityBoxes stats={character.abilities} abbreviate />
 				<ExperienceTracker character={character} />
-
-				<Section title="Moves" collapsible={true}>
+				<Section title="Moves" collapsible>
 					<Moves character={character} />
+					<Divider />
 				</Section>
-				<Section title="Relics & Equipment" collapsible={true}>
+				<Section title="Relics & Equipment" collapsible>
 					<Relics character={character} />
+					<Divider />
 				</Section>
-				<Section title="Fires & Cinders" collapsible={true}>
+				<Section title="Fires & Cinders" collapsible>
 					<Fires character={character} />
+					<Divider />
 					<Cinders character={character} />
+					<Divider />
 				</Section>
-				<Section title="Questions" collapsible={true}>
+				<Section title="Questions" collapsible>
 					<Questions character={character} />
+					<Divider />
 				</Section>
 				<Extras character={character} />
 			</div>

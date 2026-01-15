@@ -9,6 +9,7 @@ import {
 } from "../../lib/firebase";
 import { validateGameState } from "../../utils/schemaValidation";
 import { ReactComponent as Logo } from "../assets/tlr-logo.svg";
+import { GlassyButton } from "../shared/GlassyButton";
 
 type LandingStep =
 	| "name"
@@ -188,7 +189,7 @@ export function LandingPage({
 
 	return (
 		<div className="App flex items-center justify-center p-8">
-			<div className="max-w-md w-full flex flex-col gap-6">
+			<div className="max-w-md w-full flex flex-col gap-6 backdrop-blur-sm">
 				<h1 className="text-3xl font-bold text-center text-theme-text-accent">
 					<Logo className="w-1/2 h-auto mx-auto" />
 				</h1>
@@ -286,14 +287,9 @@ function NameStep({
 				onKeyDown={(e) => e.key === "Enter" && onSubmit()}
 				className="px-4 py-3 rounded-lg bg-theme-bg-secondary border border-theme-border text-theme-text-primary placeholder:text-theme-text-muted focus:outline-none focus:border-theme-border-accent"
 			/>
-			<button
-				type="button"
-				onClick={onSubmit}
-				disabled={!playerName.trim()}
-				className="px-4 py-3 rounded-lg bg-theme-bg-accent text-theme-text-accent hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
-			>
+			<GlassyButton onClick={onSubmit} disabled={!playerName.trim()}>
 				Continue
-			</button>
+			</GlassyButton>
 		</div>
 	);
 }
@@ -320,36 +316,24 @@ function ChooseStep({
 				Would you like to start a new game or join an existing one?
 			</p>
 
-			<button
-				type="button"
-				onClick={onCreateGame}
-				className="px-4 py-4 rounded-lg bg-theme-bg-accent text-theme-text-accent hover:opacity-90 transition-opacity flex flex-col items-center gap-1"
-			>
+			<GlassyButton onClick={onCreateGame}>
 				<span className="font-bold">Start New Game</span>
 				<span className="text-sm opacity-70">
 					Create a game and invite others
 				</span>
-			</button>
+			</GlassyButton>
 
-			<button
-				type="button"
-				onClick={onJoinGame}
-				className="px-4 py-4 rounded-lg bg-theme-bg-secondary border border-theme-border text-theme-text-primary hover:bg-theme-bg-secondary transition-colors flex flex-col items-center gap-1"
-			>
+			<GlassyButton onClick={onJoinGame}>
 				<span className="font-bold">Join Existing Game</span>
 				<span className="text-sm opacity-70">Enter a game code to join</span>
-			</button>
+			</GlassyButton>
 
-			<button
-				type="button"
-				onClick={onUploadGameFile}
-				className="px-4 py-4 rounded-lg bg-theme-bg-secondary border border-theme-border text-theme-text-primary hover:bg-theme-bg-secondary transition-colors flex flex-col items-center gap-1"
-			>
+			<GlassyButton onClick={onUploadGameFile}>
 				<span className="font-bold">Create Game from File</span>
 				<span className="text-sm opacity-70">
 					Use a previously downloaded game file to restart your game
 				</span>
-			</button>
+			</GlassyButton>
 
 			<button
 				type="button"
@@ -420,14 +404,12 @@ function JoinHashStep({
 				onKeyDown={(e) => e.key === "Enter" && onSubmit()}
 				className="px-4 py-3 rounded-lg bg-theme-bg-secondary border border-theme-border text-theme-text-primary placeholder:text-theme-text-muted focus:outline-none focus:border-theme-border-accent font-mono text-center"
 			/>
-			<button
-				type="button"
+			<GlassyButton
 				onClick={onSubmit}
 				disabled={!gameHashInput.trim() || isLoading}
-				className="px-4 py-3 rounded-lg bg-theme-bg-accent text-theme-text-accent hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
 			>
 				{isLoading ? "Checking..." : "Join Game"}
-			</button>
+			</GlassyButton>
 			<button
 				type="button"
 				onClick={onBack}

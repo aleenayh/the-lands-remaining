@@ -1,6 +1,7 @@
 import { toast } from "react-hot-toast";
 import { useGame } from "../../context/GameContext";
 import { downloadGameStateJSON } from "../../utils/download";
+import { GlassyButton } from "../shared/GlassyButton";
 import { ReactComponent as CopyIcon } from "./copy.svg";
 
 export function GameInfo() {
@@ -24,13 +25,9 @@ export function GameInfo() {
 			<div className="flex justify-center items-center gap-2">
 				<p>Currently Playing</p>
 
-				<button
-					type="button"
-					className="bg-theme-bg-accent border-2 border-theme-border-accent hover:bg-theme-bg-accent transition-colors flex justify-center items-center rounded-lg p-2 gap-2"
-					onClick={copyToClipboard}
-				>
+				<GlassyButton onClick={copyToClipboard} row>
 					<CopyIcon className="w-4 h-4" /> {gameHash}
-				</button>
+				</GlassyButton>
 
 				<p>as {user.name}.</p>
 			</div>
@@ -77,20 +74,12 @@ export function CopyInvite() {
 			<p>When other players join, their Embers will appear here.</p>
 
 			<p>Invite others to join your game:</p>
-			<button
-				type="button"
-				className="bg-theme-bg-accent border-2 border-theme-border-accent hover:bg-theme-bg-accent transition-colors flex justify-center items-center rounded-lg p-2 gap-2"
-				onClick={copyToClipboard}
-			>
+			<GlassyButton onClick={copyToClipboard} row>
 				<CopyIcon className="w-4 h-4" /> {gameHash}
-			</button>
-			<button
-				type="button"
-				className="bg-theme-bg-accent border-2 border-theme-border-accent hover:bg-theme-bg-accent transition-colors flex justify-center items-center rounded-lg p-2 gap-2"
-				onClick={copyUrlToClipboard}
-			>
+			</GlassyButton>
+			<GlassyButton onClick={copyUrlToClipboard} row>
 				<CopyIcon className="w-4 h-4" /> Join Link
-			</button>
+			</GlassyButton>
 		</div>
 	);
 }
