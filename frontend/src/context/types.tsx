@@ -1,4 +1,9 @@
 import { z } from "zod";
+import { journeySchema } from "../components/journeys/types";
+import {
+	anchoressSchema,
+	defaultAnchoresses,
+} from "../components/mourningTower/types";
 import { dominionSchema, mysterySchema } from "../components/mystery/types";
 import { abilitiesKeys, characterSchema } from "../components/playbooks/types";
 import { catchWithWarning } from "../utils/schemaValidation";
@@ -40,8 +45,19 @@ export const gameStateSchema = z.object({
 	gameHash: z.string().catch(catchWithWarning("gameHash", "")),
 	//no catchWithWarning for mysteries - empty array is valid, but dropped by firebase
 	mysteries: z.array(mysterySchema).catch([]),
+	journeys: z.array(journeySchema).catch([]),
 	dominion: dominionSchema.nullable().catch(null),
-	supplicants: z.array(z.string()).optional().catch(undefined),
+	tower: z
+		.object({
+			supplicants: z.array(z.string()).optional().catch(undefined),
+			anchoresses: z
+				.record(z.string(), anchoressSchema)
+				.catch(defaultAnchoresses),
+		})
+		.catch({
+			supplicants: [],
+			anchoresses: defaultAnchoresses,
+		}),
 	players: z.array(playerSchema).catch(catchWithWarning("players", [])),
 	timestamp: z.coerce.date().catch(catchWithWarning("timestamp", new Date())),
 	safety: safetySchema.catch({ lines: [], veils: [] }),

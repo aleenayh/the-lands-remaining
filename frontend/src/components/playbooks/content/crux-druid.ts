@@ -142,7 +142,7 @@ export const CruxDruid: PlaybookBase = {
 		"The Ashen Passage":
 			"Increase Cinder by 1 (max 3) and decrease another ability of your choice by 1.",
 		"The Pyre's Crown":
-			"Narrate the moment you turn from the company and walk alone toward the Throne at the heart of the Old Capital. Then, at the end of this play session, read Ascend the Throne",
+			"Narrate the moment you turn from the company and walk alone toward the Throne at the heart of the Old Capital. Then, at the end of this play session, read Ascend the Throne.",
 	},
 	ascendTheThrone: [
 		"You carry the grafted ash sapling into the Old Capital. The tree is heavy with blood, bone, and memory. The halls resist you—stone cracks, iron weeps rust, the obsidian dead turn their faces away—but the land beneath the city listens. The Throne of the Hidden King waits, split and hollow, a wound where rule once sat.",

@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { ReactComponent as Logo } from "../assets/tlr-logo.svg";
 import { ControlledSection } from "../playbooks/sharedComponents/Section";
+import { Divider } from "../shared/Divider";
 import { ReactComponent as BookIcon } from "./book.svg";
 
 export function ReferenceSheet({
@@ -34,7 +35,7 @@ export function ReferenceSheet({
 						animate={{ left: 0 }}
 						exit={{ left: "-100%" }}
 						transition={{ duration: 1 }}
-						className="absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary border-r border-theme-border-accent rounded-lg p-4 z-10 transition-all ease-linear overflow-y-auto pointer-events-auto"
+						className="absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary border-r border-theme-border-accent rounded-lg p-4 z-10 transition-all ease-linear pointer-events-auto"
 					>
 						<button
 							type="button"
@@ -43,14 +44,17 @@ export function ReferenceSheet({
 						>
 							X
 						</button>
-						<Logo className="w-1/3 h-auto mx-auto mb-4" />
-						<h1 className="text-2xl font-bold text-theme-text-accent">
-							Reference Sheet
-						</h1>
-						<div className="flex flex-col justify-stretch items-start text-left">
+						<div className="sticky flex flex-col justify-start items-center">
+							<Logo className="w-1/3 h-auto mx-auto mb-4" />
+							<h1 className="text-2xl font-bold text-theme-text-accent">
+								Reference Sheet
+							</h1>
+						</div>
+						<div className="flex flex-col justify-stretch items-start text-left overflow-y-auto">
 							<ControlledSection
 								title="The Light Move"
-								collapsible={true}
+								collapsible
+								leftAlign
 								isCollapsed={lightCollapsed}
 								setIsCollapsed={setLightCollapsed}
 							>
@@ -77,9 +81,11 @@ export function ReferenceSheet({
 									</li>
 								</ul>
 							</ControlledSection>
+							<Divider />
 							<ControlledSection
 								title="The Dark Move"
-								collapsible={true}
+								collapsible
+								leftAlign
 								isCollapsed={darkCollapsed}
 								setIsCollapsed={setDarkCollapsed}
 							>
@@ -102,9 +108,11 @@ export function ReferenceSheet({
 									</li>
 								</ul>
 							</ControlledSection>
+							<Divider />
 							<ControlledSection
 								title="The Information Move"
-								collapsible={true}
+								collapsible
+								leftAlign
 								isCollapsed={informationCollapsed}
 								setIsCollapsed={setInformationCollapsed}
 							>
@@ -126,9 +134,11 @@ export function ReferenceSheet({
 									<li>On a 12+, you also find a Lord Clue.</li>
 								</ul>
 							</ControlledSection>
+							<Divider />
 							<ControlledSection
 								title="Answer a Question"
-								collapsible={true}
+								collapsible
+								leftAlign
 								isCollapsed={questionCollapsed}
 								setIsCollapsed={setQuestionCollapsed}
 							>
@@ -161,9 +171,11 @@ export function ReferenceSheet({
 									answer to the Question through the lens of the Cinder.
 								</p>
 							</ControlledSection>
+							<Divider />
 							<ControlledSection
 								title="Make Camp"
-								collapsible={true}
+								collapsible
+								leftAlign
 								isCollapsed={campCollapsed}
 								setIsCollapsed={setCampCollapsed}
 							>

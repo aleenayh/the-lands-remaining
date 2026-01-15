@@ -4,6 +4,7 @@ import { useGame } from "../../context/GameContext";
 import { resetGameToDefaults } from "../../lib/firebase";
 import { ReactComponent as Logo } from "../assets/tlr-logo.svg";
 import { Section } from "../playbooks/sharedComponents/Section";
+import { Divider } from "../shared/Divider";
 import { ReactComponent as CogIcon } from "./cog.svg";
 import { GameInfo } from "./GameInfo";
 
@@ -50,8 +51,10 @@ export function SettingsPane({
 						</h1>
 						<div className="flex flex-col gap-10 justify-between h-full">
 							<ThemeSelector />
+							<Divider />
 							<GameInfo />
 							{DEBUG_MODE && <DebugControls />}
+							<Divider />
 							<Credits />
 						</div>
 					</motion.div>
@@ -73,6 +76,17 @@ function ThemeSelector() {
 		<div>
 			<h2 className="text-lg font-bold text-theme-text-accent">Change Theme</h2>
 			<div className="flex flex-col md:grid md:grid-cols-2 gap-2 justify-center items-center md:justify-start text-left">
+				<label htmlFor="elegy">
+					<input
+						type="radio"
+						value="elegy"
+						name="theme"
+						className="mr-2"
+						defaultChecked={initialTheme === "elegy"}
+						onChange={(e) => confirmTheme(e.target.value)}
+					/>
+					Elegy
+				</label>
 				<label htmlFor="forest">
 					<input
 						type="radio"

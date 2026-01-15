@@ -15,24 +15,36 @@
 }
 
 /* ===== THEME VARIABLES ===== */
-/* Default to forest  if no theme set */
-:root {
-  --color-bg-primary: #171f14;
-  --color-bg-secondary: #252f22;
-  --color-bg-accent: #3d4a38;
+:root,
+[data-theme="elegy"] {
+  --color-bg-primary: #212324;
+  --color-bg-secondary: #222a2f;
+  --color-bg-accent: #38424a;
 
-  --color-text-primary: #a8b5a0;
-  --color-text-secondary: #7a8873;
-  --color-text-muted: #5a6655;
-  --color-text-accent: #c4d4b8;
+  --color-text-primary: #a0adb5;
+  --color-text-secondary: #737e88;
+  --color-text-muted: #60789a;
+  --color-text-accent: #b8bed4;
 
-  --color-border: #3a4536;
-  --color-border-accent: #4d5c47;
+  --color-border: #02344d;
+  --color-border-accent: #564e62;
 
-  --color-accent-primary: #5c7a52;
+  --color-accent-primary: #52557a;
+  --bg-image: linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05)),
+    url("../public/assets/backgrounds/fog.png");
+  --bg-size: contain;
+  --bg-position: bottom left;
+  --bg-repeat: repeat-x;
+  --bg-image-opacity: 0.2;
+  --bg-image-mask: linear-gradient(
+    to right,
+    transparent 0%,
+    black 20%,
+    black 80%,
+    transparent 100%
+  );
 }
 
-/* Forest Theme - Decaying, sombre, muted greens */
 [data-theme="forest"] {
   --color-bg-primary: #171f14;
   --color-bg-secondary: #252f22;
@@ -45,8 +57,17 @@
 
   --color-border: #3a4536;
   --color-border-accent: #4d5c47;
+
   --color-accent-primary: #5c7a52;
+
+  --bg-image: url("../public/assets/backgrounds/treeline.svg");
+  --bg-size: contain;
+  --bg-position: bottom;
+  --bg-repeat: no-repeat;
+  --bg-image-opacity: 1;
+  --bg-image-mask: none;
 }
+
 [data-theme="sagravelle"] {
   --color-bg-primary: #250000;
   --color-bg-secondary: #5e2c00;
@@ -60,6 +81,12 @@
   --color-border: #ff6600;
   --color-border-accent: #ff8000;
   --color-accent-primary: #ffaa00;
+  --bg-image: url("../public/assets/backgrounds/diamonds.svg");
+  --bg-size: auto 400px;
+  --bg-position: bottom;
+  --bg-repeat: repeat-x;
+  --bg-image-opacity: 1;
+  --bg-image-mask: none;
 }
 [data-theme="nevask"] {
   --color-bg-primary: #e0e0e0;
@@ -74,6 +101,13 @@
   --color-border: #3a567a;
   --color-border-accent: #3f789e;
   --color-accent-primary: #0080c0;
+
+  --bg-image: url("../public/assets/backgrounds/deadtree.svg");
+  --bg-size: contain;
+  --bg-position: bottom;
+  --bg-repeat: no-repeat;
+  --bg-image-opacity: 1;
+  --bg-image-mask: none;
 }
 [data-theme="dark"] {
   --color-bg-primary: #0a0a0a;
@@ -125,6 +159,7 @@ body {
 .App {
   text-align: center;
   background-color: var(--color-bg-primary);
+  position: relative;
   color: var(--color-text-primary);
   height: 100vh;
   width: 100vw;
@@ -134,6 +169,22 @@ body {
   justify-content: center;
   overflow: hidden;
   transition: background-color 0.5s ease, color 0.5s ease;
+}
+.App::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-image, none);
+  background-size: var(--bg-size, contain);
+  background-position: var(--bg-position, bottom);
+  background-repeat: var(--bg-repeat, no-repeat);
+  opacity: var(--bg-image-opacity, 1);
+  mask-image: var(--bg-image-mask, none);
+  mask-size: cover;
+  -webkit-mask-image: var(--bg-image-mask, none);
+  -webkit-mask-size: cover;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .App-logo {
@@ -212,6 +263,18 @@ a {
 
 a:hover {
   color: var(--color-accent-primary);
+}
+
+ol {
+  list-style-type: upper-roman;
+  list-style-position: inside;
+  padding-left: 2rem;
+  text-indent: -1rem;
+  border-left: 1px solid var(--color-border-accent);
+}
+
+ol li {
+  margin-bottom: 0.5rem;
 }
 
 input[type="radio"] {

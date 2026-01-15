@@ -1,9 +1,12 @@
+import { useGame } from "../../../context/GameContext";
 import { playbookBases } from "../content";
 import { coreMoveTitles } from "../coreMoves";
 import { type Character, type playbookKey, playbookKeys } from "../types";
 import { Section } from "./Section";
 
 export function Extras({ character }: { character: Character }) {
+	const { user } = useGame();
+	const isMe = user.id === character.playerId;
 	const base = playbookBases[character.playbook];
 	return (
 		<div className="flex flex-col gap-2 text-left">
@@ -14,7 +17,12 @@ export function Extras({ character }: { character: Character }) {
 				<p className="text-xs text-theme-text-secondary">{character.look}</p>
 			</div>
 			{character.playbook !== playbookKeys.custom && (
-				<Section title="Story" collapsible={true}>
+				<Section
+					title="Story"
+					collapsible={true}
+					minify={!isMe}
+					leftAlign={!isMe}
+				>
 					<div className="flex flex-col gap-2 text-sm text-theme-text-secondary">
 						{base.intro.map((intro) => (
 							<p key={intro}>{intro}</p>

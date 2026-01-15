@@ -1,5 +1,7 @@
 import { useCallback } from "react";
 import { useGame } from "../../../context/GameContext";
+import { anchoresses } from "../../mourningTower/content";
+import type { Anchoress } from "../../mourningTower/types";
 import { customFieldOrFallback, playbookBases } from "../content";
 import {
 	type Character,
@@ -72,9 +74,12 @@ export function Fires({ character }: { character: Character }) {
 			: playbookBases[character.playbook as playbookKey];
 	const markedOldFire = character.oldFire;
 
+	const otherFiresAvailable =
+		calcAnchoressFires(gameState.tower.anchoresses) && editable;
+
 	return (
-		<div className="flex gap-4">
-			<div className="w-1/2 flex flex-col gap-2">
+		<div className="grid grid-cols-2 gap-4">
+			<div className="w-full flex flex-col gap-2">
 				<h3 className="text-sm font-bold text-theme-text-accent text-center">
 					The Old Fire
 				</h3>
@@ -109,7 +114,7 @@ export function Fires({ character }: { character: Character }) {
 					})}
 				</div>
 			</div>
-			<div className="w-1/2 flex flex-col gap-2">
+			<div className="w-full flex flex-col gap-2">
 				<h3 className="text-sm font-bold text-theme-text-accent text-center">
 					The Fire to Come
 				</h3>
@@ -159,6 +164,27 @@ export function Fires({ character }: { character: Character }) {
 					);
 				})}
 			</div>
+			{otherFiresAvailable && (
+				<div className="col-span-2 text-sm">
+					<p className="text-center italic text-theme-text-muted">
+						There are also Anchoress Fires available:
+					</p>
+					{Object.entries(otherFiresAvailable).map(([key, value]) => {
+						return (
+							<div key={key} className="text-left">
+								The Fires of{" "}
+								<strong>
+									{anchoresses[key as keyof typeof anchoresses].name}
+								</strong>{" "}
+								({value} Remaining)
+							</div>
+						);
+					})}
+					<p className="text-center italic text-theme-text-muted">
+						Stoke these Fires on the Mourning Tower tab.
+					</p>
+				</div>
+			)}
 		</div>
 	);
 }
@@ -218,4 +244,17 @@ const HowlingTroubadourBoxes = ({ character }: { character: Character }) => {
 			</p>
 		</div>
 	);
+};
+
+const calcAnchoressFires = (anchoresses: Record<string, Anchoress>) => {
+	const availableFires: Record<string, number> = {};
+	for (const [key, value] of Object.entries(anchoresses)) {
+		if (value.state !== "fires") continue;
+
+		for (const fire of value.fires) {
+			if (fire !== 0) continue;
+			availableFires[key] = (availableFires[key] || 0) + 1;
+		}
+	}
+	return availableFires;
 };

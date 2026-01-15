@@ -2,7 +2,10 @@ import { off, onValue, ref, set, update } from "firebase/database";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { GameState } from "../context/types";
 import { db } from "../lib/firebase";
-import { compareVersions, getLocalSchemaVersion } from "../utils/versionCheck";
+import {
+	getLocalSchemaVersion,
+	shouldBlockVersionMismatch,
+} from "../utils/versionCheck";
 
 // Connection status type
 type ConnectionStatus = "connecting" | "connected" | "disconnected" | "error";
@@ -135,11 +138,9 @@ export const useFirebase = ({
 
 			// Check version mismatch
 			if (firebaseSchemaVersion !== null) {
-				const versionMatch = compareVersions(
-					localSchemaVersion,
-					firebaseSchemaVersion,
-				);
-				if (!versionMatch) {
+				if (
+					shouldBlockVersionMismatch(localSchemaVersion, firebaseSchemaVersion)
+				) {
 					throw new VersionMismatchError(
 						localSchemaVersion,
 						firebaseSchemaVersion,

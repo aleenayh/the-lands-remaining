@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useGame } from "../../context/GameContext";
+import { Divider } from "../shared/Divider";
 import { ReactComponent as HeartShieldIcon } from "./heartshield.svg";
 
 export function SafetyPane({
@@ -62,9 +63,6 @@ export function SafetyPane({
 			</AnimatePresence>
 		</div>
 	);
-}
-function Divider() {
-	return <div className="w-full bg-theme-bg-accent h-px my-4" />;
 }
 
 function LinesAndVeils() {

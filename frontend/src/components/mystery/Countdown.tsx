@@ -5,6 +5,7 @@ import { ReactComponent as CopyIcon } from "../../components/settings/copy.svg";
 import { useGame } from "../../context/GameContext";
 import { PlayerRole } from "../../context/types";
 import { Section } from "../playbooks/sharedComponents/Section";
+import { Divider } from "../shared/Divider";
 import { StyledTooltip } from "../shared/Tooltip";
 import { lookupMystery } from "./content";
 import { themeElements } from "./themes";
@@ -206,6 +207,7 @@ export function Countdown({ mystery }: { mystery: Mystery }) {
 					</div>
 				)}
 				<ClueSection clues={clues} mystery={mystery} role={role} />
+				<Divider />
 			</div>
 			<Dialog.Portal>
 				<Dialog.Overlay className="DialogOverlay" />
@@ -473,7 +475,10 @@ function RewardForm({
 
 	const onSubmit = (data: { supplicant: string }) => {
 		updateGameState({
-			supplicants: [...(gameState.supplicants ?? []), data.supplicant],
+			tower: {
+				...gameState.tower,
+				supplicants: [...(gameState.tower.supplicants ?? []), data.supplicant],
+			},
 		});
 		toast.success(`Supplicant chosen: ${data.supplicant}`);
 	};
