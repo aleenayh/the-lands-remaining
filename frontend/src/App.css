@@ -34,14 +34,14 @@
     url("../public/assets/backgrounds/fog.png");
   --bg-size: contain;
   --bg-position: bottom left;
-  --bg-repeat: repeat-x;
+  --bg-repeat: no-repeat;
   --bg-image-opacity: 0.2;
   --bg-image-mask: linear-gradient(
     to right,
-    transparent 0%,
+    black 0%,
     black 20%,
-    black 80%,
-    transparent 100%
+    black 60%,
+    transparent 90%
   );
 }
 
