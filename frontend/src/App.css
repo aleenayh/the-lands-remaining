@@ -38,10 +38,9 @@
   --bg-image-opacity: 0.2;
   --bg-image-mask: linear-gradient(
     to right,
-    black 0%,
-    black 20%,
-    black 60%,
-    transparent 90%
+    black 0px,
+    black 750px,
+    transparent 1020px
   );
 }
 
