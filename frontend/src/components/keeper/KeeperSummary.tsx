@@ -11,9 +11,9 @@ export function KeeperSummary() {
 		.filter((character): character is Character => character !== null);
 
 	return (
-		<div className="grid grid-cols-1  sm:grid-cols-2 gap-2 md:hidden overflow-y-auto">
+		<div className="block md:hidden overflow-y-auto">
 			{characters.length > 0 ? (
-				<div>
+				<div className="flex flex-col gap-2">
 					{characters.map((character) => (
 						<div
 							key={character.playerId}

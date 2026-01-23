@@ -1,11 +1,11 @@
 export function GlassyButton({
 	children,
-	onClick,
+	onClick = () => {},
 	disabled = false,
 	row = false,
 }: {
 	children: React.ReactNode;
-	onClick: () => void;
+	onClick?: () => void;
 	disabled?: boolean;
 	row?: boolean;
 }) {

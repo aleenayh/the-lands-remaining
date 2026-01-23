@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useGame } from "../../../context/GameContext";
 import { playbookBases } from "../content";
 import { coreMoves } from "../coreMoves";
@@ -54,40 +54,35 @@ function MoveDisplay({
 	// Checkboxes come after aspects in the checks array
 	const checkboxCount = stateMove?.checks?.length ?? 0;
 
-	const toggleCheck = useCallback(
-		(index: number) => {
-			if (!editable) return;
+	const toggleCheck = (index: number) => {
+		if (!editable) return;
 
-			const currentChecks = move.checks ?? [];
-			const newChecks = [...currentChecks];
-			// Ensure array is long enough
-			while (newChecks.length <= index) {
-				newChecks.push(0);
-			}
-			newChecks[index] = newChecks[index] === 1 ? 0 : 1;
+		const currentChecks = move.checks ?? [];
+		const newChecks = [...currentChecks];
+		// Ensure array is long enough
+		while (newChecks.length <= index) {
+			newChecks.push(0);
+		}
+		newChecks[index] = newChecks[index] === 1 ? 0 : 1;
 
-			updateGameState({
-				players: gameState.players.map((player) =>
-					player.id === id
-						? {
-								...player,
-								character: player.character
-									? {
-											...player.character,
-											moves: player.character.moves.map((m) =>
-												m.title === move.title
-													? { ...m, checks: newChecks }
-													: m,
-											),
-										}
-									: null,
-							}
-						: player,
-				),
-			});
-		},
-		[editable, move, updateGameState, gameState.players, id],
-	);
+		updateGameState({
+			players: gameState.players.map((player) =>
+				player.id === id
+					? {
+							...player,
+							character: player.character
+								? {
+										...player.character,
+										moves: player.character.moves.map((m) =>
+											m.title === move.title ? { ...m, checks: newChecks } : m,
+										),
+									}
+								: null,
+						}
+					: player,
+			),
+		});
+	};
 
 	const syncLines = () => {
 		if (!editable || !localLines) return;
@@ -117,9 +112,6 @@ function MoveDisplay({
 		setLocalLines(newLines);
 	};
 
-	// Track aspect index across all lines
-	let globalAspectIndex = 0;
-
 	return (
 		<div className="flex flex-col justify-center gap-1">
 			<h3 className="text-sm font-bold text-theme-text-accent text-center">
@@ -131,18 +123,16 @@ function MoveDisplay({
 					const parsed = parseRelicText(
 						line,
 						move.checks ?? [],
-						globalAspectIndex,
 						editable,
 						toggleCheck,
 					);
-					globalAspectIndex = parsed.nextAspectIndex;
 
 					return (
 						<p
 							className="text-left leading-relaxed"
 							key={`${move.title}-line-${lineIndex}`}
 						>
-							{parsed.elements}
+							{parsed}
 						</p>
 					);
 				})}

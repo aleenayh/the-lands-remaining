@@ -33,7 +33,6 @@ interface UseFirebaseReturn {
 	gameState: GameState | null;
 	updateGameState: (updates: Partial<GameState>) => Promise<void>;
 	initializeGame: (initialState: GameState) => Promise<void>;
-	isPaused: boolean;
 	firebaseSchemaVersion: string | null;
 }
 
@@ -52,7 +51,6 @@ export const useFirebase = ({
 }: UseFirebaseOptions): UseFirebaseReturn => {
 	const [status, setStatus] = useState<ConnectionStatus>("connecting");
 	const [gameState, setGameState] = useState<GameState | null>(null);
-	const [isPaused, setIsPaused] = useState(false);
 	const [firebaseSchemaVersion, setFirebaseSchemaVersion] = useState<
 		string | null
 	>(null);
@@ -103,39 +101,12 @@ export const useFirebase = ({
 	}, [gameRefPath]);
 
 	/**
-	 * Tab visibility management - pause all sync when tab is hidden
-	 */
-	useEffect(() => {
-		const handleVisibilityChange = () => {
-			if (document.visibilityState === "hidden") {
-				setIsPaused(true);
-			} else if (document.visibilityState === "visible") {
-				// On focus, check version before resuming
-				// Version check will be handled by GameContext
-				setIsPaused(false);
-			}
-		};
-
-		document.addEventListener("visibilitychange", handleVisibilityChange);
-
-		return () => {
-			document.removeEventListener("visibilitychange", handleVisibilityChange);
-		};
-	}, []);
-
-	/**
 	 * Update game state with partial updates
 	 * Encodes data to be Firebase-safe before sending
 	 * Checks version and pause status before allowing updates
 	 */
 	const updateGameState = useCallback(
 		async (updates: Partial<GameState>): Promise<void> => {
-			// Block updates if sync is paused (tab is hidden)
-			if (isPaused) {
-				console.warn("Update blocked: sync is paused (tab is hidden)");
-				return;
-			}
-
 			// Check version mismatch
 			if (firebaseSchemaVersion !== null) {
 				if (
@@ -161,7 +132,7 @@ export const useFirebase = ({
 				throw error;
 			}
 		},
-		[gameRefPath, isPaused, firebaseSchemaVersion, localSchemaVersion],
+		[gameRefPath, firebaseSchemaVersion, localSchemaVersion],
 	);
 
 	/**
@@ -192,7 +163,6 @@ export const useFirebase = ({
 		gameState,
 		updateGameState,
 		initializeGame,
-		isPaused,
 		firebaseSchemaVersion,
 	};
 };

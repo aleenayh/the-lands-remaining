@@ -83,8 +83,6 @@ export function CustomCreateForm() {
 
 	const saveCharacter = (formInputs: CharacterCreateFormInputs) => {
 		const character = constructCustomCharacter(formInputs, user.id);
-		console.log(`ATTEMPTING TO SAVE CHARACTER: ${JSON.stringify(character)}`);
-
 		const existingPlayerIndex = gameState.players.findIndex(
 			(p) => p.id === user.id,
 		);
@@ -776,8 +774,11 @@ function constructCustomCharacter(
 			cinder,
 		},
 		cinders: cindersRecord,
-		relics,
-		relicAspects: constructAspectArray(relics),
+		relics: relics.map((relic) => ({
+			...relic,
+			aspects: constructAspectArray([relic]),
+			atAlcove: false,
+		})),
 		oldFire: oldFireRecord,
 		fireToCome: {
 			"The Kindling Gate": false,

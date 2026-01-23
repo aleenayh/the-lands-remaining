@@ -397,9 +397,6 @@ function constructCharacter(
 		cinder,
 	} = formInputs;
 
-	// Count total aspects across all relics to initialize the array
-	const relicAspects = constructAspectArray(base.relics);
-
 	let startingCondition = "";
 	if (playbookKey === playbookKeys.crownsPearl) {
 		startingCondition = "Mute";
@@ -468,8 +465,11 @@ function constructCharacter(
 			cinder,
 		},
 		cinders,
-		relics: base.relics,
-		relicAspects,
+		relics: base.relics.map((relic) => ({
+			...relic,
+			aspects: constructAspectArray([relic]),
+			atAlcove: false,
+		})),
 		oldFire,
 		fireToCome,
 		advancements,
