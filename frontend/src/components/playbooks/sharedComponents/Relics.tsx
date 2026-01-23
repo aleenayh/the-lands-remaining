@@ -1,5 +1,5 @@
 import { Dialog } from "radix-ui";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useGame } from "../../../context/GameContext";
 import { EditableLine } from "../../shared/EditableLine";
 import { AddRelicForm } from "../advancement/RewardModal";
@@ -15,37 +15,39 @@ export function Relics({ character }: { character: Character }) {
 	} = useGame();
 	const editable = id === character.playerId;
 
-	const toggleAspect = useCallback(
-		(aspectIndex: number) => {
-			if (!editable) return;
+	const toggleAspect = (title: string, aspectIndex: number) => {
+		if (!editable) return;
 
-			let currentAspects = character.relicAspects;
-			//should never be empty; this means we failed zod validation and need to reconstruct before mutation
-			if (currentAspects.length === 0) {
-				currentAspects = constructAspectArray(character.relics);
-			}
+		let currentAspects =
+			character.relics.find((r) => r.title === title)?.aspects ?? [];
+		//should never be empty; this means we failed zod validation and need to reconstruct before mutation
+		if (currentAspects.length === 0) {
+			currentAspects = constructAspectArray(
+				character.relics.filter((r) => r.title === title),
+			);
+		}
 
-			const newAspects = [...currentAspects];
-			newAspects[aspectIndex] = newAspects[aspectIndex] === 1 ? 0 : 1;
+		const newAspects = [...currentAspects];
+		newAspects[aspectIndex] = newAspects[aspectIndex] === 1 ? 0 : 1;
 
-			updateGameState({
-				players: gameState.players.map((player) =>
-					player.id === character.playerId
-						? {
-								...player,
-								character: player.character
-									? { ...player.character, relicAspects: newAspects }
-									: null,
-							}
-						: player,
-				),
-			});
-		},
-		[editable, character, updateGameState, gameState.players],
-	);
-
-	// Track global aspect index across all relics
-	let globalAspectIndex = 0;
+		updateGameState({
+			players: gameState.players.map((player) =>
+				player.id === character.playerId
+					? {
+							...player,
+							character: player.character
+								? {
+										...player.character,
+										relics: player.character.relics.map((r) =>
+											r.title === title ? { ...r, aspects: newAspects } : r,
+										),
+									}
+								: null,
+						}
+					: player,
+			),
+		});
+	};
 
 	return (
 		<Dialog.Root>
@@ -54,21 +56,29 @@ export function Relics({ character }: { character: Character }) {
 				{character.relics
 					.filter((relic) => relic.type === "relic")
 					.map((relic) => {
+						const canEdit = editable && !relic.atAlcove;
 						const parsed = parseRelicText(
 							relic.text,
-							character.relicAspects ?? [],
-							globalAspectIndex,
-							editable,
-							toggleAspect,
+							relic.aspects ?? [],
+							canEdit,
+							(index) => toggleAspect(relic.title, index),
 						);
-						globalAspectIndex = parsed.nextAspectIndex;
 
 						return (
 							<div key={relic.title} className="flex flex-col gap-1 text-left">
 								<h3 className="text-sm font-bold text-theme-text-accent text-center">
 									{relic.title}
 								</h3>
-								<p className="text-sm leading-relaxed">{parsed.elements}</p>
+								{relic.atAlcove && (
+									<p className="text-sm text-theme-text-accent text-center">
+										This item is in your Alcove at the Mourning Tower.
+									</p>
+								)}
+								<p
+									className={`text-sm leading-relaxed ${relic.atAlcove ? "opacity-60 text-theme-text-muted" : ""}`}
+								>
+									{parsed}
+								</p>
 								{editable &&
 									relic.extraLines > 0 &&
 									Array.from({ length: relic.extraLines }).map((_, index) => (
@@ -89,19 +99,17 @@ export function Relics({ character }: { character: Character }) {
 					.map((relic) => {
 						const parsed = parseRelicText(
 							relic.text,
-							character.relicAspects ?? [],
-							globalAspectIndex,
+							relic.aspects ?? [],
 							editable,
-							toggleAspect,
+							(index) => toggleAspect(relic.title, index),
 						);
-						globalAspectIndex = parsed.nextAspectIndex;
 
 						return (
 							<div key={relic.title} className="flex flex-col gap-1 text-left">
 								<h3 className="text-sm font-bold text-theme-text-accent text-center">
 									{relic.title}
 								</h3>
-								<p className="text-sm leading-relaxed">{parsed.elements}</p>
+								<p className="text-sm leading-relaxed">{parsed}</p>
 								{editable &&
 									relic.extraLines > 0 &&
 									Array.from({ length: relic.extraLines }).map((_, index) => (
@@ -237,15 +245,7 @@ function EquipmentManagementForm({ character }: { character: Character }) {
 									{relic.title}
 								</h4>
 								<p className="text-xs text-theme-text-primary">
-									{
-										parseRelicText(
-											relic.text,
-											character.relicAspects,
-											0,
-											false,
-											() => {},
-										).elements
-									}
+									{parseRelicText(relic.text, relic.aspects, false, () => {})}
 								</p>
 							</div>
 						))}
@@ -273,15 +273,7 @@ function EquipmentManagementForm({ character }: { character: Character }) {
 									</button>
 								</div>
 								<p className="text-xs text-theme-text-primary text-left">
-									{
-										parseRelicText(
-											relic.text,
-											character.relicAspects,
-											0,
-											false,
-											() => {},
-										).elements
-									}
+									{parseRelicText(relic.text, relic.aspects, false, () => {})}
 								</p>
 							</div>
 						))}

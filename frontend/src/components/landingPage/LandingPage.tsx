@@ -1,6 +1,10 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { type GameState, gameStateSchema } from "../../context/types";
+import {
+	type GameState,
+	gameStateSchema,
+	type PlayerRole,
+} from "../../context/types";
 import {
 	checkGameExists,
 	createNewGame,
@@ -27,6 +31,7 @@ export function LandingPage({
 	userId,
 	setUserName,
 	setUserId,
+	setUserRole,
 	setStartingState,
 }: {
 	setGameHash: (hash: string) => void;
@@ -34,6 +39,7 @@ export function LandingPage({
 	userId: string | null;
 	setUserName: (name: string) => void;
 	setUserId: (id: string) => void;
+	setUserRole: (role: PlayerRole) => void;
 	setStartingState: (state: GameState) => void;
 }) {
 	const firstStep = userName && userId ? "choose" : "name";
@@ -139,6 +145,12 @@ export function LandingPage({
 
 			if (isPlayerInGame || players.length === 0) {
 				// Player exists or game has no players yet - join directly
+				const syncedRole = result.gameState.players.find(
+					(p) => p.id === playerId,
+				)?.role;
+				if (syncedRole) {
+					setUserRole(syncedRole);
+				}
 				joinGame(gameHashInput.trim());
 			} else {
 				// Player not in game - show confirmation

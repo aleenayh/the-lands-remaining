@@ -209,6 +209,17 @@ const customTextFieldsSchema = z.object({
 
 export type CustomTextFields = z.infer<typeof customTextFieldsSchema>;
 
+const relicSchema = z.object({
+	title: z.string().catch("Relic"),
+	text: z.string().catch(""),
+	extraLines: z.coerce.number().catch(0),
+	type: z.enum(["relic", "equipment"]).catch("relic"),
+	aspects: z.array(z.number().catch(0)).catch([]),
+	atAlcove: z.boolean().catch(false),
+});
+
+export type Relic = z.infer<typeof relicSchema>;
+
 export const characterSchema = z.object({
 	playbook: z.enum(playbookKeysTuple),
 	playerId: z.string(),
@@ -267,19 +278,11 @@ export const characterSchema = z.object({
 			5: false,
 		}),
 	),
-	relics: z
-		.array(
-			z.object({
-				title: z.string().catch("Relic"),
-				text: z.string().catch(""),
-				extraLines: z.coerce.number().catch(0),
-				type: z.enum(["relic", "equipment"]).catch("relic"),
-			}),
-		)
-		.catch(catchWithWarning("character.relics", [])),
-	/** Tracks which relic aspects are checked. Array of 0|1 values in order of appearance. */
+	relics: z.array(relicSchema).catch(catchWithWarning("character.relics", [])),
+	/** TODO remove relicAspects after migration **/
 	relicAspects: z
 		.array(z.number())
+		.optional()
 		.catch(catchWithWarning("character.relicAspects", [])),
 	experience: z.number().catch(catchWithWarning("character.experience", 0)),
 	questions: z.record(z.string(), z.boolean()).catch(
@@ -291,6 +294,10 @@ export const characterSchema = z.object({
 			5: false,
 		}),
 	),
+	shrineFires: z
+		.array(z.object({ text: z.string(), marked: z.boolean() }))
+		.optional()
+		.catch([]),
 	customTextFields: customTextFieldsSchema.optional().catch({}),
 });
 

@@ -1,6 +1,7 @@
 import type { $ZodCatchCtx } from "zod/v4/core";
 import { defaultGameState } from "../context/defaults";
 import { type GameState, gameStateSchema } from "../context/types";
+import { atOrAfterVersion, getLocalSchemaVersion } from "./versionCheck";
 
 /**
  * Schema validation utilities for handling data format changes during playtesting.
@@ -115,9 +116,11 @@ function fixFirebaseArrays(
 
 export function validateGameState(state: unknown): {
 	state: GameState;
+	migrated: boolean;
 	warnings: ValidationWarning[];
 } {
 	const warnings: ValidationWarning[] = [];
+	let migrated = false;
 
 	if (!state || typeof state !== "object") {
 		warnings.push({
@@ -125,7 +128,7 @@ export function validateGameState(state: unknown): {
 			expected: "object",
 			received: typeof state,
 		});
-		return { state: defaultGameState, warnings };
+		return { state: defaultGameState, migrated, warnings };
 	}
 
 	// Fix Firebase's array conversion for numeric-keyed records
@@ -147,7 +150,51 @@ export function validateGameState(state: unknown): {
 				warnings,
 			);
 		}
-		return { state: result.data, warnings };
+
+		//migrate relicAspects to relics.aspects - introduced 0.1.2
+		if (!atOrAfterVersion(result.data.schemaVersion, "0.1.2")) {
+			const newPlayers = [];
+			for (const player of result.data.players) {
+				if (!player.character) {
+					newPlayers.push(player);
+					continue;
+				}
+				//previous schema - one big array with all aspects
+				const originalAspectArray = player.character.relicAspects;
+				if (!originalAspectArray) {
+					newPlayers.push(player);
+					continue;
+				}
+
+				const relics = [];
+				let startIndex = 0;
+				//new schema - each relic owns its own aspect array
+				for (let i = 0; i < player.character.relics.length; i++) {
+					const relic = { ...player.character.relics[i] };
+					const numberAspectsInRelic =
+						relic.text.match(/<aspect>/g)?.length || 0;
+					const newAspects = originalAspectArray.slice(
+						startIndex,
+						startIndex + numberAspectsInRelic,
+					);
+					relic.aspects = newAspects;
+					relics.push(relic);
+					startIndex += numberAspectsInRelic;
+				}
+				newPlayers.push({
+					...player,
+					character: {
+						...player.character,
+						relics,
+					},
+				});
+			}
+			result.data.players = newPlayers;
+			result.data.schemaVersion = getLocalSchemaVersion();
+			migrated = true;
+		}
+
+		return { state: result.data, migrated, warnings };
 	}
 
 	// If parsing still failed, collect the remaining errors
@@ -164,5 +211,5 @@ export function validateGameState(state: unknown): {
 	}
 
 	console.error("[Schema Validation] Failed to parse game state:", warnings);
-	return { state: defaultGameState, warnings };
+	return { state: defaultGameState, migrated, warnings };
 }

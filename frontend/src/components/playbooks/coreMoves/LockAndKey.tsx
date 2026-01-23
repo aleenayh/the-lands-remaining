@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { useGame } from "../../../context/GameContext";
 import type { Character } from "../types";
 import { parseRelicText } from "../utils";
@@ -12,36 +11,26 @@ export function CoreMoveLockAndKey({ character }: { character: Character }) {
 	const editable = id === character.playerId;
 	const { coreMoveState } = character;
 
-	const toggleAspect = useCallback(
-		(index: number) => {
-			if (!editable) return;
-			if (coreMoveState.type !== "lock-and-key") return;
+	const toggleAspect = (index: number) => {
+		if (!editable) return;
+		if (coreMoveState.type !== "lock-and-key") return;
 
-			const newAspects = [...coreMoveState.checks];
-			newAspects[index] = newAspects[index] === 1 ? 0 : 1;
-			updateGameState({
-				players: gameState.players.map((player) =>
-					player.id === id
-						? {
-								...player,
-								character: {
-									...character,
-									coreMoveState: { ...coreMoveState, checks: newAspects },
-								},
-							}
-						: player,
-				),
-			});
-		},
-		[
-			editable,
-			character,
-			updateGameState,
-			gameState.players,
-			id,
-			coreMoveState,
-		],
-	);
+		const newAspects = [...coreMoveState.checks];
+		newAspects[index] = newAspects[index] === 1 ? 0 : 1;
+		updateGameState({
+			players: gameState.players.map((player) =>
+				player.id === id
+					? {
+							...player,
+							character: {
+								...character,
+								coreMoveState: { ...coreMoveState, checks: newAspects },
+							},
+						}
+					: player,
+			),
+		});
+	};
 	if (coreMoveState.type !== "lock-and-key") return null;
 
 	return (
@@ -57,10 +46,7 @@ export function CoreMoveLockAndKey({ character }: { character: Character }) {
 			</p>
 
 			<p className="inline text-left ml-4">
-				{
-					parseRelicText(story, coreMoveState.checks, 0, editable, toggleAspect)
-						.elements
-				}
+				{parseRelicText(story, coreMoveState.checks, editable, toggleAspect)}
 			</p>
 		</div>
 	);

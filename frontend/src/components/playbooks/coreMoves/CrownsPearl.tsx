@@ -135,6 +135,8 @@ const songOfSwordAndSilver = {
 	text: "Legends of the merfolk’s enchanted song could be found in every dockside tavern and child’s storybook. Sailors famously claimed that it <aspect>lures men to their doom</aspect>. Romantics hypothesized that it is not something that is heard with the ears at all, but <aspect>it touches the soul directly</aspect>. In a few feverish scrawlings, it is even said that <aspect>it was the last sound heard before the Dimning befell the world</aspect>. Not every merfolk learns the song; some instinctively figure it out, others must be taught by a sea witch.",
 	extraLines: 2,
 	type: "relic" as const,
+	aspects: [0, 0, 0],
+	atAlcove: false,
 };
 
 function ChooseWhatStole({ character }: { character: Character }) {

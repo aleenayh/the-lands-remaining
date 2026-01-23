@@ -116,13 +116,16 @@ export function AddRelicForm({ onClose }: { onClose: () => void }) {
 	};
 
 	const onSubmit = (data: AddRelicFormInputs) => {
+		const newAspects = countAspects(data.description.split("\n"));
 		const newRelic = {
 			title: data.title,
 			text: parseAspects(data.description.split("\n")).join("\n"),
 			extraLines: data.extraLines,
 			type: data.type,
+			aspects: Array.from({ length: newAspects }, () => 0),
+			atAlcove: false,
 		};
-		const newAspects = countAspects(data.description.split("\n"));
+
 		updateGameState({
 			players: gameState.players.map((player) =>
 				player.character && player.id === id
@@ -131,10 +134,6 @@ export function AddRelicForm({ onClose }: { onClose: () => void }) {
 							character: {
 								...player.character,
 								relics: [...player.character.relics, newRelic],
-								relicAspects: [
-									...player.character.relicAspects,
-									...Array.from({ length: newAspects }, () => 0),
-								],
 							},
 						}
 					: player,

@@ -77,6 +77,26 @@ export function Fires({ character }: { character: Character }) {
 	const otherFiresAvailable =
 		calcAnchoressFires(gameState.tower.anchoresses) && editable;
 
+	const shrineFires = character.shrineFires;
+	const onToggleShrineFire = (text: string, checked: boolean) => {
+		updateGameState({
+			players: gameState.players.map((player) =>
+				player.id === character.playerId && player.character
+					? {
+							...player,
+							character: {
+								...character,
+								shrineFires: [
+									...(character.shrineFires ?? []).map((fire) =>
+										fire.text === text ? { ...fire, marked: checked } : fire,
+									),
+								],
+							},
+						}
+					: player,
+			),
+		});
+	};
 	return (
 		<div className="grid grid-cols-2 gap-4">
 			<div className="w-full flex flex-col gap-2">
@@ -164,6 +184,30 @@ export function Fires({ character }: { character: Character }) {
 					);
 				})}
 			</div>
+			{shrineFires && shrineFires.length > 0 && (
+				<div className="col-span-2 text-sm">
+					<h3 className="text-sm font-bold text-theme-text-accent text-center">
+						Shrine's Fires
+					</h3>
+					{shrineFires.map((fire) => {
+						return (
+							<div key={fire.text} className="flex items-start gap-2 text-left">
+								<input
+									type="checkbox"
+									checked={fire.marked}
+									disabled={!editable}
+									onChange={(e) =>
+										onToggleShrineFire(fire.text, e.target.checked)
+									}
+								/>
+								<label className="text-xs" htmlFor={`fire-fire-${fire.text}`}>
+									{fire.text}
+								</label>
+							</div>
+						);
+					})}
+				</div>
+			)}
 			{otherFiresAvailable && (
 				<div className="col-span-2 text-sm">
 					<p className="text-center italic text-theme-text-muted">
@@ -256,5 +300,6 @@ const calcAnchoressFires = (anchoresses: Record<string, Anchoress>) => {
 			availableFires[key] = (availableFires[key] || 0) + 1;
 		}
 	}
+	if (Object.keys(availableFires).length === 0) return null;
 	return availableFires;
 };

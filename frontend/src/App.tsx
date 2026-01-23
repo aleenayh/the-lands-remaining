@@ -18,7 +18,9 @@ function App() {
 	const [gameHash, setGameHash] = useState<string | null>(initialGameHash);
 	const [startingState, setStartingState] = useState<GameState | null>(null);
 	const [userName, setUserName] = useState<string | null>(savedName ?? null);
-	const userRole = savedRole ?? PlayerRole.PLAYER;
+	const [userRole, setUserRole] = useState<PlayerRole>(
+		savedRole ?? PlayerRole.PLAYER,
+	);
 	const [userId, setUserId] = useState<string | null>(
 		savedName ? nameToPlayerId(savedName) : null,
 	);
@@ -34,6 +36,7 @@ function App() {
 				userId={userId}
 				setUserName={setUserName}
 				setUserId={setUserId}
+				setUserRole={setUserRole}
 				setStartingState={setStartingState}
 			/>
 		);

@@ -76,8 +76,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 	const [showVersionMismatchModal, setShowVersionMismatchModal] =
 		useState(false);
 	const localSchemaVersion = getLocalSchemaVersion();
-	// Track if we've migrated schemaVersion for this game to avoid multiple writes
-	const schemaVersionMigratedRef = React.useRef(false);
+	// Track if we've migrated to avoid multiple writes
+	const migrationRef = React.useRef(false);
 	// Store update function in ref so it can be accessed in callbacks
 	const firebaseUpdateStateRef = React.useRef<
 		((updates: Partial<GameState>) => Promise<void>) | null
@@ -91,12 +91,15 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 		gameState: firebaseState,
 		updateGameState: firebaseUpdateState,
 		initializeGame,
-		isPaused,
 		firebaseSchemaVersion,
 	} = useFirebase({
 		gameHash,
 		onStateSync: (state: GameState) => {
-			const { state: validatedState, warnings } = validateGameState(state);
+			const {
+				state: validatedState,
+				warnings,
+				migrated,
+			} = validateGameState(state);
 			if (warnings.length > 0) {
 				const newWarnings = warnings.filter(
 					(w) => !warningsShown.includes(w.field),
@@ -126,27 +129,22 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 			setGameState(mergedState);
 			setFirebaseInitialized(true);
 
-			// Migrate existing games: set schemaVersion if missing or empty
-			// Only do this once per game session to avoid unnecessary writes
-			if (
-				localSchemaVersion &&
-				(!validatedState.schemaVersion ||
-					validatedState.schemaVersion === "") &&
-				!schemaVersionMigratedRef.current &&
-				firebaseUpdateStateRef.current
-			) {
-				schemaVersionMigratedRef.current = true;
+			// Migration triggered; only do this once per game session to avoid unnecessary writes
+			if (migrated && !migrationRef.current && firebaseUpdateStateRef.current) {
+				migrationRef.current = true;
 				// Update Firebase with current schema version
 				// This happens asynchronously and won't block the UI
 				firebaseUpdateStateRef
-					.current({ schemaVersion: localSchemaVersion })
+					.current({
+						...validatedState,
+					})
 					.catch((error) => {
 						console.error(
 							"Failed to migrate schemaVersion for existing game:",
 							error,
 						);
 						// Reset flag so we can retry on next sync
-						schemaVersionMigratedRef.current = false;
+						migrationRef.current = false;
 					});
 			}
 
@@ -185,24 +183,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 	}, [firebaseSchemaVersion, localSchemaVersion]);
 
 	/**
-	 * Tab visibility handler - check version on focus
-	 */
-	useEffect(() => {
-		const handleVisibilityChange = () => {
-			if (document.visibilityState === "visible" && !isPaused) {
-				// Tab became visible, check version
-				checkVersionMismatch();
-			}
-		};
-
-		document.addEventListener("visibilitychange", handleVisibilityChange);
-
-		return () => {
-			document.removeEventListener("visibilitychange", handleVisibilityChange);
-		};
-	}, [checkVersionMismatch, isPaused]);
-
-	/**
 	 * On Firebase connect: Initialize game if it doesn't exist
 	 */
 	useEffect(() => {
@@ -219,6 +199,12 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 			initializeGame(initialState)
 				.then(() => {
 					setFirebaseInitialized(true);
+					const syncedRole = initialState.players.find(
+						(player) => player.id === userInfo.id,
+					)?.role;
+					if (syncedRole && syncedRole !== userInfo.role) {
+						setUserInfo({ ...userInfo, role: syncedRole });
+					}
 				})
 				.catch((error) => {
 					console.error("Failed to initialize game:", error);
@@ -232,6 +218,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({
 		initializeGame,
 		gameState,
 		localSchemaVersion,
+		userInfo,
 	]);
 
 	/**

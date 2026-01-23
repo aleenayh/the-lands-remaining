@@ -11,39 +11,6 @@ export function getLocalSchemaVersion(): string {
 }
 
 /**
- * Compare two semantic versions
- * Returns true if versions match exactly, false otherwise
- * Any mismatch (even patch level) triggers protection
- */
-export function compareVersions(local: string, remote: string): boolean {
-	if (!local || !remote) {
-		// If either version is missing, consider it a mismatch for safety
-		return false;
-	}
-	return local === remote;
-}
-
-/**
- * Check if versions match
- * Returns object with match status and version details
- */
-export function checkVersionMatch(
-	localVersion: string,
-	remoteVersion: string,
-): {
-	match: boolean;
-	localVersion: string;
-	remoteVersion: string;
-} {
-	const match = compareVersions(localVersion, remoteVersion);
-	return {
-		match,
-		localVersion,
-		remoteVersion,
-	};
-}
-
-/**
  * Determine if we should block updates due to version mismatch
  * Returns true if local version is older than remote (should block/show modal)
  * Returns false if local version is newer or equal (allow overwrite)
@@ -100,4 +67,22 @@ export function shouldBlockVersionMismatch(
 
 	// Versions are equal, allow (no blocking needed)
 	return false;
+}
+
+/**
+ * helper to determine if data migration is needed
+ * @param dataVersion - The version of the data to check (from firebase)
+ * @param targetVersion - version at which data is in expected format
+ * @returns true if schema version is at or after target version (no migration needed)
+ * false if schema version is older than target version (migration needed)
+ */
+export function atOrAfterVersion(
+	dataVersion: string,
+	targetVersion: string,
+): boolean {
+	if (!dataVersion || !targetVersion) {
+		return false;
+	}
+
+	return !shouldBlockVersionMismatch(dataVersion, targetVersion);
 }

@@ -52,7 +52,7 @@ export function DiceIndicator({ playerId }: { playerId: string }) {
 	return (
 		<Tooltip.Root open={isOpen} onOpenChange={setIsOpen}>
 			<div className="absolute top-1 left-1 text-theme-border-accent">
-				<Tooltip.Trigger>
+				<Tooltip.Trigger asChild>
 					<button type="button" onClick={openForThreeSeconds}>
 						<DiceIcon className="w-10 h-10" />
 					</button>

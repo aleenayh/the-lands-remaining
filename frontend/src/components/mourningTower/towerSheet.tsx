@@ -4,6 +4,7 @@ import { PlayerRole } from "../../context/types";
 import { findSupplicant } from "../mystery/content";
 import { Section } from "../playbooks/sharedComponents/Section";
 import { Divider } from "../shared/Divider";
+import { Alcove } from "./Alcove";
 import { anchoresses } from "./content";
 import { ReactComponent as TowerIcon } from "./tower.svg";
 import type { AnchoressContent } from "./types";
@@ -32,7 +33,7 @@ export function TowerSheet({
 						animate={{ left: 0 }}
 						exit={{ left: "-100%" }}
 						transition={{ duration: 1 }}
-						className="absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary border-r border-theme-border-accent rounded-lg p-4 z-10 transition-all ease-linear overflow-y-auto pointer-events-auto"
+						className="absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary border-r border-theme-border-accent rounded-lg p-4 z-10 transition-all ease-linear pointer-events-auto"
 					>
 						<button
 							type="button"
@@ -45,8 +46,10 @@ export function TowerSheet({
 						<h1 className="text-2xl font-bold text-theme-text-accent mb-10">
 							The Mourning Tower
 						</h1>
-						<div className="flex flex-col gap-2 justify-between h-full">
+						<div className="flex flex-col gap-2 justify-start items-center h-full overflow-y-auto">
 							<Supplicants />
+							<Divider />
+							<Alcove />
 							<Divider />
 							<Anchoresses />
 						</div>

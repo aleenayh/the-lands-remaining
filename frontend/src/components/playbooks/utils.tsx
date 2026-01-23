@@ -4,12 +4,11 @@
 export function parseRelicText(
 	text: string,
 	relicAspects: number[],
-	startIndex: number,
 	editable: boolean,
 	onToggle: (index: number) => void,
-): { elements: React.ReactNode; nextAspectIndex: number } {
+): React.ReactNode[] {
 	const parts: React.ReactNode[] = [];
-	let currentIndex = startIndex;
+	let currentIndex = 0;
 	let lastEnd = 0;
 
 	// Match all <aspect>...</aspect> patterns
@@ -50,7 +49,7 @@ export function parseRelicText(
 		parts.push(formattedStaticText);
 	}
 
-	return { elements: parts, nextAspectIndex: currentIndex };
+	return parts;
 }
 
 function AspectSpan({
