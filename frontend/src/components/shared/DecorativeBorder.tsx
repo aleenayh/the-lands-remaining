@@ -36,7 +36,7 @@ export function BorderedTray({
 			animate={{ left: 0 }}
 			exit={{ left: "-100%" }}
 			transition={{ duration: 1 }}
-			className={`absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary z-10 transition-all ease-linear pointer-events-auto border-theme-border-accent border-2 overflow-y-auto scrollbar-hide border-l-0 p-4 ${className}`}
+			className={`absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary z-10 transition-all ease-linear pointer-events-auto border-theme-border-accent border-2 overflow-y-auto  border-l-0 p-4 ${className}`}
 		>
 			{children}
 			<div className="absolute inset-0 h-full w-full pointer-events-none z-[5]">
