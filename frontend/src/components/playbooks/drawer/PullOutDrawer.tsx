@@ -1,6 +1,8 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { useGame } from "../../../context/GameContext";
 import { CopyInvite } from "../../settings/GameInfo";
+import { CloseTrayButton } from "../../shared/CloseTrayButton";
+import { BorderedTray } from "../../shared/DecorativeBorder";
 import { Section } from "../../shared/Section";
 import { PlaybookPane } from "../PlaybookPane";
 import type { Character } from "../types";
@@ -34,20 +36,8 @@ export function PullOutCharacterOverview({
 			</button>
 			<AnimatePresence>
 				{isOpen && (
-					<motion.div
-						initial={{ left: "-100%" }}
-						animate={{ left: 0 }}
-						exit={{ left: "-100%" }}
-						transition={{ duration: 1 }}
-						className="absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary border-r border-theme-border-accent rounded-lg p-4 z-10 transition-all ease-linear overflow-y-auto pointer-events-auto"
-					>
-						<button
-							type="button"
-							className="absolute top-0 right-0 w-8 h-8"
-							onClick={() => setIsOpen(!isOpen)}
-						>
-							X
-						</button>
+					<BorderedTray>
+						<CloseTrayButton close={() => setIsOpen(!isOpen)} />
 						<h1 className="text-2xl font-bold text-theme-text-accent">
 							Other Embers
 						</h1>
@@ -66,7 +56,7 @@ export function PullOutCharacterOverview({
 						) : (
 							<CopyInvite />
 						)}
-					</motion.div>
+					</BorderedTray>
 				)}
 			</AnimatePresence>
 		</div>
