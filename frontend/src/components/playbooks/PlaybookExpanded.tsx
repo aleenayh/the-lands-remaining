@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { DecorativeBorder } from "../shared/DecorativeBorder";
+import { Section } from "../shared/Section";
 import { AdvancementTab } from "./advancement/AdvancementTab";
 import { AbilityBoxes } from "./sharedComponents/AbilityBoxes";
 import { Cinders } from "./sharedComponents/Cinders";
@@ -9,7 +11,6 @@ import { Moves } from "./sharedComponents/Moves";
 import { DiceIndicator } from "./sharedComponents/PlayerPill";
 import { Questions } from "./sharedComponents/Questions";
 import { Relics } from "./sharedComponents/Relics";
-import { Section } from "./sharedComponents/Section";
 import type { Character } from "./types";
 
 const tabsConfig = (character: Character) => [
@@ -47,11 +48,14 @@ export function PlaybookExpanded({ character }: { character: Character }) {
 	);
 
 	return (
-		<div className="border-2 border-theme-border-accent bg-theme-bg-primary rounded-lg p-4 h-full flex flex-col gap-2 overflow-hidden relative">
-			<DiceIndicator playerId={character.playerId} />
-			<h1 className="text-2xl font-bold text-center text-theme-text-accent shrink-0 whitespace-normal text-balance">
-				{character.name}
-			</h1>
+		<DecorativeBorder className="bg-theme-bg-primary flex flex-col gap-2 ">
+			<div className="w-full grid grid-cols-[.25fr_auto_.25fr]">
+				<DiceIndicator playerId={character.playerId} />
+				<h1 className="text-2xl font-bold text-center text-theme-text-accent shrink-0 whitespace-normal text-balance">
+					{character.name}
+				</h1>
+				<div />
+			</div>
 			<div className="flex-1 overflow-y-auto overflow-x-hidden min-h-0 min-w-0 flex flex-col gap-3">
 				<Section title="Conditions">
 					<Conditions character={character} />
@@ -78,6 +82,6 @@ export function PlaybookExpanded({ character }: { character: Character }) {
 				</div>
 				{tabs.find((tab) => tab.label === activeTab)?.component}
 			</div>
-		</div>
+		</DecorativeBorder>
 	);
 }

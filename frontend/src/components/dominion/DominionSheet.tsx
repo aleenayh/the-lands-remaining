@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { Dialog } from "radix-ui";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -7,8 +7,10 @@ import { useGame } from "../../context/GameContext";
 import { PlayerRole } from "../../context/types";
 import { DominionMysteries } from "../mystery/content/dominion";
 import type { Dominion } from "../mystery/types";
-import { Section } from "../playbooks/sharedComponents/Section";
 import { parseStaticText } from "../playbooks/utils";
+import { CloseTrayButton } from "../shared/CloseTrayButton";
+import { BorderedTray } from "../shared/DecorativeBorder";
+import { Section } from "../shared/Section";
 import { ReactComponent as CrownIcon } from "./crown.svg";
 
 export function DominionSheet({
@@ -45,191 +47,185 @@ export function DominionSheet({
 				{isOpen && (
 					<div>
 						{dominionMystery ? (
-							<motion.div
-								initial={{ left: "-100%" }}
-								animate={{ left: 0 }}
-								exit={{ left: "-100%" }}
-								transition={{ duration: 1 }}
-								className="absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary border-r border-theme-border-accent rounded-lg p-4 z-10 transition-all ease-linear overflow-y-auto pointer-events-auto"
-							>
-								<button
-									type="button"
-									className="absolute top-0 right-0 w-8 h-8"
-									onClick={() => setIsOpen(!isOpen)}
-								>
-									X
-								</button>
+							<BorderedTray>
+								<CloseTrayButton close={() => setIsOpen(!isOpen)} />
 								<h1 className="text-2xl font-bold text-theme-text-accent mb-10">
 									{title}
 								</h1>
-								<div className="flex flex-col gap-10">
-									<Section
-										title="Introduction"
-										collapsible={true}
-										minify={true}
-									>
-										{intro.map((i) => (
-											<p key={i} className="text-left leading-relaxed text-sm">
-												{parseStaticText(i)}
-											</p>
-										))}
-									</Section>
-
+								<div className="h-full overflow-y-auto">
 									<div className="flex flex-col gap-10">
-										<div>
-											{dominionMystery?.questions?.map((q) => (
-												<div key={q.text}>
-													<h2 className="text-lg font-bold text-theme-text-accent">
-														{q.text}
-													</h2>
-													<p className="text-sm text-theme-text-secondary italic">
-														(Complexity: {q.complexity})
-													</p>
-												</div>
+										<Section
+											title="Introduction"
+											collapsible
+											minify
+											withDecoration
+										>
+											{intro.map((i) => (
+												<p
+													key={i}
+													className="text-left leading-relaxed text-sm"
+												>
+													{parseStaticText(i)}
+												</p>
 											))}
-										</div>
-									</div>
-									<ClueSection
-										dominion={
-											dominionMystery.title as keyof typeof DominionMysteries
-										}
-										role={role}
-									/>
-									{role === PlayerRole.KEEPER && (
-										<div className="flex flex-col gap-2 mt-8 border border-theme-border-accent rounded-lg p-4">
-											<h2 className="text-xl font-bold text-theme-text-accent">
-												Keeper Materials
-											</h2>
-											<p className="text-sm text-theme-text-secondary italic">
-												Not visible to Embers.
-											</p>
-											<Section title="Layers" collapsible={true}>
-												{layers.map((l) => (
-													<Section
-														title={l.title}
-														collapsible={true}
-														minify={true}
-														key={l.title}
-													>
-														{l.text.map((t) => (
-															<p key={t} className="text-left leading-relaxed">
-																{parseStaticText(t)}
-															</p>
-														))}
-													</Section>
-												))}
-											</Section>
-											<Section title="Servants" collapsible={true}>
-												{servants.map((s) => (
-													<div key={s.title}>
+										</Section>
+
+										<div className="flex flex-col gap-10">
+											<div>
+												{dominionMystery?.questions?.map((q) => (
+													<div key={q.text}>
 														<h2 className="text-lg font-bold text-theme-text-accent">
-															{s.title}
+															{q.text}
 														</h2>
-														{s.description.map((d) => (
-															<p key={d} className="text-left leading-relaxed">
-																{parseStaticText(d)}
-															</p>
-														))}
-														{s.quotes.length > 0 && (
-															<h3 className="text-lg font-bold text-theme-text-accent">
-																Quotes
-															</h3>
-														)}
-														{s.quotes.map((q) => (
-															<p
-																key={q}
-																className="text-left leading-relaxed italic"
-															>
-																&ldquo;{parseStaticText(q)}&rdquo;
-															</p>
-														))}
+														<p className="text-sm text-theme-text-secondary italic">
+															(Complexity: {q.complexity})
+														</p>
 													</div>
 												))}
-											</Section>
-											<Dialog.Root open={modalOpen} onOpenChange={setModalOpen}>
-												<Dialog.Trigger className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100">
-													Change Dominion
-												</Dialog.Trigger>
-												<Dialog.Portal>
-													<Dialog.Overlay className="DialogOverlay" />
-													<Dialog.Content className="DialogContent">
-														<Dialog.Close asChild>
-															<button
-																type="button"
-																className="absolute top-2 right-2 aspect-square w-8 h-8 bg-theme-bg-accent text-theme-text-primary rounded-full flex justify-center items-center"
-															>
-																X
-															</button>
-														</Dialog.Close>
-														<Dialog.Title className="DialogTitle">
-															Change Dominion
-														</Dialog.Title>
-														<Dialog.Description className="DialogDescription">
-															There can only be one active dominion at a time.
-															Selecting a new dominion will replace the current
-															one, including active clues. You can also remove
-															the dominion without selecting a new one.
-														</Dialog.Description>
-														<DominionMysteryForm setIsOpen={setModalOpen} />
-													</Dialog.Content>
-												</Dialog.Portal>
-											</Dialog.Root>
+											</div>
 										</div>
-									)}
+										<ClueSection
+											dominion={
+												dominionMystery.title as keyof typeof DominionMysteries
+											}
+											role={role}
+										/>
+										{role === PlayerRole.KEEPER && (
+											<div className="flex flex-col gap-2 mt-8 border border-theme-border-accent rounded-lg p-4 overflow-y-auto">
+												<h2 className="text-xl font-bold text-theme-text-accent">
+													Keeper Materials
+												</h2>
+												<p className="text-sm text-theme-text-secondary italic">
+													Not visible to Embers.
+												</p>
+												<Section title="Layers" collapsible={true}>
+													{layers.map((l) => (
+														<Section
+															title={l.title}
+															collapsible={true}
+															minify={true}
+															key={l.title}
+														>
+															{l.text.map((t) => (
+																<p
+																	key={t}
+																	className="text-left leading-relaxed"
+																>
+																	{parseStaticText(t)}
+																</p>
+															))}
+														</Section>
+													))}
+												</Section>
+												<Section title="Servants" collapsible={true}>
+													{servants.map((s) => (
+														<div key={s.title}>
+															<h2 className="text-lg font-bold text-theme-text-accent">
+																{s.title}
+															</h2>
+															{s.description.map((d) => (
+																<p
+																	key={d}
+																	className="text-left leading-relaxed"
+																>
+																	{parseStaticText(d)}
+																</p>
+															))}
+															{s.quotes.length > 0 && (
+																<h3 className="text-lg font-bold text-theme-text-accent">
+																	Quotes
+																</h3>
+															)}
+															{s.quotes.map((q) => (
+																<p
+																	key={q}
+																	className="text-left leading-relaxed italic"
+																>
+																	&ldquo;{parseStaticText(q)}&rdquo;
+																</p>
+															))}
+														</div>
+													))}
+												</Section>
+												<Dialog.Root
+													open={modalOpen}
+													onOpenChange={setModalOpen}
+												>
+													<Dialog.Trigger className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100">
+														Change Dominion
+													</Dialog.Trigger>
+													<Dialog.Portal>
+														<Dialog.Overlay className="DialogOverlay" />
+														<Dialog.Content className="DialogContent">
+															<Dialog.Close asChild>
+																<button
+																	type="button"
+																	className="absolute top-2 right-2 aspect-square w-8 h-8 bg-theme-bg-accent text-theme-text-primary rounded-full flex justify-center items-center"
+																>
+																	X
+																</button>
+															</Dialog.Close>
+															<Dialog.Title className="DialogTitle">
+																Change Dominion
+															</Dialog.Title>
+															<Dialog.Description className="DialogDescription">
+																There can only be one active dominion at a time.
+																Selecting a new dominion will replace the
+																current one, including active clues. You can
+																also remove the dominion without selecting a new
+																one.
+															</Dialog.Description>
+															<DominionMysteryForm setIsOpen={setModalOpen} />
+														</Dialog.Content>
+													</Dialog.Portal>
+												</Dialog.Root>
+											</div>
+										)}
+									</div>
 								</div>
-							</motion.div>
+							</BorderedTray>
 						) : (
-							<motion.div
-								initial={{ left: "-100%" }}
-								animate={{ left: 0 }}
-								exit={{ left: "-100%" }}
-								transition={{ duration: 1 }}
-								className="absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary border-r border-theme-border-accent rounded-lg p-4 z-10 transition-all ease-linear overflow-y-auto pointer-events-auto"
-							>
-								<button
-									type="button"
-									className="absolute top-0 right-0 w-8 h-8"
-									onClick={() => setIsOpen(!isOpen)}
-								>
-									X
-								</button>
+							<BorderedTray>
+								<CloseTrayButton close={() => setIsOpen(!isOpen)} />
 								<h1 className="text-2xl font-bold text-theme-text-accent mb-10">
 									{title}
 								</h1>
-								<div className="text-lg text-theme-text-secondary text-center my-10">
-									No active dominion. You can add one below.
+								<div className="h-full overflow-y-auto">
+									<div className="text-lg text-theme-text-secondary text-center my-10">
+										No active dominion. You can add one below.
+									</div>
+									{role === PlayerRole.KEEPER && (
+										<Dialog.Root open={modalOpen} onOpenChange={setModalOpen}>
+											<Dialog.Trigger className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100">
+												Change Dominion
+											</Dialog.Trigger>
+											<Dialog.Portal>
+												<Dialog.Overlay className="DialogOverlay" />
+												<Dialog.Content className="DialogContent">
+													<Dialog.Close asChild>
+														<button
+															type="button"
+															className="absolute top-2 right-2 aspect-square w-8 h-8 bg-theme-bg-accent text-theme-text-primary rounded-full flex justify-center items-center"
+														>
+															X
+														</button>
+													</Dialog.Close>
+													<Dialog.Title className="DialogTitle">
+														Change Dominion
+													</Dialog.Title>
+													<Dialog.Description className="DialogDescription">
+														There can only be one active dominion at a time.
+														Selecting a new dominion will replace the current
+														one, including active clues. You can also remove the
+														dominion without selecting a new one.
+													</Dialog.Description>
+													<DominionMysteryForm setIsOpen={setModalOpen} />
+												</Dialog.Content>
+											</Dialog.Portal>
+										</Dialog.Root>
+									)}
 								</div>
-								{role === PlayerRole.KEEPER && (
-									<Dialog.Root open={modalOpen} onOpenChange={setModalOpen}>
-										<Dialog.Trigger className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100">
-											Change Dominion
-										</Dialog.Trigger>
-										<Dialog.Portal>
-											<Dialog.Overlay className="DialogOverlay" />
-											<Dialog.Content className="DialogContent">
-												<Dialog.Close asChild>
-													<button
-														type="button"
-														className="absolute top-2 right-2 aspect-square w-8 h-8 bg-theme-bg-accent text-theme-text-primary rounded-full flex justify-center items-center"
-													>
-														X
-													</button>
-												</Dialog.Close>
-												<Dialog.Title className="DialogTitle">
-													Change Dominion
-												</Dialog.Title>
-												<Dialog.Description className="DialogDescription">
-													There can only be one active dominion at a time.
-													Selecting a new dominion will replace the current one,
-													including active clues. You can also remove the
-													dominion without selecting a new one.
-												</Dialog.Description>
-												<DominionMysteryForm setIsOpen={setModalOpen} />
-											</Dialog.Content>
-										</Dialog.Portal>
-									</Dialog.Root>
-								)}
-							</motion.div>
+							</BorderedTray>
 						)}
 					</div>
 				)}

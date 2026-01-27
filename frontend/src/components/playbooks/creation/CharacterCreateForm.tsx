@@ -7,10 +7,10 @@ import {
 } from "react-hook-form";
 import { useGame } from "../../../context/GameContext";
 import { PlayerRole } from "../../../context/types";
+import { Section } from "../../shared/Section";
 import { playbookBases } from "../content";
 import { generateCoreMoveState } from "../coreMoves";
 import { Vows } from "../sharedComponents/Extras";
-import { Section } from "../sharedComponents/Section";
 import {
 	type Abilities,
 	type Character,

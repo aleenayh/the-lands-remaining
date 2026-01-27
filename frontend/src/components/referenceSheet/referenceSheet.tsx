@@ -1,8 +1,10 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { ReactComponent as Logo } from "../assets/tlr-logo.svg";
-import { ControlledSection } from "../playbooks/sharedComponents/Section";
+import { CloseTrayButton } from "../shared/CloseTrayButton";
+import { BorderedTray } from "../shared/DecorativeBorder";
 import { Divider } from "../shared/Divider";
+import { ControlledSection } from "../shared/Section";
 import { ReactComponent as BookIcon } from "./book.svg";
 
 export function ReferenceSheet({
@@ -30,31 +32,20 @@ export function ReferenceSheet({
 			</button>
 			<AnimatePresence>
 				{isOpen && (
-					<motion.div
-						initial={{ left: "-100%" }}
-						animate={{ left: 0 }}
-						exit={{ left: "-100%" }}
-						transition={{ duration: 1 }}
-						className="absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary border-r border-theme-border-accent rounded-lg p-4 z-10 transition-all ease-linear pointer-events-auto"
-					>
-						<button
-							type="button"
-							className="absolute top-0 right-0 w-8 h-8"
-							onClick={() => setIsOpen(!isOpen)}
-						>
-							X
-						</button>
-						<div className="sticky flex flex-col justify-start items-center">
+					<BorderedTray>
+						<CloseTrayButton close={() => setIsOpen(!isOpen)} />
+						<div className="sticky flex flex-col justify-start items-center pointer-events-none">
 							<Logo className="w-1/3 h-auto mx-auto mb-4" />
 							<h1 className="text-2xl font-bold text-theme-text-accent">
 								Reference Sheet
 							</h1>
 						</div>
-						<div className="flex flex-col justify-stretch items-start text-left overflow-y-auto">
+						<div className="flex flex-col justify-stretch items-start text-left overflow-y-auto gap-0">
 							<ControlledSection
 								title="The Light Move"
 								collapsible
 								leftAlign
+								withDecoration
 								isCollapsed={lightCollapsed}
 								setIsCollapsed={setLightCollapsed}
 							>
@@ -63,7 +54,7 @@ export function ReferenceSheet({
 									what you’re afraid will happen if you fail or lose your nerve,
 									then roll with an appropriate ability.
 								</p>
-								<ul className="list-disc list-inside text-sm">
+								<ul className="list-disc list-inside text-sm ml-6">
 									<li>
 										On a 7-9, the Keeper will tell you how your actions would
 										leave you vulnerable, and you can choose to back down or go
@@ -86,6 +77,7 @@ export function ReferenceSheet({
 								title="The Dark Move"
 								collapsible
 								leftAlign
+								withDecoration
 								isCollapsed={darkCollapsed}
 								setIsCollapsed={setDarkCollapsed}
 							>
@@ -96,7 +88,7 @@ export function ReferenceSheet({
 									choose to back down or go through with it. If you go through
 									with it, roll with an appropriate ability.
 								</p>
-								<ul className="list-disc list-inside text-sm">
+								<ul className="list-disc list-inside text-sm ml-6">
 									<li>
 										On a 10+, you do what you intended or you hold steady;
 										describe what it looks like.
@@ -113,6 +105,7 @@ export function ReferenceSheet({
 								title="The Information Move"
 								collapsible
 								leftAlign
+								withDecoration
 								isCollapsed={informationCollapsed}
 								setIsCollapsed={setInformationCollapsed}
 							>
@@ -121,7 +114,7 @@ export function ReferenceSheet({
 									otherwise gather information, describe how you’re doing so and
 									roll with an appropriate ability.
 								</p>
-								<ul className="list-disc list-inside text-sm">
+								<ul className="list-disc list-inside text-sm ml-6">
 									<li>
 										On a hit, you find a Clue. The Keeper will tell you what it
 										is.
@@ -139,6 +132,7 @@ export function ReferenceSheet({
 								title="Answer a Question"
 								collapsible
 								leftAlign
+								withDecoration
 								isCollapsed={questionCollapsed}
 								setIsCollapsed={setQuestionCollapsed}
 							>
@@ -150,7 +144,7 @@ export function ReferenceSheet({
 									into the answer or otherwise explained away, minus the
 									question’s Complexity.
 								</p>
-								<ul className="list-disc list-inside text-sm">
+								<ul className="list-disc list-inside text-sm ml-6">
 									<li>
 										On a 10+, the answer is correct and an Opportunity can be
 										pursued.
@@ -176,6 +170,7 @@ export function ReferenceSheet({
 								title="Make Camp"
 								collapsible
 								leftAlign
+								withDecoration
 								isCollapsed={campCollapsed}
 								setIsCollapsed={setCampCollapsed}
 							>
@@ -202,7 +197,7 @@ export function ReferenceSheet({
 									(or whoever the Keeper wishes in the case of a tie) rolls with
 									Cinder.
 								</p>
-								<ul className="list-disc list-inside text-sm">
+								<ul className="list-disc list-inside text-sm ml-6">
 									<li>On a 10+, the rest period passes without incident.</li>
 									<li>
 										On a 7-9, the rest period passes without incident, but your
@@ -213,7 +208,7 @@ export function ReferenceSheet({
 								</ul>
 							</ControlledSection>
 						</div>
-					</motion.div>
+					</BorderedTray>
 				)}
 			</AnimatePresence>
 		</div>

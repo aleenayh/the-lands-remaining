@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { useGame } from "../../../context/GameContext";
+import { Section } from "../../shared/Section";
 import { customFieldOrFallback, playbookBases } from "../content";
 import { type Character, playbookKeys } from "../types";
-import { Section } from "./Section";
 
 export function Cinders({ character }: { character: Character }) {
 	const {
