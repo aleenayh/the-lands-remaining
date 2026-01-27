@@ -1,9 +1,12 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { Dialog } from "radix-ui";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useGame } from "../../context/GameContext";
+import { ReactComponent as BorderIcon } from "../assets/border.svg";
+import { CloseTrayButton } from "../shared/CloseTrayButton";
+import { BorderedTray } from "../shared/DecorativeBorder";
 import { Divider } from "../shared/Divider";
 import { ReactComponent as HeartShieldIcon } from "./heartshield.svg";
 
@@ -26,24 +29,13 @@ export function SafetyPane({
 			</button>
 			<AnimatePresence>
 				{isOpen && (
-					<motion.div
-						initial={{ left: "-100%" }}
-						animate={{ left: 0 }}
-						exit={{ left: "-100%" }}
-						transition={{ duration: 1 }}
-						className="absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary border-r border-theme-border-accent rounded-lg p-4 z-10 transition-all ease-linear overflow-y-auto pointer-events-auto"
-					>
-						<button
-							type="button"
-							className="absolute top-0 right-0 w-8 h-8"
-							onClick={() => setIsOpen(!isOpen)}
-						>
-							X
-						</button>
+					<BorderedTray>
+						<CloseTrayButton close={() => setIsOpen(!isOpen)} />
+
 						<h1 className="text-2xl font-bold text-theme-text-accent mb-6">
 							Safety Tools
 						</h1>
-						<div className="flex flex-col gap-4 justify-start items-center h-full">
+						<div className="flex flex-col gap-4 justify-start items-center h-full overflow-y-auto">
 							<p className="text-balance text-sm">
 								No game is more important than the people playing it. Your game
 								may use any safety tools you wish, but the Gauntlet typically
@@ -58,7 +50,7 @@ export function SafetyPane({
 							<Divider />
 							<ExplainerSections />
 						</div>
-					</motion.div>
+					</BorderedTray>
 				)}
 			</AnimatePresence>
 		</div>
@@ -333,18 +325,17 @@ function ExplainerSections() {
 			>
 				Lines and Veils
 			</button>
-			<div className="col-span-3 text-left">
+			<div className="col-span-3 text-left relative">
 				{view === "open-door" && (
 					<div className="flex flex-col gap-2">
 						<h3 className="text-lg font-bold text-theme-text-accent text-center">
 							Open Door Policy
 						</h3>
-						<p>
-							{" "}
+						<Decorated>
 							The Open Door Policy is very simple: you can leave the game for
 							any reason and you don’t have to explain yourself. Just tell the
 							group you have to go; no one here will ask any questions about it.
-						</p>
+						</Decorated>
 					</div>
 				)}
 
@@ -353,22 +344,23 @@ function ExplainerSections() {
 						<h3 className="text-lg font-bold text-theme-text-accent text-center">
 							X-Card
 						</h3>
-						<p>
-							{" "}
-							Because tabletop gaming is improvisational, we may encounter
-							themes or topics not anticipated by other safety tools. The X-card
-							is useful in case something in the game makes you feel
-							uncomfortable in an un-fun way. Just tap or hold up the X-card and
-							we will stop play in order to change whatever just happened in the
-							game. The Keeper may ask for clarification on what is being
-							X-carded, but will never ask why. Play resumes once the change is
-							made.
-						</p>
+						<Decorated>
+							<p>
+								Because tabletop gaming is improvisational, we may encounter
+								themes or topics not anticipated by other safety tools. The
+								X-card is useful in case something in the game makes you feel
+								uncomfortable in an un-fun way. Just tap or hold up the X-card
+								and we will stop play in order to change whatever just happened
+								in the game. The Keeper may ask for clarification on what is
+								being X-carded, but will never ask why. Play resumes once the
+								change is made.
+							</p>
 
-						<p className="italic text-sm text-theme-text-muted">
-							The X-Card was developed by{" "}
-							<a href="http://tinyurl.com/x-card-rpg">John Stavropoulos</a>.
-						</p>
+							<p className="italic text-sm text-theme-text-muted">
+								The X-Card was developed by{" "}
+								<a href="http://tinyurl.com/x-card-rpg">John Stavropoulos</a>.
+							</p>
+						</Decorated>
 					</div>
 				)}
 
@@ -377,8 +369,7 @@ function ExplainerSections() {
 						<h3 className="text-lg font-bold text-theme-text-accent text-center">
 							Lines and Veils
 						</h3>
-						<p>
-							{" "}
+						<Decorated>
 							Lines and Veils are tools to pre-emptively establish boundaries
 							around sensitive subject matter. Lines are things that we are not
 							going to have in the game, period. Veils are things that we're ok
@@ -387,9 +378,21 @@ function ExplainerSections() {
 							added anonymously in this tab and will be seen by all players.
 							Importantly, even the subjects listed as inherent to the game can
 							still be lined or veiled.
-						</p>
+						</Decorated>
 					</div>
 				)}
+			</div>
+		</div>
+	);
+}
+
+function Decorated({ children }: { children: React.ReactNode }) {
+	return (
+		<div className="relative p-8 border-2 border-theme-border-accent rounded-lg flex flex-col gap-2">
+			{children}
+			<div className="absolute inset-0 h-full w-full pointer-events-none -z-[1]">
+				<BorderIcon className="text-theme-border-accent absolute top-0 right-0 w-12 h-12 rotate-180" />
+				<BorderIcon className="text-theme-border-accent absolute bottom-0 left-0 w-12 h-12 transform " />
 			</div>
 		</div>
 	);

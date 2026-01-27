@@ -4,8 +4,8 @@ import toast from "react-hot-toast";
 import { ReactComponent as CopyIcon } from "../../components/settings/copy.svg";
 import { useGame } from "../../context/GameContext";
 import { PlayerRole } from "../../context/types";
-import { Section } from "../playbooks/sharedComponents/Section";
 import { Divider } from "../shared/Divider";
+import { Section } from "../shared/Section";
 import { StyledTooltip } from "../shared/Tooltip";
 import { lookupMystery } from "./content";
 import { themeElements } from "./themes";
@@ -118,7 +118,7 @@ export function Countdown({ mystery }: { mystery: Mystery }) {
 					</div>
 				)}
 				{intro && intro.length > 0 && (
-					<Section title="Introduction" collapsible={true} minify={true}>
+					<Section title="Introduction" collapsible minify withDecoration>
 						<div className="text-sm text-left">
 							{intro?.map((line) => (
 								<p key={line}>{line}</p>

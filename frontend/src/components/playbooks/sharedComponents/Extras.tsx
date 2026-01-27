@@ -1,8 +1,8 @@
 import { useGame } from "../../../context/GameContext";
+import { Section } from "../../shared/Section";
 import { playbookBases } from "../content";
 import { coreMoveTitles } from "../coreMoves";
 import { type Character, type playbookKey, playbookKeys } from "../types";
-import { Section } from "./Section";
 
 export function Extras({ character }: { character: Character }) {
 	const { user } = useGame();

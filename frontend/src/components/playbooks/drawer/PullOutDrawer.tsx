@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useGame } from "../../../context/GameContext";
 import { CopyInvite } from "../../settings/GameInfo";
+import { Section } from "../../shared/Section";
 import { PlaybookPane } from "../PlaybookPane";
-import { Section } from "../sharedComponents/Section";
 import type { Character } from "../types";
 import { ReactComponent as GroupIcon } from "./group.svg";
 

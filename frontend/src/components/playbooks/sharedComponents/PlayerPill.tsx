@@ -9,7 +9,7 @@ export function PlayerPill({ playerId }: { playerId: string }) {
 	const player = gameState.players.find((player) => player.id === playerId);
 	if (!player) return null;
 	return (
-		<div className="absolute top-2 right-2 rounded-xl w-auto px-1 py-[0.05rem] bg-theme-bg-secondary border-2 border-theme-border-accent">
+		<div className="rounded-xl w-auto px-1 py-[0.05rem] bg-theme-bg-secondary border-2 border-theme-border-accent">
 			<p className="text-sm text-theme-text-primary">{player.name}</p>
 		</div>
 	);
@@ -51,7 +51,7 @@ export function DiceIndicator({ playerId }: { playerId: string }) {
 
 	return (
 		<Tooltip.Root open={isOpen} onOpenChange={setIsOpen}>
-			<div className="absolute top-1 left-1 text-theme-border-accent">
+			<div className="text-theme-border-accent">
 				<Tooltip.Trigger asChild>
 					<button type="button" onClick={openForThreeSeconds}>
 						<DiceIcon className="w-10 h-10" />

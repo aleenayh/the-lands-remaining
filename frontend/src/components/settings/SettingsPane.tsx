@@ -1,10 +1,12 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useGame } from "../../context/GameContext";
 import { resetGameToDefaults } from "../../lib/firebase";
 import { ReactComponent as Logo } from "../assets/tlr-logo.svg";
-import { Section } from "../playbooks/sharedComponents/Section";
+import { CloseTrayButton } from "../shared/CloseTrayButton";
+import { BorderedTray } from "../shared/DecorativeBorder";
 import { Divider } from "../shared/Divider";
+import { Section } from "../shared/Section";
 import { ReactComponent as CogIcon } from "./cog.svg";
 import { GameInfo } from "./GameInfo";
 
@@ -30,25 +32,14 @@ export function SettingsPane({
 			</button>
 			<AnimatePresence>
 				{isOpen && (
-					<motion.div
-						initial={{ left: "-100%" }}
-						animate={{ left: 0 }}
-						exit={{ left: "-100%" }}
-						transition={{ duration: 1 }}
-						className="absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary border-r border-theme-border-accent rounded-lg p-4 z-10 transition-all ease-linear overflow-y-auto pointer-events-auto"
-					>
-						<button
-							type="button"
-							className="absolute top-0 right-0 w-8 h-8"
-							onClick={() => setIsOpen(!isOpen)}
-						>
-							X
-						</button>
-						<Logo className="w-1/3 h-auto mx-auto mb-4" />
-
-						<h1 className="text-2xl font-bold text-theme-text-accent mb-10">
-							Settings
-						</h1>
+					<BorderedTray>
+						<CloseTrayButton close={() => setIsOpen(!isOpen)} />
+						<div className="sticky flex flex-col justify-start items-center pointer-events-none">
+							<Logo className="w-1/3 h-auto mx-auto mb-4" />
+							<h1 className="text-2xl font-bold text-theme-text-accent">
+								Settings
+							</h1>
+						</div>
 						<div className="flex flex-col gap-10 justify-between h-full">
 							<ThemeSelector />
 							<Divider />
@@ -57,7 +48,7 @@ export function SettingsPane({
 							<Divider />
 							<Credits />
 						</div>
-					</motion.div>
+					</BorderedTray>
 				)}
 			</AnimatePresence>
 		</div>
