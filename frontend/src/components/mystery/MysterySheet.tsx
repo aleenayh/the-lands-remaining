@@ -37,7 +37,7 @@ export function MysterySheet({
 						<h1 className="text-2xl font-bold text-theme-text-accent mb-10">
 							Mysteries
 						</h1>
-						<div className="flex flex-col gap-10">
+						<div className="flex flex-col gap-10 overflow-y-auto">
 							{mysteries && mysteries.length > 0 ? (
 								mysteries.map((mystery) => (
 									<Countdown mystery={mystery} key={mystery.title} />

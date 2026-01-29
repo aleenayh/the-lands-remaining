@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { DecorativeBorder } from "../shared/DecorativeBorder";
+import { DiceIndicator } from "../shared/Dice";
 import { Section } from "../shared/Section";
 import { AdvancementTab } from "./advancement/AdvancementTab";
 import { AbilityBoxes } from "./sharedComponents/AbilityBoxes";
@@ -8,7 +9,6 @@ import { Conditions } from "./sharedComponents/Conditions";
 import { ExperienceTracker } from "./sharedComponents/ExperienceTracker";
 import { Fires } from "./sharedComponents/Fires";
 import { Moves } from "./sharedComponents/Moves";
-import { DiceIndicator } from "./sharedComponents/PlayerPill";
 import { Questions } from "./sharedComponents/Questions";
 import { Relics } from "./sharedComponents/Relics";
 import type { Character } from "./types";

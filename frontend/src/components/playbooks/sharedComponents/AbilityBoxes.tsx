@@ -1,7 +1,7 @@
-import { AnimatePresence, motion } from "framer-motion";
 import { Dialog } from "radix-ui";
 import { useId, useState } from "react";
 import { useGame } from "../../../context/GameContext";
+import { type Die, DieComponent, rollDie } from "../../shared/Dice";
 import type { Abilities, Abilities as AbilityType } from "../types";
 
 export function AbilityBoxes({
@@ -62,18 +62,7 @@ type AbilityBoxProps = {
 	abbreviate?: boolean;
 };
 
-type Die = {
-	id: string;
-	value: number;
-	isRolling: boolean;
-	exclude: boolean;
-};
-
-export function AbilityBox({
-	ability,
-	value,
-	abbreviate = false,
-}: AbilityBoxProps) {
+function AbilityBox({ ability, value, abbreviate = false }: AbilityBoxProps) {
 	const [rollType, setRollType] = useState<
 		"regular" | "advantage" | "disadvantage"
 	>("regular");
@@ -285,45 +274,4 @@ export function AbilityBox({
 			</Dialog.Portal>
 		</Dialog.Root>
 	);
-}
-
-function DieComponent({
-	dice,
-	id,
-	index,
-}: {
-	dice: Die[];
-	id: string;
-	index: number;
-}) {
-	const die = dice.find((die) => die.id === `${id}-${index}`);
-	if (!die) {
-		return null;
-	}
-	return (
-		<div
-			key={die.id}
-			className={`diceBase ${die.exclude ? "diceExcluded" : ""} ${die.isRolling ? "diceRolling" : ""}`}
-		>
-			<AnimatePresence>
-				{die.isRolling ? (
-					<div className="diceRollingIcon" />
-				) : (
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.5 }}
-						className="text-xl font-bold"
-					>
-						{die.value}
-					</motion.div>
-				)}
-			</AnimatePresence>
-		</div>
-	);
-}
-
-function rollDie() {
-	return Math.floor(Math.random() * 6) + 1;
 }
