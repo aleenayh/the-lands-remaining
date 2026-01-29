@@ -311,6 +311,7 @@ function MysteryLookup({
 				text: q.question,
 				complexity: q.complexity,
 				opportunity: q.opportunity,
+				result: null,
 			})),
 			theme: data.theme,
 			countdownTotal: mystery.countdownTotal,

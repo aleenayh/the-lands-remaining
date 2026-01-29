@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { ReactComponent as CopyIcon } from "../../components/settings/copy.svg";
 import { useGame } from "../../context/GameContext";
 import { PlayerRole } from "../../context/types";
+import { AnswerQuestionDiceRollModal } from "../shared/Dice";
 import { Divider } from "../shared/Divider";
 import { Section } from "../shared/Section";
 import { StyledTooltip } from "../shared/Tooltip";
@@ -168,11 +169,20 @@ export function Countdown({ mystery }: { mystery: Mystery }) {
 						</h2>
 						{mystery.questions.map((question) => (
 							<div key={question.text}>
-								<div className="flex gap-2 justify-start items-center">
+								<div className="flex gap-2 justify-start items-center w-full flex-wrap ">
 									{question.text}{" "}
 									<span className="text-sm text-theme-text-secondary italic">
 										(Complexity: {question.complexity})
 									</span>
+									{question.result && (
+										<span className="text-sm text-theme-text-secondary font-bold">
+											Result: {question.result}
+										</span>
+									)}
+									<AnswerQuestionDiceRollModal
+										mystery={mystery}
+										question={question}
+									/>
 								</div>
 								{question.opportunity && (
 									<div className="text-sm text-theme-text-secondary text-left">

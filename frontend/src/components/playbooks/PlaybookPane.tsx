@@ -1,4 +1,5 @@
 import { DecorativeBorder } from "../shared/DecorativeBorder";
+import { DiceIndicator } from "../shared/Dice";
 import { Divider } from "../shared/Divider";
 import { Section } from "../shared/Section";
 import { AbilityBoxes } from "./sharedComponents/AbilityBoxes";
@@ -8,7 +9,7 @@ import { ExperienceTracker } from "./sharedComponents/ExperienceTracker";
 import { Extras } from "./sharedComponents/Extras";
 import { Fires } from "./sharedComponents/Fires";
 import { Moves } from "./sharedComponents/Moves";
-import { DiceIndicator, PlayerPill } from "./sharedComponents/PlayerPill";
+import { PlayerPill } from "./sharedComponents/PlayerPill";
 import { Questions } from "./sharedComponents/Questions";
 import { Relics } from "./sharedComponents/Relics";
 import type { Character } from "./types";

@@ -256,6 +256,7 @@ function DominionMysteryForm({
 				text: q.question,
 				complexity: q.complexity,
 				opportunity: q.opportunity,
+				result: null,
 			})),
 			clues: dominionContent.clues.map((c) => ({
 				text: c,
