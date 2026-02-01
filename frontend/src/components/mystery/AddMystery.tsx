@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useGame } from "../../context/GameContext";
-import { CountdownItem } from "./Countdown";
 import { canonicalMysteries } from "./content";
+import { CountdownItem } from "./MysteryContent";
 import { type Mystery, MysteryTheme, type Question } from "./types";
 
 type AddMysteryFormInputs = {
