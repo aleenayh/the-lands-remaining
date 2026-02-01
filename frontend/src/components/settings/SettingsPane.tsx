@@ -1,4 +1,5 @@
 import { AnimatePresence } from "framer-motion";
+import { Tooltip } from "radix-ui";
 import { useState } from "react";
 import { useGame } from "../../context/GameContext";
 import { resetGameToDefaults } from "../../lib/firebase";
@@ -7,6 +8,7 @@ import { CloseTrayButton } from "../shared/CloseTrayButton";
 import { BorderedTray } from "../shared/DecorativeBorder";
 import { Divider } from "../shared/Divider";
 import { Section } from "../shared/Section";
+import { StyledTooltip } from "../shared/Tooltip";
 import { ReactComponent as CogIcon } from "./cog.svg";
 import { GameInfo } from "./GameInfo";
 
@@ -22,14 +24,23 @@ export function SettingsPane({
 }) {
 	return (
 		<div className="flex flex-col justify-start items-start h-full w-full pointer-events-none">
-			<button
-				type="button"
-				aria-label="Open settings"
-				className="w-10 h-10 text-theme-accent-primary bg-theme-bg-secondary rounded-none rounded-br-lg rounded-tr-lg p-2 hover:bg-theme-bg-accent hover:text-theme-text-accent transition-colors pointer-events-auto"
-				onClick={() => setIsOpen(!isOpen)}
-			>
-				<CogIcon className="w-full h-full" />
-			</button>
+			<Tooltip.Root>
+				<Tooltip.Trigger asChild>
+					<button
+						type="button"
+						aria-label="Open game settings"
+						className="drawerButton"
+						onClick={() => setIsOpen(!isOpen)}
+					>
+						<CogIcon className="w-full h-full" />
+					</button>
+				</Tooltip.Trigger>
+				<Tooltip.Portal>
+					<Tooltip.Content className="z-30 pl-1" side="right">
+						<StyledTooltip>Settings</StyledTooltip>
+					</Tooltip.Content>
+				</Tooltip.Portal>
+			</Tooltip.Root>
 			<AnimatePresence>
 				{isOpen && (
 					<BorderedTray>
