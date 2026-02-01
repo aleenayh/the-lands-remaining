@@ -12,20 +12,12 @@ import { lookupMystery } from "./content";
 import { themeElements } from "./themes";
 import type { Mystery } from "./types";
 
-export function Countdown({ mystery }: { mystery: Mystery }) {
+export function MysteryContent({ mystery }: { mystery: Mystery }) {
 	const {
 		user: { role },
 		gameState,
 		updateGameState,
 	} = useGame();
-	const { initialColor, filledColor, textColors } =
-		themeElements[mystery.theme];
-	const localTheme = localStorage.getItem("theme") || "forest";
-	const useHighContrastDark = localTheme === "dark";
-	const useHighContrastLight = localTheme === "light";
-	const gradient = textColors
-		? `linear-gradient(to bottom, hsl(${textColors.top.h}, ${textColors.top.s}%, ${textColors.top.l}%), hsl(${textColors.bottom.h}, ${textColors.bottom.s}%, ${textColors.bottom.l}%))`
-		: `linear-gradient(to bottom, hsl(${initialColor.h}, ${initialColor.s}%, ${initialColor.l}%), hsl(${filledColor.h}, ${filledColor.s}%, ${filledColor.l}%))`;
 
 	const onToggle = (checked: boolean) => {
 		updateGameState({
@@ -68,34 +60,27 @@ export function Countdown({ mystery }: { mystery: Mystery }) {
 		});
 	};
 
-	const style = useHighContrastDark
-		? {
-				color: "#fff",
-			}
-		: useHighContrastLight
-			? {
-					color: "#000",
-				}
-			: {
-					background: gradient,
-					backgroundClip: "text",
-					color: "transparent",
-					WebkitBackgroundClip: "text",
-					WebkitTextFillColor: "transparent",
-				};
-
-	const { intro, clues } = lookupMystery(mystery.title) ?? {
+	const { intro } = lookupMystery(mystery.title) ?? {
 		intro: [],
-		clues: [],
 	};
 	return (
 		<Dialog.Root>
-			<div className="flex flex-col gap-0">
-				<h1 className="text-xl text-center whitespace-nowrap" style={style}>
-					{mystery.title}
-				</h1>
+			<div className="flex flex-col gap-0 py-4 w-full">
+				{intro && intro.length > 0 ? (
+					<Section title={mystery.title} collapsible withDecoration leftAlign>
+						<div className="text-sm text-left flex flex-col gap-2">
+							{intro?.map((line) => (
+								<p key={line}>{line}</p>
+							))}
+						</div>
+					</Section>
+				) : (
+					<h2 className={`font-bold text-left text-theme-text-accent text-lg`}>
+						{mystery.title}
+					</h2>
+				)}
 				{role === PlayerRole.KEEPER && (
-					<div className="flex gap-2 justify-center items-center">
+					<div className="my-2 flex gap-2 justify-center items-center">
 						<Tooltip.Root>
 							<Tooltip.Trigger>
 								<button
@@ -117,15 +102,6 @@ export function Countdown({ mystery }: { mystery: Mystery }) {
 							Issue Rewards
 						</Dialog.Trigger>
 					</div>
-				)}
-				{intro && intro.length > 0 && (
-					<Section title="Introduction" collapsible minify withDecoration>
-						<div className="text-sm text-left">
-							{intro?.map((line) => (
-								<p key={line}>{line}</p>
-							))}
-						</div>
-					</Section>
 				)}
 				{mystery.countdownTotal > 0 && (
 					<div>
@@ -164,7 +140,7 @@ export function Countdown({ mystery }: { mystery: Mystery }) {
 				)}
 				{mystery.questions && mystery.questions.length > 0 && (
 					<div className="py-4 flex flex-col gap-2">
-						<h2 className="text-md text-center whitespace-nowrap" style={style}>
+						<h2 className="text-md text-center whitespace-nowrap text-theme-text-primary">
 							Questions
 						</h2>
 						{mystery.questions.map((question) => (
@@ -185,7 +161,7 @@ export function Countdown({ mystery }: { mystery: Mystery }) {
 									/>
 								</div>
 								{question.opportunity && (
-									<div className="text-sm text-theme-text-secondary text-left">
+									<div className="ml-2 border-l-2 px-4 border-theme-border text-sm leading-tight text-theme-text-secondary text-left">
 										<span className="italic">Opportunity:</span>{" "}
 										{question.opportunity}
 									</div>
@@ -216,7 +192,7 @@ export function Countdown({ mystery }: { mystery: Mystery }) {
 						))}
 					</div>
 				)}
-				<ClueSection clues={clues} mystery={mystery} role={role} />
+				<ClueSection mystery={mystery} role={role} />
 				<Divider />
 			</div>
 			<Dialog.Portal>
@@ -272,24 +248,15 @@ export function CountdownItem({
 }
 
 function ClueSection({
-	clues,
 	mystery,
 	role,
 }: {
-	clues: string[];
 	mystery: Mystery;
 	role: PlayerRole;
 }) {
 	const { updateGameState, gameState } = useGame();
 	const earnedClues = mystery.clues?.filter((clue) => clue.earned);
-	const removedClues = mystery.clues?.filter((clue) => clue.removed);
 	const { register, handleSubmit, reset } = useForm<{ customClue: string }>();
-
-	const availableCanonicalClues = clues.filter(
-		(clue) =>
-			!earnedClues?.some((c) => c.text === clue) &&
-			!removedClues?.some((c) => c.text === clue),
-	);
 
 	const addCustomClue = (data: { customClue: string }) => {
 		const newClues = mystery.clues
@@ -367,10 +334,7 @@ function ClueSection({
 	};
 
 	return (
-		<Section title="Clues" collapsible={true} minify={true}>
-			<h3 className="text-sm text-theme-text-primary text-center">
-				Earned Clues
-			</h3>
+		<Section title="Clues">
 			<div className="flex gap-2 text-sm text-theme-text-secondary text-left justify-center items-center">
 				<div>Earned: {earnedClues?.length}</div> <div>|</div>
 				<div>
@@ -426,32 +390,6 @@ function ClueSection({
 					</div>
 				)}
 			</div>
-			{role === PlayerRole.KEEPER && (
-				<div className="flex flex-col gap-2 w-full ">
-					<h3 className="text-sm text-theme-text-primary text-center">
-						Available Clues
-					</h3>
-					<span className="text-sm italic text-theme-text-secondary text-left">
-						Unearned clue lists are only visible to the Keeper, and only
-						populated for canonical mysteries. Custom clues can be added by any
-						player, for any mystery.
-					</span>
-					<div className="grid grid-cols-2 gap-2">
-						{availableCanonicalClues?.map((clue) => (
-							<div
-								key={clue}
-								className="flex gap-2 items-start justify-start text-left text-sm"
-							>
-								<input
-									type="checkbox"
-									onChange={(e) => earnClue(clue, e.target.checked)}
-								/>
-								{clue}
-							</div>
-						))}
-					</div>
-				</div>
-			)}
 			<form
 				onSubmit={handleSubmit(addCustomClue)}
 				className="flex gap-2 w-full"
