@@ -1,9 +1,11 @@
 import { AnimatePresence } from "framer-motion";
+import { Tooltip } from "radix-ui";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useGame } from "../../context/GameContext";
 import { CloseTrayButton } from "../shared/CloseTrayButton";
 import { BorderedTray } from "../shared/DecorativeBorder";
+import { StyledTooltip } from "../shared/Tooltip";
 import { ReactComponent as NotesIcon } from "./quill.svg";
 
 export function NotesPane({
@@ -34,14 +36,23 @@ export function NotesPane({
 
 	return (
 		<div className="flex flex-col justify-start items-start h-full w-full pointer-events-none">
-			<button
-				type="button"
-				aria-label="Open settings"
-				className="w-10 h-10 text-theme-accent-primary bg-theme-bg-secondary rounded-none rounded-br-lg rounded-tr-lg p-2 hover:bg-theme-bg-accent hover:text-theme-text-accent transition-colors pointer-events-auto"
-				onClick={() => setIsOpen(!isOpen)}
-			>
-				<NotesIcon className="w-full h-full" />
-			</button>
+			<Tooltip.Root>
+				<Tooltip.Trigger asChild>
+					<button
+						type="button"
+						aria-label="Open Notes"
+						className="drawerButton"
+						onClick={() => setIsOpen(!isOpen)}
+					>
+						<NotesIcon className="w-full h-full" />
+					</button>
+				</Tooltip.Trigger>
+				<Tooltip.Portal>
+					<Tooltip.Content className="z-30 pl-1" side="right">
+						<StyledTooltip>Notes</StyledTooltip>
+					</Tooltip.Content>
+				</Tooltip.Portal>
+			</Tooltip.Root>
 			<AnimatePresence>
 				{isOpen && (
 					<BorderedTray>

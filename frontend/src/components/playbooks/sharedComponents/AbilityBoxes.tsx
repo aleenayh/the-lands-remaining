@@ -12,7 +12,7 @@ export function AbilityBoxes({
 	abbreviate?: boolean;
 }) {
 	return (
-		<div className={`flex justify-center gap-1 mx-0 md:mx-auto`}>
+		<div className={`flex justify-center gap-1 mx-0 md:mx-auto my-1`}>
 			{orderAbilities(stats).map(({ ability, value }) =>
 				abbreviate ? (
 					<StaticAbilityBox ability={ability} value={value} key={ability} />
