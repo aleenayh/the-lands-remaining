@@ -12,6 +12,7 @@ type CharacterCreateFormInputs = {
 	name: string;
 	look: string;
 	ritual: string;
+	pronouns: string;
 	stats: {
 		vitality: number;
 		composure: number;
@@ -59,6 +60,7 @@ export function CustomCreateForm() {
 				name: "",
 				look: "",
 				ritual: "",
+				pronouns: "",
 				stats: {
 					vitality: 0,
 					composure: 0,
@@ -158,6 +160,14 @@ export function CustomCreateForm() {
 							</label>
 							<input
 								{...register("name")}
+								type="text"
+								className="border px-2 py-1 flex-grow"
+							/>
+							<label htmlFor="pronouns" className="text-xs italic">
+								Pronouns
+							</label>
+							<input
+								{...register("pronouns")}
 								type="text"
 								className="border px-2 py-1 flex-grow"
 							/>
@@ -721,6 +731,7 @@ function constructCustomCharacter(
 		name,
 		look,
 		ritual,
+		pronouns,
 		stats: { vitality, composure, reason, presence, cinder },
 		moves,
 		relics,
@@ -765,6 +776,7 @@ function constructCustomCharacter(
 		playerId: userId,
 		name,
 		look,
+		pronouns,
 		ritual,
 		abilities: {
 			vitality,

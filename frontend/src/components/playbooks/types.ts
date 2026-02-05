@@ -224,6 +224,7 @@ export const characterSchema = z.object({
 	playbook: z.enum(playbookKeysTuple),
 	playerId: z.string(),
 	name: z.string(),
+	pronouns: z.string().optional().catch(""),
 	look: z.string().catch(catchWithWarning("character.look", "")),
 	ritual: z.string().catch(catchWithWarning("character.ritual", "")),
 	oldFire: z.record(z.string(), z.boolean()).catch(
