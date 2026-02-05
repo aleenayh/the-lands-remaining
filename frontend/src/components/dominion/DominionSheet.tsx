@@ -67,7 +67,7 @@ export function DominionSheet({
 										<Section
 											title="Introduction"
 											collapsible
-											minify
+											leftAlign
 											withDecoration
 										>
 											{intro.map((i) => (
@@ -401,10 +401,7 @@ function ClueSection({
 	};
 
 	return (
-		<Section title="Clues" collapsible={true} minify={true}>
-			<h3 className="text-sm text-theme-text-primary text-center">
-				Earned Clues
-			</h3>
+		<Section title="Clues">
 			<div className="flex gap-2 text-sm text-theme-text-secondary text-left justify-center items-center">
 				<div>Earned: {earnedClues?.length}</div> <div>|</div>
 				<div>
