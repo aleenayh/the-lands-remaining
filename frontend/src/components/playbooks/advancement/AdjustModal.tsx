@@ -17,6 +17,7 @@ export function AdjustmentModal() {
 	const { register, handleSubmit } = useForm({
 		defaultValues: {
 			name: character?.name ?? "",
+			pronouns: character?.pronouns ?? "",
 			look: character?.look ?? "",
 			ritual: character?.ritual ?? "",
 			abilities: character?.abilities ?? {
@@ -33,6 +34,7 @@ export function AdjustmentModal() {
 	}
 	const onSubmit = (data: {
 		name: string;
+		pronouns: string;
 		look: string;
 		ritual: string;
 		abilities: Abilities;
@@ -73,6 +75,8 @@ export function AdjustmentModal() {
 					>
 						<label htmlFor="name">Name</label>
 						<input type="text" {...register("name")} />
+						<label htmlFor="pronouns">Pronouns</label>
+						<input type="text" {...register("pronouns")} />
 						<label htmlFor="look">Look</label>
 						<input type="text" {...register("look")} />
 						<label htmlFor="ritual">Ritual</label>

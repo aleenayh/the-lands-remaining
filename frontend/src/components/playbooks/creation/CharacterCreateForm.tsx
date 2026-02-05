@@ -33,6 +33,7 @@ type CharacterCreateFormInputs = {
 	title: string;
 	characterName: string;
 	honorific: string;
+	pronouns: string;
 	look1: string;
 	look2: string;
 	look3: string;
@@ -58,6 +59,7 @@ export function CharacterCreateForm({
 			defaultValues: {
 				characterName: getRandomValue(base.names),
 				honorific: getRandomValue(base.honorifics),
+				pronouns: "",
 				look1: getRandomValue(base.look),
 				look2: getRandomValue(base.look),
 				look3: getRandomValue(base.look),
@@ -140,6 +142,17 @@ export function CharacterCreateForm({
 						register={register}
 					/>
 				)}
+				<div className="inline-flex items-center justify-between gap-2 w-full pr-8">
+					<label htmlFor="pronouns" className="text-sm font-bold">
+						Pronouns:
+					</label>
+					<input
+						{...register("pronouns")}
+						type="text"
+						placeholder="specify your Ember's pronouns"
+						className="border px-4 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent flex-grow"
+					/>
+				</div>
 			</Section>
 
 			{/* Looks - 3 */}
@@ -387,6 +400,7 @@ function constructCharacter(
 		look1,
 		look2,
 		look3,
+		pronouns,
 		title,
 		characterName,
 		honorific,
@@ -455,6 +469,7 @@ function constructCharacter(
 		playbook: playbookKey,
 		playerId,
 		name: `${title !== undefined ? title : ""} ${characterName} ${honorific}`,
+		pronouns,
 		look: `${look1.charAt(0).toUpperCase() + look1.slice(1)}, ${look2}, ${look3}`,
 		ritual,
 		abilities: {
