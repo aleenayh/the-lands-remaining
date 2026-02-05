@@ -28,7 +28,7 @@ export function PullOutCharacterOverview({
 		.filter((character): character is Character => character !== null);
 
 	return (
-		<div className="flex flex-col justify-start items-start h-full w-full pointer-events-none">
+		<div className="flex flex-col md:hidden justify-start items-start h-full w-full pointer-events-none">
 			<Tooltip.Root>
 				<Tooltip.Trigger asChild>
 					<button
