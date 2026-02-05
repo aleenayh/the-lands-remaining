@@ -60,13 +60,11 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 		});
 	};
 
-	const { intro } = lookupMystery(mystery.title) ?? {
-		intro: [],
-	};
+	const intro = mystery.intro ?? lookupMystery(mystery.title)?.intro ?? [];
 	return (
 		<Dialog.Root>
 			<div className="flex flex-col gap-0 py-4 w-full">
-				{intro && intro.length > 0 ? (
+				{intro.length > 0 ? (
 					<Section title={mystery.title} collapsible withDecoration leftAlign>
 						<div className="text-sm text-left flex flex-col gap-2">
 							{intro?.map((line) => (

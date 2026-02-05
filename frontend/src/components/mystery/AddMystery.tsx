@@ -9,6 +9,7 @@ import { type Mystery, MysteryTheme, type Question } from "./types";
 
 type AddMysteryFormInputs = {
 	title: string;
+	intro: string;
 	questions: Question[];
 	theme: MysteryTheme;
 	countdownTotal: number;
@@ -108,6 +109,7 @@ function CustomMysteryForm({
 		useForm<AddMysteryFormInputs>({
 			defaultValues: {
 				title: "",
+				intro: "",
 				questions: [
 					{
 						text: "",
@@ -134,6 +136,7 @@ function CustomMysteryForm({
 	const onSubmit = (data: AddMysteryFormInputs) => {
 		const newMystery: Mystery = {
 			title: data.title,
+			intro: data.intro.split("\n").filter((line) => line.trim() !== ""),
 			questions: data.questions,
 			theme: data.theme,
 			countdownTotal: data.countdownTotal,
@@ -161,6 +164,17 @@ function CustomMysteryForm({
 					type="text"
 					{...register("title")}
 					required
+					className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
+				/>
+				<Divider />
+				<label
+					htmlFor="title"
+					className="text-theme-text-accent text-center font-bold"
+				>
+					Introduction
+				</label>
+				<textarea
+					{...register("intro")}
 					className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
 				/>
 				<Divider />
