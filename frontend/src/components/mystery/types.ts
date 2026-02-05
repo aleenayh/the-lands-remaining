@@ -28,6 +28,7 @@ const clueSchema = z.object({
 
 export const mysterySchema = z.object({
 	title: z.string().catch(catchWithWarning("mystery.title", "Mystery")),
+	intro: z.array(z.string()).optional().catch([]),
 	questions: z
 		.array(questionSchema)
 		.optional()
