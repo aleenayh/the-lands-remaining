@@ -216,7 +216,7 @@ function AbilityBox({ ability, value, abbreviate = false }: AbilityBoxProps) {
 								checked={rollType === "regular"}
 								onChange={() => setRollType("regular")}
 							/>
-							<label htmlFor="regular">Regular Roll</label>
+							<label className="cursor-pointer" htmlFor={`${id}-regular`}>Regular Roll</label>
 						</div>
 						<div className="flex items-center">
 							<input
@@ -226,7 +226,7 @@ function AbilityBox({ ability, value, abbreviate = false }: AbilityBoxProps) {
 								checked={rollType === "advantage"}
 								onChange={() => setRollType("advantage")}
 							/>
-							<label htmlFor="advantage">Advantage</label>
+							<label className="cursor-pointer" htmlFor={`${id}-advantage`}>Advantage</label>
 						</div>
 						<div className="flex items-center">
 							<input
@@ -236,7 +236,7 @@ function AbilityBox({ ability, value, abbreviate = false }: AbilityBoxProps) {
 								checked={rollType === "disadvantage"}
 								onChange={() => setRollType("disadvantage")}
 							/>
-							<label htmlFor="disadvantage">Disadvantage</label>
+							<label className="cursor-pointer" htmlFor={`${id}-disadvantage`}>Disadvantage</label>
 						</div>
 					</fieldset>
 					<div className="w-full flex justify-center items-center">

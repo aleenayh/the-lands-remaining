@@ -78,8 +78,9 @@ function ThemeSelector() {
 		<div>
 			<h2 className="text-lg font-bold text-theme-text-accent">Change Theme</h2>
 			<div className="flex flex-col md:grid md:grid-cols-2 gap-2 justify-center items-center md:justify-start text-left">
-				<label htmlFor="elegy">
+				<label htmlFor="elegy" className="cursor-pointer">
 					<input
+						id="elegy"
 						type="radio"
 						value="elegy"
 						name="theme"
@@ -89,8 +90,9 @@ function ThemeSelector() {
 					/>
 					Elegy
 				</label>
-				<label htmlFor="forest">
+				<label htmlFor="forest" className="cursor-pointer">
 					<input
+						id="forest"
 						type="radio"
 						value="forest"
 						name="theme"
@@ -100,8 +102,9 @@ function ThemeSelector() {
 					/>
 					The Great Forest
 				</label>
-				<label htmlFor="sagravelle">
+				<label htmlFor="sagravelle" className="cursor-pointer">
 					<input
+						id="sagravelle"
 						type="radio"
 						value="sagravelle"
 						name="theme"
@@ -111,8 +114,9 @@ function ThemeSelector() {
 					/>
 					Sagravelle
 				</label>
-				<label htmlFor="nevask">
+				<label htmlFor="nevask" className="cursor-pointer">
 					<input
+						id="nevask"
 						type="radio"
 						value="nevask"
 						name="theme"
@@ -122,8 +126,9 @@ function ThemeSelector() {
 					/>
 					Nevask
 				</label>
-				<label htmlFor="dark">
+				<label htmlFor="dark" className="cursor-pointer">
 					<input
+						id="dark"
 						type="radio"
 						value="dark"
 						name="theme"
@@ -133,8 +138,9 @@ function ThemeSelector() {
 					/>
 					High Contrast (Dark)
 				</label>
-				<label htmlFor="light">
+				<label htmlFor="light" className="cursor-pointer">
 					<input
+						id="light"
 						type="radio"
 						value="light"
 						name="theme"

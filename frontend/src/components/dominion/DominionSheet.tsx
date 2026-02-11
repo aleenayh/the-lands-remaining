@@ -285,8 +285,8 @@ function DominionMysteryForm({
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
 			<div className="flex gap-2 items-center justify-start my-4">
-				<input type="radio" {...register("title")} value="noxilliax" />
-				<label htmlFor="title">
+				<input id="dominion-noxilliax" type="radio" {...register("title")} value="noxilliax" />
+				<label className="cursor-pointer" htmlFor="dominion-noxilliax">
 					Noxilliax, The Emerald Nightmare (The Great Forest)
 				</label>
 			</div>

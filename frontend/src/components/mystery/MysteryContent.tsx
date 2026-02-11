@@ -452,11 +452,12 @@ function RewardForm({
 				<div key={supplicant} className="flex flex-col gap-2 items-center">
 					<div className="w-full flex gap-2 items-center justify-start">
 						<input
+							id={`supplicant-${supplicant}`}
 							type="radio"
 							{...register("supplicant")}
 							value={supplicant}
 						/>
-						<label key={supplicant} htmlFor={supplicant}>
+						<label key={supplicant} className="cursor-pointer" htmlFor={`supplicant-${supplicant}`}>
 							{supplicant}
 						</label>
 					</div>
