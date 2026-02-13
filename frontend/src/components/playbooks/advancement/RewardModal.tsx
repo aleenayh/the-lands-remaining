@@ -181,12 +181,12 @@ export function AddRelicForm({ onClose }: { onClose: () => void }) {
 				</p>
 				<div className="flex gap-2 justify-evenly">
 					<div className="flex items-center justify-start">
-						<input type="radio" {...register("type")} value="relic" />
-						<label htmlFor="type">Relic</label>
+						<input id="add-relic-type-relic" type="radio" {...register("type")} value="relic" />
+						<label className="cursor-pointer" htmlFor="add-relic-type-relic">Relic</label>
 					</div>
 					<div className="flex items-center justify-start">
-						<input type="radio" {...register("type")} value="equipment" />
-						<label htmlFor="type">Equipment</label>
+						<input id="add-relic-type-equipment" type="radio" {...register("type")} value="equipment" />
+						<label className="cursor-pointer" htmlFor="add-relic-type-equipment">Equipment</label>
 					</div>
 				</div>
 

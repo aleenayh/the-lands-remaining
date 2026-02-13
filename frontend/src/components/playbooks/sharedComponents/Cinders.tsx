@@ -48,12 +48,13 @@ export function Cinders({ character }: { character: Character }) {
 						className="flex items-start gap-2 text-left"
 					>
 						<input
+							id={value}
 							type="checkbox"
 							checked={marked}
 							disabled={!editable}
 							onChange={(e) => onToggle(e.target.checked, parseInt(key, 10))}
 						/>
-						<label className="text-sm" htmlFor={value}>
+						<label className={`text-sm ${editable ? "cursor-pointer" : ""}`} htmlFor={value}>
 							<span
 								className={`${marked ? "text-theme-text-muted line-through" : ""}`}
 							>

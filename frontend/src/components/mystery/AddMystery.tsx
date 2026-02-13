@@ -356,9 +356,10 @@ function MysteryLookup({
 					<label
 						key={mystery.title}
 						htmlFor={mystery.title}
-						className="text-theme-text-accent text-center font-bold"
+						className="text-theme-text-accent text-center font-bold cursor-pointer"
 					>
 						<input
+							id={mystery.title}
 							type="radio"
 							{...register("title")}
 							value={mystery.title}

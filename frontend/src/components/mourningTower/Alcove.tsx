@@ -201,8 +201,8 @@ function PickRelicForm({ onClose }: { onClose: () => void }) {
 			<div className="flex flex-col gap-2">
 				{relics.map((relic) => (
 					<div key={relic.title}>
-						<input type="radio" {...register("relic")} value={relic.title} />
-						<label htmlFor={relic.title}>{relic.title}</label>
+						<input id={relic.title} type="radio" {...register("relic")} value={relic.title} />
+						<label className="cursor-pointer" htmlFor={relic.title}>{relic.title}</label>
 					</div>
 				))}
 			</div>

@@ -275,8 +275,8 @@ function CandleCreateForm({
 						{aspects.map((aspect, index) => (
 							// biome-ignore lint/suspicious/noArrayIndexKey: order unimportant
 							<div key={`aspect-${index}`}>
-								<input type="radio" value={aspect} {...register("aspect")} />
-								<label htmlFor={`aspect-${index}`}>{aspect}</label>
+								<input id={`aspect-${index}`} type="radio" value={aspect} {...register("aspect")} />
+								<label className="cursor-pointer" htmlFor={`aspect-${index}`}>{aspect}</label>
 							</div>
 						))}
 						<h3 className="text-center font-bold text-theme-text-accent">
@@ -286,12 +286,8 @@ function CandleCreateForm({
 							(on a roll of 9 or lower)
 						</p>
 						<ul className="list-disc list-inside ml-4">
-							<input
-								type="radio"
-								value="no-complication"
-								{...register("complication")}
-							/>
-							<label htmlFor="complication-1">None</label>
+							<input id="complication-none" type="radio" value="no-complication" {...register("complication")} />
+							<label className="cursor-pointer" htmlFor="complication-none">None</label>
 							{complications
 								.filter((complication) => complication !== "")
 								.map((complication, index) => (
@@ -302,11 +298,12 @@ function CandleCreateForm({
 										}`}
 									>
 										<input
+											id={`complication-${index}`}
 											type="radio"
 											value={complication}
 											{...register("complication")}
 										/>
-										<label htmlFor={`complication-${index}`}>
+										<label className="cursor-pointer" htmlFor={`complication-${index}`}>
 											{complication}
 										</label>
 									</div>

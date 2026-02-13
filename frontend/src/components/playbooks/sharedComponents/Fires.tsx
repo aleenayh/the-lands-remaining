@@ -115,12 +115,13 @@ export function Fires({ character }: { character: Character }) {
 						return (
 							<div key={fire} className="flex items-start gap-2 text-left">
 								<input
+									id={`old-fire-${i}`}
 									type="checkbox"
 									checked={markedOldFire[i]}
 									disabled={!editable}
 									onChange={(e) => onToggleOldFire(e.target.checked, i)}
 								/>
-								<label className="text-xs" htmlFor={fire}>
+								<label className={`text-xs ${editable ? "cursor-pointer" : ""}`} htmlFor={`old-fire-${i}`}>
 									{editable && (
 										<span
 											className={`${markedOldFire[i] ? "text-theme-text-muted line-through" : ""}`}
@@ -162,7 +163,7 @@ export function Fires({ character }: { character: Character }) {
 									onToggleFireToCome(e.target.checked, key as fireToComeKey)
 								}
 							/>
-							<label className="text-xs" htmlFor={`fire-fire-${fire}`}>
+							<label className={`text-xs ${editable ? "cursor-pointer" : ""}`} htmlFor={`fire-fire-${fire}`}>
 								<strong
 									className={`${marked || disabled ? "text-theme-text-muted line-through" : ""}`}
 								>
@@ -193,6 +194,7 @@ export function Fires({ character }: { character: Character }) {
 						return (
 							<div key={fire.text} className="flex items-start gap-2 text-left">
 								<input
+									id={`fire-fire-${fire.text}`}
 									type="checkbox"
 									checked={fire.marked}
 									disabled={!editable}
@@ -200,7 +202,10 @@ export function Fires({ character }: { character: Character }) {
 										onToggleShrineFire(fire.text, e.target.checked)
 									}
 								/>
-								<label className="text-xs" htmlFor={`fire-fire-${fire.text}`}>
+								<label
+									className={`text-xs ${editable ? "cursor-pointer" : ""}`}
+									htmlFor={`fire-fire-${fire.text}`}
+								>
 									{fire.text}
 								</label>
 							</div>
