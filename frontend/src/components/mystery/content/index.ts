@@ -25,7 +25,6 @@ export function lookupMystery(title: string): MysteryContent | undefined {
 		questionsAndOpportunities: mystery.questionsAndOpportunities,
 		intro: mystery.intro,
 		countdownTotal: mystery.countdownTotal,
-		clues: mystery.clues,
 		rewards: mystery.rewards,
 	};
 }
