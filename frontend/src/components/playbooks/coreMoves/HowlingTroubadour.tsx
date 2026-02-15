@@ -1,5 +1,5 @@
 import { Dialog } from "radix-ui";
-import { useCallback, useId } from "react";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useGame } from "../../../context/GameContext";
@@ -237,10 +237,10 @@ function RhagarModal({
 						<div className="flex gap-2 items-center">
 							<input
 								type="checkbox"
-								id={useId()}
+								id="decrease-composure-checkbox"
 								{...register("decrease-composure-checkbox")}
 							/>
-							<label htmlFor="decrease-composure-checkbox">
+							<label className="cursor-pointer" htmlFor="decrease-composure-checkbox">
 								Decrease Composure by 1 (to {character.abilities.composure - 1})
 								{character.abilities.vitality >= 4
 									? ". Your Vitality cannot be increased any further"
@@ -251,10 +251,10 @@ function RhagarModal({
 						<div className="flex gap-2 items-center">
 							<input
 								type="checkbox"
-								id={useId()}
+								id="decrease-reason-checkbox"
 								{...register("decrease-reason-checkbox")}
 							/>
-							<label htmlFor="decrease-reason-checkbox">
+							<label className="cursor-pointer" htmlFor="decrease-reason-checkbox">
 								Decrease Reason by 1 (to {character.abilities.reason - 1})
 								{character.abilities.presence >= 4
 									? ". Your Presence cannot be increased any further"
@@ -265,11 +265,11 @@ function RhagarModal({
 						<div className="flex gap-2 items-center">
 							<input
 								type="checkbox"
-								id={useId()}
+								id="unmark-tinder-arch-checkbox"
 								disabled={!character.fireToCome["The Tinder Arch"]}
 								{...register("unmark-tinder-arch-checkbox")}
 							/>
-							<label htmlFor="unmark-tinder-arch-checkbox">
+							<label className="cursor-pointer" htmlFor="unmark-tinder-arch-checkbox">
 								{character.fireToCome["The Tinder Arch"]
 									? "Unmark The Tinder Arch"
 									: "Unmark The Tinder Arch (no effect; not yet marked)"}
@@ -278,10 +278,10 @@ function RhagarModal({
 						<div className="flex gap-2 items-center">
 							<input
 								type="checkbox"
-								id={useId()}
+								id="unmark-aspects-weapon-checkbox"
 								{...register("unmark-aspects-weapon-checkbox")}
 							/>
-							<label htmlFor="unmark-aspects-weapon-checkbox">
+							<label className="cursor-pointer" htmlFor="unmark-aspects-weapon-checkbox">
 								Unmark all Aspects on a Relic or piece of Equipment that is a
 								weapon. (Manually after submitting).
 							</label>
@@ -402,10 +402,10 @@ function ElcyeneModal({
 						<div className="flex gap-2 items-center">
 							<input
 								type="checkbox"
-								id={useId()}
+								id="decrease-vitality-checkbox"
 								{...register("decrease-vitality-checkbox")}
 							/>
-							<label htmlFor="decrease-vitality-checkbox">
+							<label className="cursor-pointer" htmlFor="decrease-vitality-checkbox">
 								Decrease Vitality by 1 (to {character.abilities.vitality - 1})
 								{character.abilities.composure >= 4
 									? ". Your Composure cannot be increased any further"
@@ -416,10 +416,10 @@ function ElcyeneModal({
 						<div className="flex gap-2 items-center">
 							<input
 								type="checkbox"
-								id={useId()}
+								id="decrease-presence-checkbox"
 								{...register("decrease-presence-checkbox")}
 							/>
-							<label htmlFor="decrease-presence-checkbox">
+							<label className="cursor-pointer" htmlFor="decrease-presence-checkbox">
 								Decrease Presence by 1 (to {character.abilities.presence - 1})
 								{character.abilities.reason >= 4
 									? ". Your Reason cannot be increased any further"
@@ -430,10 +430,10 @@ function ElcyeneModal({
 						<div className="flex gap-2 items-center">
 							<input
 								type="checkbox"
-								id={useId()}
+								id="unmark-old-fire-checkbox"
 								{...register("unmark-old-fire-checkbox")}
 							/>
-							<label htmlFor="unmark-old-fire">
+							<label className="cursor-pointer" htmlFor="unmark-old-fire-checkbox">
 								Unmark any marked box on The Old Fire; narrate the story
 								differently when you mark it again. (Manually after submitting).
 							</label>
@@ -441,10 +441,10 @@ function ElcyeneModal({
 						<div className="flex gap-2 items-center">
 							<input
 								type="checkbox"
-								id={useId()}
+								id="unmark-aspects-checkbox"
 								{...register("unmark-aspects-checkbox")}
 							/>
-							<label htmlFor="unmark-aspects-checkbox">
+							<label className="cursor-pointer" htmlFor="unmark-aspects-checkbox">
 								Unmark all Aspects on a Relic or piece of Equipment that is a
 								not weapon. (Manually after submitting).
 							</label>

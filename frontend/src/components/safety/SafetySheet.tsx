@@ -72,8 +72,8 @@ function LinesAndVeils() {
 	const { lines, veils } = gameState.safety;
 
 	const remove = (type: "line" | "veil", text: string) => {
-		const newLines = lines.filter((line) => line !== text);
-		const newVeils = veils.filter((veil) => veil !== text);
+		const newLines = type === "line" ? lines.filter((line) => line !== text) : lines;
+		const newVeils = type === "veil" ? veils.filter((veil) => veil !== text) : veils;
 		updateGameState({
 			safety: {
 				lines: newLines,
@@ -290,12 +290,12 @@ function AddLineOrVeilForm() {
 			/>
 			<div className="flex gap-2 justify-center">
 				<div className="flex gap-2 items-center justify-start">
-					<input type="radio" {...register("type")} value="line" />
-					<label htmlFor="type">Line</label>
+					<input id="type-line" type="radio" {...register("type")} value="line" />
+					<label className="cursor-pointer" htmlFor="type-line">Line</label>
 				</div>
 				<div className="flex gap-2 items-center justify-start">
-					<input type="radio" {...register("type")} value="veil" />
-					<label htmlFor="type">Veil</label>
+					<input id="type-veil" type="radio" {...register("type")} value="veil" />
+					<label className="cursor-pointer" htmlFor="type-veil">Veil</label>
 				</div>
 			</div>
 			<button

@@ -64,16 +64,18 @@ function AspectSpan({
 	onToggle: () => void;
 }) {
 	return (
-		<span>
+		<span
+			onClick={editable ? onToggle : undefined}
+			className={editable ? "cursor-pointer select-none" : "select-none"}
+		>
 			<button
 				type="button"
-				onClick={onToggle}
 				disabled={!editable}
 				className={`inline-block align-middle w-3 h-3 border rounded-sm text-[8px] leading-[0.6rem] text-center mr-0.5 ${
 					checked
 						? "bg-theme-accent-primary border-theme-accent-primary text-white"
 						: "border-theme-border-accent bg-transparent"
-				} ${editable ? "cursor-pointer hover:border-theme-accent-primary" : "cursor-default opacity-70"}`}
+				} ${editable ? "hover:border-theme-accent-primary" : "cursor-default opacity-70"}`}
 				aria-label={checked ? "Uncheck aspect" : "Check aspect"}
 			>
 				{checked && "✓"}
