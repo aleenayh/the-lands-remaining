@@ -49,26 +49,28 @@ export function DiceIndicator({ playerId }: { playerId: string }) {
 					</button>
 				</Tooltip.Trigger>
 			</div>
-			<Tooltip.Content>
-				<StyledTooltip>
-					{!rolling ? (
-						<div className="flex flex-col gap-1">
-							<div className="text-xs text-theme-text-muted">Last roll:</div>{" "}
-							<div className="text-lg font-bold">
-								<strong>{lastRoll?.roll}</strong>
+			<Tooltip.Portal>
+				<Tooltip.Content className="z-30" side="bottom">
+					<StyledTooltip>
+						{!rolling ? (
+							<div className="flex flex-col justify-center items-center gap-1">
+								<div className="text-xs text-theme-text-muted">Last roll:</div>{" "}
+								<div className="text-lg font-bold">
+									<strong>{lastRoll?.roll}</strong>
+								</div>
+								<div className="lowercase text-xs text-theme-text-muted">
+									({lastRoll?.type ?? "N/A"})
+								</div>
 							</div>
-							<div className="lowercase text-xs text-theme-text-muted">
-								({lastRoll?.type ?? "N/A"})
+						) : (
+							<div className="diceRolling">
+								{" "}
+								<DiceIcon className="w-10 h-10" />
 							</div>
-						</div>
-					) : (
-						<div className="diceRolling">
-							{" "}
-							<DiceIcon className="w-10 h-10" />
-						</div>
-					)}
-				</StyledTooltip>
-			</Tooltip.Content>
+						)}
+					</StyledTooltip>
+				</Tooltip.Content>
+			</Tooltip.Portal>
 		</Tooltip.Root>
 	);
 }
