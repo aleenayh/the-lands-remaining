@@ -3,9 +3,15 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useGame } from "../../context/GameContext";
+import { Divider } from "../shared/Divider";
 import { canonicalMysteries } from "./content";
 import { CountdownItem } from "./MysteryContent";
-import { type Mystery, MysteryTheme, type Question } from "./types";
+import {
+	generateMysteryId,
+	type Mystery,
+	MysteryTheme,
+	type Question,
+} from "./types";
 
 type AddMysteryFormInputs = {
 	title: string;
@@ -87,7 +93,7 @@ export function AddMystery() {
 					)}
 
 					{selectedTab === "custom" && (
-						<CustomMysteryForm setIsOpen={setIsOpen} />
+						<CustomMysteryForm setIsOpen={setIsOpen} mystery={null} />
 					)}
 
 					{selectedTab !== "choose" && selectedTab !== "custom" && (
@@ -99,26 +105,68 @@ export function AddMystery() {
 	);
 }
 
+export function EditMystery({ mystery }: { mystery: Mystery }) {
+	const [isOpen, setIsOpen] = useState(false);
+	return (
+		<Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+			<Dialog.Trigger asChild>
+				<button
+					type="button"
+					className="border border-theme-border bg-theme-bg-primary hover:bg-theme-bg-accent px-2 py-1 rounded-lg text-sm text-theme-text-secondary hover:text-theme-text-primary"
+				>
+					Edit Mystery
+				</button>
+			</Dialog.Trigger>
+			<Dialog.Portal>
+				<Dialog.Overlay className="DialogOverlay" style={{ zIndex: 20 }} />
+				<Dialog.Content className="DialogContent" style={{ zIndex: 30 }}>
+					<Dialog.Close asChild>
+						<button
+							type="button"
+							className="absolute top-2 right-2 aspect-square w-8 h-8 bg-theme-bg-accent text-theme-text-primary rounded-full flex justify-center items-center"
+						>
+							X
+						</button>
+					</Dialog.Close>
+					<Dialog.Title className="DialogTitle">Edit Mystery</Dialog.Title>
+					<Dialog.Description className="hidden">
+						Edit the questions, opportunities, introduction or countdown for{" "}
+						{mystery.title}.
+					</Dialog.Description>
+
+					<CustomMysteryForm setIsOpen={setIsOpen} mystery={mystery} />
+				</Dialog.Content>
+			</Dialog.Portal>
+		</Dialog.Root>
+	);
+}
+
 function CustomMysteryForm({
 	setIsOpen,
+	mystery,
 }: {
 	setIsOpen: (isOpen: boolean) => void;
+	mystery: Mystery | null;
 }) {
 	const [numberOfQuestions, setNumberOfQuestions] = useState(1);
 	const { register, handleSubmit, watch, reset, setValue } =
 		useForm<AddMysteryFormInputs>({
 			defaultValues: {
-				title: "",
-				intro: "",
-				questions: [
+				title: mystery?.title || "",
+				intro: mystery?.intro?.join("\n") || "",
+				questions: mystery?.questions?.map((q) => ({
+					text: q.text,
+					complexity: q.complexity,
+					opportunity: q.opportunity,
+				})) || [
 					{
 						text: "",
 						complexity: 1,
 						opportunity: "",
 					},
 				],
-				theme: MysteryTheme.Dandelion,
-				countdownTotal: 3,
+				theme: mystery?.theme || MysteryTheme.Dandelion,
+				countdownTotal: mystery?.countdownTotal || 3,
 			},
 		});
 	const { gameState, updateGameState } = useGame();
@@ -135,16 +183,26 @@ function CustomMysteryForm({
 
 	const onSubmit = (data: AddMysteryFormInputs) => {
 		const newMystery: Mystery = {
+			...mystery,
+			id: mystery?.id || generateMysteryId(),
 			title: data.title,
 			intro: data.intro.split("\n").filter((line) => line.trim() !== ""),
 			questions: data.questions,
 			theme: data.theme,
 			countdownTotal: data.countdownTotal,
-			countdownCurrent: 0,
+			countdownCurrent: mystery?.countdownCurrent || 0,
 		};
-		updateGameState({
-			mysteries: [...gameState.mysteries, newMystery],
-		});
+		if (mystery) {
+			updateGameState({
+				mysteries: gameState.mysteries.map((m) =>
+					m.id === mystery.id ? newMystery : m,
+				),
+			});
+		} else {
+			updateGameState({
+				mysteries: [...gameState.mysteries, newMystery],
+			});
+		}
 		reset();
 		setIsOpen(false);
 	};
@@ -272,7 +330,7 @@ function CustomMysteryForm({
 							type="number"
 							{...register("countdownTotal")}
 							min={0}
-							max={20}
+							max={10}
 							className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
 						/>
 					</div>
@@ -288,7 +346,7 @@ function CustomMysteryForm({
 					type="submit"
 					className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100"
 				>
-					Add Mystery
+					{mystery ? "Save Mystery" : "Add Mystery"}
 				</button>
 			</div>
 		</form>
@@ -320,6 +378,7 @@ function MysteryLookup({
 			return;
 		}
 		const newMystery: Mystery = {
+			id: generateMysteryId(),
 			title: data.title,
 			questions: mystery.questionsAndOpportunities.map((q) => ({
 				text: q.question,
@@ -401,10 +460,6 @@ function MysteryLookup({
 			</div>
 		</form>
 	);
-}
-
-function Divider() {
-	return <div className="w-full bg-theme-bg-accent h-px" />;
 }
 
 function Preview({ type, total }: { type: MysteryTheme; total: number }) {

@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { catchWithWarning } from "../../utils/schemaValidation";
 
+export function generateMysteryId(): string {
+	const id = crypto.randomUUID().substring(0, 8);
+	return id;
+}
+
 export const questionSchema = z.object({
 	text: z.string(),
 	opportunity: z.string().optional().catch(undefined),
@@ -27,6 +32,10 @@ const clueSchema = z.object({
 });
 
 export const mysterySchema = z.object({
+	id: z
+		.string()
+		.catch(() => generateMysteryId())
+		.default(() => generateMysteryId()),
 	title: z.string().catch(catchWithWarning("mystery.title", "Mystery")),
 	intro: z.array(z.string()).optional().catch([]),
 	questions: z

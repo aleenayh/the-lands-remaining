@@ -8,6 +8,7 @@ import { AnswerQuestionDiceRollModal } from "../shared/Dice";
 import { Divider } from "../shared/Divider";
 import { Section } from "../shared/Section";
 import { StyledTooltip } from "../shared/Tooltip";
+import { EditMystery } from "./AddMystery";
 import { lookupMystery } from "./content";
 import { themeElements } from "./themes";
 import type { Mystery } from "./types";
@@ -22,7 +23,7 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 	const onToggle = (checked: boolean) => {
 		updateGameState({
 			mysteries: gameState.mysteries.map((m) =>
-				m.title === mystery.title
+				m.id === mystery.id
 					? {
 							...m,
 							countdownCurrent: checked
@@ -35,7 +36,7 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 	};
 	const onRemove = () => {
 		updateGameState({
-			mysteries: gameState.mysteries.filter((m) => m.title !== mystery.title),
+			mysteries: gameState.mysteries.filter((m) => m.id !== mystery.id),
 		});
 	};
 
@@ -49,7 +50,7 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 			: [{ text: question, earned: false, explained: false, removed: true }];
 		updateGameState({
 			mysteries: gameState.mysteries.map((m) =>
-				m.title === mystery.title
+				m.id === mystery.id
 					? {
 							...m,
 							questions: m.questions?.filter((q) => q.text !== question),
@@ -99,6 +100,8 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 						<Dialog.Trigger className="border border-theme-border bg-theme-bg-primary hover:bg-theme-bg-accent px-2 py-1 rounded-lg text-sm text-theme-text-secondary hover:text-theme-text-primary">
 							Issue Rewards
 						</Dialog.Trigger>
+
+						<EditMystery mystery={mystery} />
 					</div>
 				)}
 				{mystery.countdownTotal > 0 && (
@@ -277,7 +280,7 @@ function ClueSection({
 				];
 		updateGameState({
 			mysteries: gameState.mysteries.map((m) =>
-				m.title === mystery.title ? { ...m, clues: [...newClues] } : m,
+				m.id === mystery.id ? { ...m, clues: [...newClues] } : m,
 			),
 		});
 		reset();
@@ -296,7 +299,7 @@ function ClueSection({
 					];
 		updateGameState({
 			mysteries: gameState.mysteries.map((m) =>
-				m.title === mystery.title
+				m.id === mystery.id
 					? {
 							...m,
 							clues: [...newClues],
@@ -312,7 +315,7 @@ function ClueSection({
 		) ?? [{ text: clue, earned: true, explained: checked, removed: false }];
 		updateGameState({
 			mysteries: gameState.mysteries.map((m) =>
-				m.title === mystery.title ? { ...m, clues: [...newClues] } : m,
+				m.id === mystery.id ? { ...m, clues: [...newClues] } : m,
 			),
 		});
 	};
@@ -326,7 +329,7 @@ function ClueSection({
 
 		updateGameState({
 			mysteries: gameState.mysteries.map((m) =>
-				m.title === mystery.title ? { ...m, clues: [...newClues] } : m,
+				m.id === mystery.id ? { ...m, clues: [...newClues] } : m,
 			),
 		});
 	};
@@ -457,7 +460,11 @@ function RewardForm({
 							{...register("supplicant")}
 							value={supplicant}
 						/>
-						<label key={supplicant} className="cursor-pointer" htmlFor={`supplicant-${supplicant}`}>
+						<label
+							key={supplicant}
+							className="cursor-pointer"
+							htmlFor={`supplicant-${supplicant}`}
+						>
 							{supplicant}
 						</label>
 					</div>
