@@ -10,28 +10,6 @@ export const GreatForestMysteries: MysteryContent[] = [
 			"The stories say she sits at the swamp’s heart, attended by the diseased remains of her court. They say her beauty withered to madness, her laughter curdled to a wet, rasping croon. She is too powerful to approach directly, too broken to reason with, and too rooted in sorrow to leave her throne of thorns and muck.",
 			"Yet there is one tale—old, uncertain, half-forgotten—that may offer a path. When the Dimning came, Cenduwain did not fall to shadow. She fell to grief. She lost the one she loved, and in that loss her heart unraveled. If the tale is true, then to reach her—to stand close enough to survive her terrible power—you must uncover the truth of that lost love. You must learn who they were, what they looked like, their story… and wear it like a mask to the heart of the swamp.",
 		],
-		clues: [
-			"A wilted rose held upright by a thin thread of gold—too fine to be mortal craft.",
-			"Two sets of footprints in the mud, one dissolving into petals the farther it goes.",
-			"A fragment of a love poem etched onto a broken marble tile; half the lines are missing.",
-			"A cracked locket containing (pick one: a lock of hair, a pressed petal, a drop of still-warm sap, something else).",
-			"A cloak pin shaped like an unfurling rose, its metal eaten by rot everywhere except where it once touched skin.",
-			"A half-sunken gondola with a single cushion preserved in unnaturally perfect condition.",
-			"A scrap of parchment naming a Fae courtship rite, stained with bloom rot.",
-			"A thorn crown fused to the skull of a long-dead courtier; the thorns bloom when worn.",
-			"A cluster of roses growing in the perfect shape of a handprint.",
-			"A jeweled ring lodged deep in the bark of a twisted tree.",
-			"A patch of swamp water that reflects not the viewer, but a stranger’s face—beautiful, sorrowful, or furious.",
-			"A broken mask of lacquered petals, one side pristine, the other melted.",
-			"A whisper rising over and over from the vines: “Come back to me,” though the voice changes gender or tone each time.",
-			"Two butterflies pinned together on a thorn, their wings still beating faintly.",
-			"A stone bench split cleanly in two, the crack filled with luminous moss that forms the shape of intertwined initials.",
-			"The remnants of a song carved into the trunk of a drowned willow; the last line has been violently scratched out.",
-			"A warped marble plaque naming a dance once performed “only for the Lady and her chosen.”",
-			"A brittle scroll describing a Fae courtship ritual that requires (pick one: a sacrifice, a secret, an oath, something else).",
-			"A halo of dragonflies suddenly appears over someone’s head.",
-			"A twisted wine goblet fused to the stone floor of a ruined pavilion, half-filled with water that tastes faintly of honey.",
-		],
 		countdownTotal: 3,
 		questionsAndOpportunities: [
 			{
@@ -65,5 +43,45 @@ export const GreatForestMysteries: MysteryContent[] = [
 				},
 			],
 		},
+	},
+	{
+		title: "Wightwood",
+		intro: [
+			"When the Old Fire was merely a spark and a single red moon hung in the sky, the earliest tribes of men made war with each other in petty attempts at carving their own settlements out of the wilderness. As a second moon appeared in the sky, a grove of strange trees emerged in place of one of the many battlefields scarring the land. Where once there were blood-stained acres littered with hundreds of unburied infantrymen, there now stood towering white birches. In the Age of Plenty, this place came to be known as the Wightwood—a memorial to the fallen, and a reminder of the sacrifices that helped make the Age possible.",
+			"As the Dimming’s shadow snuffed out the Old Fire, something in the darkness stirred the once-slumbering dead from their rest. Rising without nations to claim, these Undead soldiers learned to exist in a harmony they were denied in life. Though the Dimning’s shadow retreated and left the Lands in disarray, things remained tranquil in the Wightwood—for a time.",
+			"The Undead now speak of a strange lodge that recently appeared out of nowhere, floating high above the treetops. Visible only at night, the lodge’s design suggests the arrival of a race of beings called Lumenians, not seen since before the Dimning, and bears the crest of their celestial hunting party, the Silvercut Company. More curious though is the motive for their return: in recent years, they have snatched up several of the Undead to bring back to their lodge.",
+			"Though the Lumenians have not been seen since before the Dimning, bits of their folklore have remained. Their stories tell of a sleeping beast, the Lumen Prince, whose dreams guide the very orbit of the blue moon. The forthcoming eclipse portents the waking of the prince, whose temperament could leave not only the Lands, but the very cosmos, in ruins. With the eclipse drawing ever closer, and the Silvercut Company still on the hunt, the window to find the means to lull the prince shrinks.",
+		],
+		questionsAndOpportunities: [
+			{
+				question: "How can the Silvercut Lodge be accessed?",
+				complexity: 2,
+				opportunity:
+					"Gain access to the Silvercut Lodge and the Locations therein, an unlock the next Question.",
+			},
+			{
+				question:
+					"What does the Silvercut Company need from the Undead to keep the Restless Lumen Prince asleep?",
+				complexity: 6,
+				opportunity:
+					"Resolve the Mystery by immediately engaging in a Struggle to perform a ritual to put the Restless Lumen Prince back to sleep.",
+			},
+		],
+		rewards: {
+			supplicants: {
+				"Scrutineer Kheiro":
+					"Gain one extra Clue on the Information Move when consulting him about matters related to Lumenian culture, the physiology of beasts, or the cosmos, even on a miss.",
+				Raenya:
+					"Gain one extra Clue on the Information Move when consulting them about matters related to nocturnal navigation, hunting, or trapping, even on a miss.",
+			},
+			items: [
+				"Lumenglider boots: Leather hunting boots that allow the wearer to <walk on crescent-shaped plates of rigid moonlight.>",
+				"Darkstar hunting bow: <The wielder is able to see perfectly in total darkness> when the bowstring is fully drawn.",
+				"Twin-moon astrolabe: This handheld device tracks the paths of the twin moons, and how their movement effects <the constellations in the skies> and <the waters of the Lands.>",
+				"Flask of wightsap: When ingested in small doses, this blood-red sap <can impart a tranquil euphoria>, though <too much can lead to madness or catatonia.>",
+				"Wightwood buckler: A small round shield reinforced with wightwood branches provides <special protection against fire.>",
+			],
+		},
+		countdownTotal: 5,
 	},
 ];

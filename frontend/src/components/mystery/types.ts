@@ -78,7 +78,6 @@ type MysteryBase = {
 		opportunity: string;
 	}[];
 	intro: string[];
-	clues: string[];
 };
 
 export type MysteryContent = MysteryBase & {
@@ -103,6 +102,7 @@ type Layer = {
 export type DominionContent = MysteryBase & {
 	servants: Servant[];
 	layers: Layer[];
+	clues: string[];
 };
 
 export const AvailableLands = {

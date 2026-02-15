@@ -406,22 +406,24 @@ function MysteryLookup({
 				<h2 className="text-lg font-bold text-theme-text-accent">
 					Select a Mystery
 				</h2>
-				{allMysteries.map((mystery) => (
-					<label
-						key={mystery.title}
-						htmlFor={mystery.title}
-						className="text-theme-text-accent text-center font-bold cursor-pointer"
-					>
-						<input
-							id={mystery.title}
-							type="radio"
-							{...register("title")}
-							value={mystery.title}
-							className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
-						/>
-						{mystery.title}
-					</label>
-				))}
+				<div className="grid grid-cols-2 gap-2">
+					{allMysteries.map((mystery) => (
+						<label
+							key={mystery.title}
+							htmlFor={mystery.title}
+							className="text-theme-text-accent text-center font-bold cursor-pointer"
+						>
+							<input
+								id={mystery.title}
+								type="radio"
+								{...register("title")}
+								value={mystery.title}
+								className="border p-2 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
+							/>
+							{mystery.title}
+						</label>
+					))}
+				</div>
 
 				<Divider />
 				<div className="mt-4 flex flex-col md:flex-row gap-2 items-center text-sm md:text-md">
