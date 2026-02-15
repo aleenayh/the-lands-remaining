@@ -8,7 +8,7 @@ export const defaultGameState: GameState = {
 	dominion: null,
 	journeys: [],
 	tower: {
-		supplicants: [],
+		supplicants: {},
 		anchoresses: defaultAnchoresses,
 	},
 	players: [],

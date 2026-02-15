@@ -49,13 +49,17 @@ export const gameStateSchema = z.object({
 	dominion: dominionSchema.nullable().catch(null),
 	tower: z
 		.object({
-			supplicants: z.array(z.string()).optional().catch(undefined),
+			//description optional for data migration to 0.1.3
+			supplicants: z
+				.record(z.string(), z.string().optional().catch(undefined))
+				.optional()
+				.catch(undefined),
 			anchoresses: z
 				.record(z.string(), anchoressSchema)
 				.catch(defaultAnchoresses),
 		})
 		.catch({
-			supplicants: [],
+			supplicants: {},
 			anchoresses: defaultAnchoresses,
 		}),
 	players: z.array(playerSchema).catch(catchWithWarning("players", [])),

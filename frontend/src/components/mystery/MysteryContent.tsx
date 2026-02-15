@@ -9,7 +9,7 @@ import { Divider } from "../shared/Divider";
 import { Section } from "../shared/Section";
 import { StyledTooltip } from "../shared/Tooltip";
 import { EditMystery } from "./AddMystery";
-import { lookupMystery } from "./content";
+import { findSupplicant, lookupMystery } from "./content";
 import { themeElements } from "./themes";
 import type { Mystery } from "./types";
 
@@ -423,10 +423,19 @@ function RewardForm({
 	const { updateGameState, gameState } = useGame();
 
 	const onSubmit = (data: { supplicant: string }) => {
+		const supplicant = findSupplicant(data.supplicant);
+		if (!supplicant) {
+			toast.error(`Supplicant ${data.supplicant} not found.`);
+			return;
+		}
+		const newSupplicants = {
+			...(gameState.tower.supplicants ?? {}),
+			[data.supplicant]: supplicant,
+		};
 		updateGameState({
 			tower: {
 				...gameState.tower,
-				supplicants: [...(gameState.tower.supplicants ?? []), data.supplicant],
+				supplicants: newSupplicants,
 			},
 		});
 		toast.success(`Supplicant chosen: ${data.supplicant}`);
