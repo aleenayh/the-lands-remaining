@@ -380,6 +380,7 @@ function MysteryLookup({
 		const newMystery: Mystery = {
 			id: generateMysteryId(),
 			title: data.title,
+			intro: mystery.intro,
 			questions: mystery.questionsAndOpportunities.map((q) => ({
 				text: q.question,
 				complexity: q.complexity,
@@ -389,12 +390,6 @@ function MysteryLookup({
 			theme: data.theme,
 			countdownTotal: mystery.countdownTotal,
 			countdownCurrent: 0,
-			clues: mystery.clues.map((c) => ({
-				text: c,
-				earned: false,
-				explained: false,
-				removed: false,
-			})),
 		};
 		updateGameState({
 			mysteries: [...gameState.mysteries, newMystery],
