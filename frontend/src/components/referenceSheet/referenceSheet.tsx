@@ -168,6 +168,9 @@ export function ReferenceSheet({
 									<li>
 										On a 6-, the answer is incorrect and the Keeper reacts.
 									</li>
+									<li>
+										On a 12+, the answer is also a Lord Clue.
+									</li>
 								</ul>
 								<p className="italic text-sm">
 									Note: The Answer a Question roll can never be taken with
