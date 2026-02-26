@@ -13,7 +13,10 @@ export function Cinders({ character }: { character: Character }) {
 	const editable = id === character.playerId;
 	const { cinders } =
 		character.playbook === playbookKeys.custom
-			? { cinders: customFieldOrFallback(character, "cinderDefinitions").value }
+			? {
+					cinders: customFieldOrFallback(character, "cinderDefinitions")
+						.value as Record<number, string>,
+				}
 			: playbookBases[character.playbook];
 	const markedCinders = character.cinders;
 	const kindlingGateMarked = character.fireToCome["The Kindling Gate"] === true;
@@ -42,6 +45,12 @@ export function Cinders({ character }: { character: Character }) {
 			<h3 className="text-xl font-bold text-theme-text-accent">Cinders</h3>
 			{Object.entries(cinders).map(([key, value]) => {
 				const marked = markedCinders[parseInt(key, 10)] === true;
+				const crossedOut = shouldCrossOutCinder(
+					kindlingGateMarked,
+					parseInt(key, 10),
+					character,
+				);
+				if (crossedOut && !editable) return null;
 				return (
 					<div
 						key={`cinder-${key}`}
@@ -54,9 +63,12 @@ export function Cinders({ character }: { character: Character }) {
 							disabled={!editable}
 							onChange={(e) => onToggle(e.target.checked, parseInt(key, 10))}
 						/>
-						<label className={`text-sm ${editable ? "cursor-pointer" : ""}`} htmlFor={value}>
+						<label
+							className={`text-sm ${editable ? "cursor-pointer" : ""}`}
+							htmlFor={value}
+						>
 							<span
-								className={`${marked ? "text-theme-text-muted line-through" : ""}`}
+								className={`${crossedOut ? "text-theme-text-muted line-through" : ""} ${marked ? "font-bold text-theme-text-accent" : ""}`}
 							>
 								{value}
 							</span>
@@ -96,4 +108,36 @@ export function Cinders({ character }: { character: Character }) {
 			)}
 		</div>
 	);
+}
+
+function shouldCrossOutCinder(
+	kindlingGateMarked: boolean,
+	key: number,
+	character: Character,
+) {
+	if (!kindlingGateMarked) return false;
+	const heraldCondition = character.conditions.find((condition) =>
+		condition.toLowerCase().includes("herald"),
+	);
+	if (!heraldCondition) return false;
+	const cinderRecord =
+		character.playbook === playbookKeys.custom
+			? (customFieldOrFallback(character, "cinderDefinitions").value as Record<
+					number,
+					string
+				>)
+			: playbookBases[character.playbook].cinders;
+
+	//if no cinders match the condition we should  not cross out any of them
+	const cindersThatMatchCondition = Object.entries(cinderRecord).filter(
+		([_, value]) => {
+			const thisCinderTitle = value.split("-")[0].trim().toLowerCase();
+			return heraldCondition.toLowerCase().includes(thisCinderTitle);
+		},
+	);
+	if (cindersThatMatchCondition.length === 0) return false;
+
+	const thisCinderTitle = cinderRecord[key]?.split("-")[0].trim().toLowerCase();
+	if (heraldCondition.toLowerCase().includes(thisCinderTitle)) return false;
+	return true;
 }
