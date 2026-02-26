@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { Game } from "./components/Game";
 import { LandingPage } from "./components/landingPage/LandingPage";
 import { GameProvider } from "./context/GameContext";
+import { PreferencesProvider } from "./context/PreferencesContext";
 import { type GameState, PlayerRole, type UserInfo } from "./context/types";
 import ErrorBoundary from "./ErrorBoundary";
 import { nameToPlayerId } from "./lib/firebase";
@@ -51,16 +52,18 @@ function App() {
 	return (
 		<div className="App">
 			<ErrorBoundary>
-				<GameProvider
-					gameHash={gameHash}
-					userInfo={userInfo}
-					startingState={startingState}
-				>
-					<Tooltip.Provider>
-						<Toaster />
-						<Game />
-					</Tooltip.Provider>
-				</GameProvider>
+				<PreferencesProvider>
+					<GameProvider
+						gameHash={gameHash}
+						userInfo={userInfo}
+						startingState={startingState}
+					>
+						<Tooltip.Provider>
+							<Toaster />
+							<Game />
+						</Tooltip.Provider>
+					</GameProvider>
+				</PreferencesProvider>
 			</ErrorBoundary>
 		</div>
 	);

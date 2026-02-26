@@ -3,6 +3,7 @@ import { Dialog } from "radix-ui";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useGame } from "../../../context/GameContext";
+import { usePreferences } from "../../../context/PreferencesContext";
 import { PlayerRole } from "../../../context/types";
 import { AbilityBoxes } from "../sharedComponents/AbilityBoxes";
 import type { Character } from "../types";
@@ -50,6 +51,8 @@ const formSteps = [
 
 export function CustomCreateForm() {
 	const { updateGameState, user, gameState } = useGame();
+	const { prefersReducedMotion } = usePreferences();
+	const transitionDuration = prefersReducedMotion ? 0 : 0.2;
 	const [step, setStep] = useState<(typeof formSteps)[number]>(formSteps[0]);
 	const [moveModalOpen, setMoveModalOpen] = useState(false);
 	const [relicModalOpen, setRelicModalOpen] = useState(false);
@@ -143,7 +146,7 @@ export function CustomCreateForm() {
 							initial={{ opacity: 0, x: 100 }}
 							animate={{ opacity: 1, x: 0 }}
 							exit={{ opacity: 0, x: -100 }}
-							transition={{ duration: 0.2 }}
+							transition={{ duration: transitionDuration }}
 							key="base"
 						>
 							<p>
@@ -249,7 +252,7 @@ export function CustomCreateForm() {
 							initial={{ opacity: 0, x: 100 }}
 							animate={{ opacity: 1, x: 0 }}
 							exit={{ opacity: 0, x: -100 }}
-							transition={{ duration: 0.2 }}
+							transition={{ duration: transitionDuration }}
 							key="moves"
 						>
 							<p className="text-left">
@@ -337,7 +340,7 @@ export function CustomCreateForm() {
 							initial={{ opacity: 0, x: 100 }}
 							animate={{ opacity: 1, x: 0 }}
 							exit={{ opacity: 0, x: -100 }}
-							transition={{ duration: 0.2 }}
+							transition={{ duration: transitionDuration }}
 							key="relics"
 						>
 							<h2 className="font-bold text-center text-theme-text-accent text-lg">
@@ -425,7 +428,7 @@ export function CustomCreateForm() {
 							initial={{ opacity: 0, x: 100 }}
 							animate={{ opacity: 1, x: 0 }}
 							exit={{ opacity: 0, x: -100 }}
-							transition={{ duration: 0.2 }}
+							transition={{ duration: transitionDuration }}
 							key="questions"
 						>
 							<h2 className="font-bold text-center text-theme-text-accent text-lg">
@@ -478,7 +481,7 @@ export function CustomCreateForm() {
 							initial={{ opacity: 0, x: 100 }}
 							animate={{ opacity: 1, x: 0 }}
 							exit={{ opacity: 0, x: -100 }}
-							transition={{ duration: 0.2 }}
+							transition={{ duration: transitionDuration }}
 							key="cinders"
 						>
 							<h2 className="font-bold text-center text-theme-text-accent text-lg">
@@ -531,7 +534,7 @@ export function CustomCreateForm() {
 							initial={{ opacity: 0, x: 100 }}
 							animate={{ opacity: 1, x: 0 }}
 							exit={{ opacity: 0, x: -100 }}
-							transition={{ duration: 0.2 }}
+							transition={{ duration: transitionDuration }}
 							key="fires"
 						>
 							<h2 className="font-bold text-center text-theme-text-accent text-lg">
@@ -610,7 +613,7 @@ export function CustomCreateForm() {
 							initial={{ opacity: 0, x: 100 }}
 							animate={{ opacity: 1, x: 0 }}
 							exit={{ opacity: 0, x: -100 }}
-							transition={{ duration: 0.2 }}
+							transition={{ duration: transitionDuration }}
 							key="review"
 						>
 							<h2 className="font-bold text-center text-theme-text-accent text-lg">

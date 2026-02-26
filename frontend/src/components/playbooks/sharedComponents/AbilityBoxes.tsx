@@ -1,6 +1,7 @@
 import { Dialog } from "radix-ui";
 import { useId, useState } from "react";
 import { useGame } from "../../../context/GameContext";
+import { usePreferences } from "../../../context/PreferencesContext";
 import { type Die, DieComponent, rollDie } from "../../shared/Dice";
 import type { Abilities, Abilities as AbilityType } from "../types";
 
@@ -67,6 +68,7 @@ function AbilityBox({ ability, value, abbreviate = false }: AbilityBoxProps) {
 		"regular" | "advantage" | "disadvantage"
 	>("regular");
 	const id = useId();
+	const { prefersImmediateDice, prefersReducedMotion } = usePreferences();
 	const resetDice = (number: number) => {
 		return Array.from({ length: number }, (_, index) => ({
 			id: `${id}-${index}`,
@@ -85,27 +87,30 @@ function AbilityBox({ ability, value, abbreviate = false }: AbilityBoxProps) {
 		user: { id: playerId },
 	} = useGame();
 	const calcTotal = (diceToCalc: Die[]) => {
-		setTimeout(() => {
-			const result = diceToCalc
-				.filter((die) => !die.exclude)
-				.reduce((acc, die) => acc + die.value, 0);
-			const thisTotal = result + value;
-			setTotal(thisTotal);
-			updateGameState({
-				players: gameState.players.map((player) =>
-					player.id === playerId
-						? {
-								...player,
-								lastRoll: {
-									roll: thisTotal,
-									type: ability,
-									timestamp: new Date(),
-								},
-							}
-						: player,
-				),
-			});
-		}, 1500);
+		setTimeout(
+			() => {
+				const result = diceToCalc
+					.filter((die) => !die.exclude)
+					.reduce((acc, die) => acc + die.value, 0);
+				const thisTotal = result + value;
+				setTotal(thisTotal);
+				updateGameState({
+					players: gameState.players.map((player) =>
+						player.id === playerId
+							? {
+									...player,
+									lastRoll: {
+										roll: thisTotal,
+										type: ability,
+										timestamp: new Date(),
+									},
+								}
+							: player,
+					),
+				});
+			},
+			prefersImmediateDice ? 0 : 1500,
+		);
 	};
 
 	const handleRoll = () => {
@@ -127,45 +132,55 @@ function AbilityBox({ ability, value, abbreviate = false }: AbilityBoxProps) {
 		const initialDice = resetDice(numDice);
 		setDice(initialDice.map((die) => ({ ...die, isRolling: true })));
 
-		setTimeout(() => {
-			// Generate rolled values first so we can use them for both state and calculation
-			const rolledDice = initialDice.map((die) => ({
-				...die,
-				isRolling: false,
-				value: rollDie(),
-			}));
+		setTimeout(
+			() => {
+				// Generate rolled values first so we can use them for both state and calculation
+				const rolledDice = initialDice.map((die) => ({
+					...die,
+					isRolling: false,
+					value: rollDie(),
+				}));
 
-			setDice(rolledDice);
+				setDice(rolledDice);
 
-			if (rollType !== "regular") {
-				setTimeout(() => {
-					const idToExclude =
-						rollType === "advantage"
-							? rolledDice.find(
-									(die) =>
-										die.value ===
-										Math.min(...rolledDice.map((die) => die.value)),
-								)?.id
-							: rolledDice.find(
-									(die) =>
-										die.value ===
-										Math.max(...rolledDice.map((die) => die.value)),
-								)?.id;
+				if (rollType !== "regular") {
+					setTimeout(
+						() => {
+							const idToExclude =
+								rollType === "advantage"
+									? rolledDice.find(
+											(die) =>
+												die.value ===
+												Math.min(...rolledDice.map((die) => die.value)),
+										)?.id
+									: rolledDice.find(
+											(die) =>
+												die.value ===
+												Math.max(...rolledDice.map((die) => die.value)),
+										)?.id;
 
-					const finalDice = rolledDice.map((die) => ({
-						...die,
-						exclude: die.id === idToExclude,
-					}));
+							const finalDice = rolledDice.map((die) => ({
+								...die,
+								exclude: die.id === idToExclude,
+							}));
 
-					setDice(finalDice);
-					setBounceValue(true);
-					calcTotal(finalDice);
-				}, 1200);
-			} else {
-				setBounceValue(true);
-				calcTotal(rolledDice);
-			}
-		}, 2500);
+							setDice(finalDice);
+							if (!prefersReducedMotion && !prefersImmediateDice) {
+								setBounceValue(true);
+							}
+							calcTotal(finalDice);
+						},
+						prefersImmediateDice ? 0 : 1200,
+					);
+				} else {
+					if (!prefersReducedMotion && !prefersImmediateDice) {
+						setBounceValue(true);
+					}
+					calcTotal(rolledDice);
+				}
+			},
+			prefersImmediateDice ? 0 : 2500,
+		);
 	};
 
 	const handleOpenChange = (open: boolean) => {
@@ -216,7 +231,9 @@ function AbilityBox({ ability, value, abbreviate = false }: AbilityBoxProps) {
 								checked={rollType === "regular"}
 								onChange={() => setRollType("regular")}
 							/>
-							<label className="cursor-pointer" htmlFor={`${id}-regular`}>Regular Roll</label>
+							<label className="cursor-pointer" htmlFor={`${id}-regular`}>
+								Regular Roll
+							</label>
 						</div>
 						<div className="flex items-center">
 							<input
@@ -226,7 +243,9 @@ function AbilityBox({ ability, value, abbreviate = false }: AbilityBoxProps) {
 								checked={rollType === "advantage"}
 								onChange={() => setRollType("advantage")}
 							/>
-							<label className="cursor-pointer" htmlFor={`${id}-advantage`}>Advantage</label>
+							<label className="cursor-pointer" htmlFor={`${id}-advantage`}>
+								Advantage
+							</label>
 						</div>
 						<div className="flex items-center">
 							<input
@@ -236,7 +255,9 @@ function AbilityBox({ ability, value, abbreviate = false }: AbilityBoxProps) {
 								checked={rollType === "disadvantage"}
 								onChange={() => setRollType("disadvantage")}
 							/>
-							<label className="cursor-pointer" htmlFor={`${id}-disadvantage`}>Disadvantage</label>
+							<label className="cursor-pointer" htmlFor={`${id}-disadvantage`}>
+								Disadvantage
+							</label>
 						</div>
 					</fieldset>
 					<div className="w-full flex justify-center items-center">
