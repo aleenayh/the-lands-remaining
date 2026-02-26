@@ -178,7 +178,7 @@ function PreferencesControls() {
 				>
 					<Switch.Thumb className="data-[state=checked]:translate-x-4 block h-3 w-4 rounded-full bg-theme-accent-primary shadow-sm transition" />
 				</Switch.Root>
-				<div>Roll dice immediately</div>
+				<div>Roll dice instantly</div>
 			</div>
 			<div className="flex gap-2 justify-start items-center">
 				<Switch.Root

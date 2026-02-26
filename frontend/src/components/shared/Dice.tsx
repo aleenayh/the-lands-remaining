@@ -91,6 +91,7 @@ export function AnswerQuestionDiceRollModal({
 	question: Question;
 }) {
 	const id = useId();
+	const { prefersReducedMotion, prefersImmediateDice } = usePreferences();
 	const resetDice = (number: number) => {
 		return Array.from({ length: number }, (_, index) => ({
 			id: `${id}-${index}`,
@@ -126,25 +127,28 @@ export function AnswerQuestionDiceRollModal({
 	}
 
 	const calcTotal = (diceToCalc: Die[]) => {
-		setTimeout(() => {
-			const result = diceToCalc
-				.filter((die) => !die.exclude)
-				.reduce((acc, die) => acc + die.value, 0);
-			const thisTotal = result + modifier;
-			setTotal(thisTotal);
-			updateGameState({
-				mysteries: gameState.mysteries.map((m) =>
-					m.title === mystery.title
-						? {
-								...m,
-								questions: m.questions?.map((q) =>
-									q.text === question.text ? { ...q, result: thisTotal } : q,
-								),
-							}
-						: m,
-				),
-			});
-		}, 1500);
+		setTimeout(
+			() => {
+				const result = diceToCalc
+					.filter((die) => !die.exclude)
+					.reduce((acc, die) => acc + die.value, 0);
+				const thisTotal = result + modifier;
+				setTotal(thisTotal);
+				updateGameState({
+					mysteries: gameState.mysteries.map((m) =>
+						m.title === mystery.title
+							? {
+									...m,
+									questions: m.questions?.map((q) =>
+										q.text === question.text ? { ...q, result: thisTotal } : q,
+									),
+								}
+							: m,
+					),
+				});
+			},
+			prefersImmediateDice ? 0 : 1500,
+		);
 	};
 
 	const handleRoll = () => {
@@ -156,18 +160,23 @@ export function AnswerQuestionDiceRollModal({
 		const initialDice = resetDice(2);
 		setDice(initialDice.map((die) => ({ ...die, isRolling: true })));
 
-		setTimeout(() => {
-			// Generate rolled values first so we can use them for both state and calculation
-			const rolledDice = initialDice.map((die) => ({
-				...die,
-				isRolling: false,
-				value: rollDie(),
-			}));
+		setTimeout(
+			() => {
+				// Generate rolled values first so we can use them for both state and calculation
+				const rolledDice = initialDice.map((die) => ({
+					...die,
+					isRolling: false,
+					value: rollDie(),
+				}));
 
-			setDice(rolledDice);
-			setBounceValue(true);
-			calcTotal(rolledDice);
-		}, 2500);
+				setDice(rolledDice);
+				if (!prefersReducedMotion && !prefersImmediateDice) {
+					setBounceValue(true);
+				}
+				calcTotal(rolledDice);
+			},
+			prefersImmediateDice ? 0 : 2500,
+		);
 	};
 
 	const handleOpenChange = (open: boolean) => {
