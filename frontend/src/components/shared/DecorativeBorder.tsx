@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { usePreferences } from "../../context/PreferencesContext";
 import { ReactComponent as BorderIcon } from "../assets/border.svg";
 
 export function DecorativeBorder({
@@ -30,12 +31,21 @@ export function BorderedTray({
 	children: React.ReactNode;
 	className?: string;
 }) {
+	const { prefersReducedMotion } = usePreferences();
 	return (
 		<motion.div
-			initial={{ left: "-100%" }}
-			animate={{ left: 0 }}
-			exit={{ left: "-100%" }}
-			transition={{ duration: 1 }}
+			initial={{
+				left: prefersReducedMotion ? 0 : "-100%",
+				opacity: prefersReducedMotion ? 0 : 1,
+			}}
+			animate={{ left: 0, opacity: 1 }}
+			exit={{
+				left: prefersReducedMotion ? 0 : "-100%",
+				opacity: prefersReducedMotion ? 0 : 1,
+			}}
+			transition={{
+				duration: prefersReducedMotion ? 0 : 1,
+			}}
 			className={`absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary z-10 transition-all ease-linear pointer-events-auto border-theme-border-accent border-2 overflow-y-auto  border-l-0 p-4 ${className}`}
 		>
 			{children}

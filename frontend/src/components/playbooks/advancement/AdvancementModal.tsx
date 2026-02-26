@@ -3,6 +3,7 @@ import { Dialog } from "radix-ui";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useGame } from "../../../context/GameContext";
+import { usePreferences } from "../../../context/PreferencesContext";
 import { advancements, playbookBases } from "../content";
 import { coreMoveTitles } from "../coreMoves";
 import { constructAspectArray } from "../creation/CharacterCreateForm";
@@ -15,6 +16,8 @@ export function AdvancementModal() {
 		gameState,
 		user: { id },
 	} = useGame();
+	const { prefersReducedMotion } = usePreferences();
+	const transitionDuration = prefersReducedMotion ? 0 : 0.2;
 	const [step, setStep] = useState<
 		| "select-advancement"
 		| "adjust-stats"
@@ -108,7 +111,7 @@ export function AdvancementModal() {
 									initial={{ opacity: 0, x: 10 }}
 									animate={{ opacity: 1, x: 0 }}
 									exit={{ opacity: 0, x: -10 }}
-									transition={{ duration: 0.2 }}
+									transition={{ duration: transitionDuration }}
 									className="flex flex-col gap-4 mt-4"
 								>
 									{advancementOptions.map((option) => (
@@ -135,7 +138,7 @@ export function AdvancementModal() {
 									initial={{ opacity: 0, x: 10 }}
 									animate={{ opacity: 1, x: 0 }}
 									exit={{ opacity: 0, x: -10 }}
-									transition={{ duration: 0.2 }}
+									transition={{ duration: transitionDuration }}
 								>
 									<MoveSelector
 										character={character}
@@ -149,7 +152,7 @@ export function AdvancementModal() {
 									initial={{ opacity: 0, x: 10 }}
 									animate={{ opacity: 1, x: 0 }}
 									exit={{ opacity: 0, x: -10 }}
-									transition={{ duration: 0.2 }}
+									transition={{ duration: transitionDuration }}
 								>
 									<MoveWriter
 										character={character}
@@ -163,7 +166,7 @@ export function AdvancementModal() {
 									initial={{ opacity: 0, x: 10 }}
 									animate={{ opacity: 1, x: 0 }}
 									exit={{ opacity: 0, x: -10 }}
-									transition={{ duration: 0.2 }}
+									transition={{ duration: transitionDuration }}
 								>
 									<UnmarkAspects
 										character={character}
@@ -177,7 +180,7 @@ export function AdvancementModal() {
 									initial={{ opacity: 0, x: 10 }}
 									animate={{ opacity: 1, x: 0 }}
 									exit={{ opacity: 0, x: -10 }}
-									transition={{ duration: 0.2 }}
+									transition={{ duration: transitionDuration }}
 								>
 									<AdjustStats
 										character={character}

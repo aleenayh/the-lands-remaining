@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Dialog, Tooltip } from "radix-ui";
 import { useEffect, useId, useState } from "react";
 import { useGame } from "../../context/GameContext";
+import { usePreferences } from "../../context/PreferencesContext";
 import { ReactComponent as DiceIcon } from "../assets/dice.svg";
 import type { Mystery, Question } from "../mystery/types";
 import { StyledTooltip } from "./Tooltip";
@@ -273,6 +274,7 @@ export function DieComponent({
 	id: string;
 	index: number;
 }) {
+	const { prefersReducedMotion } = usePreferences();
 	const die = dice.find((die) => die.id === `${id}-${index}`);
 	if (!die) {
 		return null;
@@ -280,10 +282,10 @@ export function DieComponent({
 	return (
 		<div
 			key={die.id}
-			className={`diceBase ${die.exclude ? "diceExcluded" : ""} ${die.isRolling ? "diceRolling" : ""}`}
+			className={`diceBase ${die.exclude ? "diceExcluded" : ""} ${die.isRolling && !prefersReducedMotion ? "diceRolling" : ""}`}
 		>
 			<AnimatePresence>
-				{die.isRolling ? (
+				{die.isRolling && !prefersReducedMotion ? (
 					<div className="diceRollingIcon" />
 				) : (
 					<motion.div
@@ -293,7 +295,7 @@ export function DieComponent({
 						transition={{ duration: 0.5 }}
 						className="text-xl font-bold"
 					>
-						{die.value}
+						{!die.isRolling ? die.value : "?"}
 					</motion.div>
 				)}
 			</AnimatePresence>

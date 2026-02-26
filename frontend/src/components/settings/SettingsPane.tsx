@@ -1,7 +1,8 @@
 import { AnimatePresence } from "framer-motion";
-import { Tooltip } from "radix-ui";
-import { useState } from "react";
+import { Switch, Tooltip } from "radix-ui";
+import { useId, useState } from "react";
 import { useGame } from "../../context/GameContext";
+import { usePreferences } from "../../context/PreferencesContext";
 import { resetGameToDefaults } from "../../lib/firebase";
 import { ReactComponent as Logo } from "../assets/tlr-logo.svg";
 import { CloseTrayButton } from "../shared/CloseTrayButton";
@@ -53,6 +54,7 @@ export function SettingsPane({
 						</div>
 						<div className="flex flex-col gap-10 justify-between h-full">
 							<ThemeSelector />
+							<PreferencesControls />
 							<Divider />
 							<GameInfo />
 							{DEBUG_MODE && <DebugControls />}
@@ -74,13 +76,15 @@ function ThemeSelector() {
 		document.documentElement.setAttribute("data-theme", value);
 	};
 
+	const themeId = useId();
+
 	return (
 		<div>
 			<h2 className="text-lg font-bold text-theme-text-accent">Change Theme</h2>
 			<div className="flex flex-col md:grid md:grid-cols-2 gap-2 justify-center items-center md:justify-start text-left">
-				<label htmlFor="elegy" className="cursor-pointer">
+				<label htmlFor={`${themeId}-elegy`} className="cursor-pointer">
 					<input
-						id="elegy"
+						id={`${themeId}-elegy`}
 						type="radio"
 						value="elegy"
 						name="theme"
@@ -90,9 +94,9 @@ function ThemeSelector() {
 					/>
 					Elegy
 				</label>
-				<label htmlFor="forest" className="cursor-pointer">
+				<label htmlFor={`${themeId}-forest`} className="cursor-pointer">
 					<input
-						id="forest"
+						id={`${themeId}-forest`}
 						type="radio"
 						value="forest"
 						name="theme"
@@ -102,9 +106,9 @@ function ThemeSelector() {
 					/>
 					The Great Forest
 				</label>
-				<label htmlFor="sagravelle" className="cursor-pointer">
+				<label htmlFor={`${themeId}-sagravelle`} className="cursor-pointer">
 					<input
-						id="sagravelle"
+						id={`${themeId}-sagravelle`}
 						type="radio"
 						value="sagravelle"
 						name="theme"
@@ -114,9 +118,9 @@ function ThemeSelector() {
 					/>
 					Sagravelle
 				</label>
-				<label htmlFor="nevask" className="cursor-pointer">
+				<label htmlFor={`${themeId}-nevask`} className="cursor-pointer">
 					<input
-						id="nevask"
+						id={`${themeId}-nevask`}
 						type="radio"
 						value="nevask"
 						name="theme"
@@ -126,9 +130,9 @@ function ThemeSelector() {
 					/>
 					Nevask
 				</label>
-				<label htmlFor="dark" className="cursor-pointer">
+				<label htmlFor={`${themeId}-dark`} className="cursor-pointer">
 					<input
-						id="dark"
+						id={`${themeId}-dark`}
 						type="radio"
 						value="dark"
 						name="theme"
@@ -138,9 +142,9 @@ function ThemeSelector() {
 					/>
 					High Contrast (Dark)
 				</label>
-				<label htmlFor="light" className="cursor-pointer">
+				<label htmlFor={`${themeId}-light`} className="cursor-pointer">
 					<input
-						id="light"
+						id={`${themeId}-light`}
 						type="radio"
 						value="light"
 						name="theme"
@@ -150,6 +154,41 @@ function ThemeSelector() {
 					/>
 					High Contrast (Light)
 				</label>
+			</div>
+		</div>
+	);
+}
+
+function PreferencesControls() {
+	const {
+		prefersImmediateDice,
+		saveImmediateDicePreference,
+		prefersReducedMotion,
+		saveMotionPreference,
+	} = usePreferences();
+
+	return (
+		<div>
+			<h2 className="text-lg font-bold text-theme-text-accent">Preferences</h2>
+			<div className="flex gap-2 justify-start items-center">
+				<Switch.Root
+					checked={!prefersImmediateDice}
+					onCheckedChange={(checked) => saveImmediateDicePreference(!checked)}
+					className="flex gap-2 items-center data-[state=checked]:bg-theme-bg-secondary border border-theme-border-accent  h-4 w-9 rounded-full bg-theme-bg-primary p-px transition shadow-inner shadow-black/20"
+				>
+					<Switch.Thumb className="data-[state=checked]:translate-x-4 block h-3 w-4 rounded-full bg-theme-accent-primary shadow-sm transition" />
+				</Switch.Root>
+				<div>Roll dice immediately</div>
+			</div>
+			<div className="flex gap-2 justify-start items-center">
+				<Switch.Root
+					checked={!prefersReducedMotion}
+					onCheckedChange={(checked) => saveMotionPreference(!checked)}
+					className="flex gap-2 items-center data-[state=checked]:bg-theme-bg-secondary border border-theme-border-accent  h-4 w-9 rounded-full bg-theme-bg-primary p-px transition shadow-inner shadow-black/20"
+				>
+					<Switch.Thumb className="data-[state=checked]:translate-x-4 block h-3 w-4 rounded-full bg-theme-accent-primary shadow-sm transition" />
+				</Switch.Root>
+				<div>Reduce motion</div>
 			</div>
 		</div>
 	);
