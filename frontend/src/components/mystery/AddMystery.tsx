@@ -97,7 +97,7 @@ function CustomMysteryForm({
 	setIsOpen: (isOpen: boolean) => void;
 	mystery: Mystery | null;
 }) {
-	const [numberOfQuestions, setNumberOfQuestions] = useState(1);
+	const [numberOfQuestions, setNumberOfQuestions] = useState(mystery?.questions?.length || 1);
 	const { register, handleSubmit, watch, reset, setValue } =
 		useForm<AddMysteryFormInputs>({
 			defaultValues: {
