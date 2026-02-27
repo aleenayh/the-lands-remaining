@@ -1,4 +1,4 @@
-import type { DominionContent } from "../../types";
+import type { DominionContent } from "../../mystery/types";
 
 export const NoxilliaxDominion: DominionContent = {
 	title: "Noxilliax, The Emerald Nightmare",
@@ -33,56 +33,6 @@ export const NoxilliaxDominion: DominionContent = {
 			question: "How can the spell that hides Liralen be lifted?",
 			complexity: 8,
 			opportunity: "",
-		},
-	],
-	servants: [
-		{
-			title: "The Emerald Knights",
-			description: [
-				"The Emerald Knights are the oldest and most faithful servants of Noxilliax, sworn to the dragon long before the Dimning, and remaining loyal long after it ceased to speak to them. They act as wardens, ritual attendants, and executioners throughout the Great Forest, enforcing Noxilliax’s will not through decree but through presence. Their armor is pale green scale mail, lacquered to a wet-leaf sheen and edged with bronze that has darkened to near black. Their helms are crested and angular, shaped to suggest draconic brows and horns. Most wield long spears or glaives with leaf-shaped blades, though some carry heavy swords whose edges are wreathed in green flame. <strong>Some names, if you need them:</strong> Sir Caelthorn, Lady Verdanth, Sir Oryx Vale, Lady Melys Greenward, Sir Halvren Mosscloak, Lady Isereth Boughborne.",
-			],
-			quotes: [
-				"By leaf and scale, we stand where others fall.",
-				"The forest remembers our oath, even if our lord has forgotten.",
-				"Grief is our vigil, and we will not abandon it.",
-				"The Emerald Nightmare does not sleep alone, nor unguarded.",
-				"Yield now, or be returned to the Root in silence.",
-			],
-		},
-		{
-			title: "Cult of the Green Ember",
-			description: [
-				"These are people who consider themselves to be “Green” Embers. They aren’t true Embers, here by will of the Old Fire, but pretenders who believe that Noxilliax is the Old Fire. They search the world for sites of so-called “Green Grace” in the hopes of gathering the dragon’s essence, which they will then carry to the Throne of the Old King. Green Embers are always found alone (each believes they are the true Green Ember), and usually at sites of Green Grace. They consider the Embers to be competitors, and are usually hostile. They are a persistent Danger once Noxilliax is defeated, and you have a new reaction: Reveal a Green Ember. Pick elements from the lists below to make a Green Ember.",
-				"<strong>Name</strong>",
-				"<li>The Verdant Ascendant</li>",
-				"<li>The Emerald Witness</li>",
-				"<li>The Scale-Blessed Pilgrim</li>",
-				"<li>The Green Anointed</li>",
-				"<li>The Keeper of the Ninth Flame</li>",
-				"<li>The Voice Beneath the Canopy</li>",
-				"<strong>Look</strong>",
-				"<li>Robes dyed in layered greens, stitched with draconic scripture.</li>",
-				"<li>Bare arms etched with spiraling scale tattoos.</li>",
-				"<li>A hooded mantle of leaves lacquered into a brittle, ceremonial cuirass.</li>",
-				"<li>Bronze chains hung with shards of green crystal and shed scales.</li>",
-				"<li>A face smeared with verdigris pigment, eyes ringed in ash and sap.</li>",
-				"<li>Walking barefoot, soles stained permanently green by forest ichor.</li>",
-				"<strong>Site of Green Grace</strong>",
-				"<li>A lightning-split oak whose sap runs emerald.</li>",
-				"<li>A pool where fallen leaves never decay and gently glow at dusk.</li>",
-				"<li>A standing stone cracked by fire, still warm to the touch.</li>",
-				"<li>The skeleton of a great beast fused with roots and moss.</li>",
-				"<li>A clearing where shadows always form the shape of wings.</li>",
-				"<li>A ruined shrine overgrown with vines bearing scale-shaped thorns.</li>",
-				"<strong>Dragon Magic</strong>",
-				"<li>A prayer that calls spectral draconic claws from the ground to wrench and swipe.</li>",
-				"<li>A vial of condensed dragon ichor that burns through armor.</li>",
-				"<li>A sigil carved into the earth that summons a brief, crushing downwash of spectral wings.</li>",
-				"<li>A draconic roar shattering glass, bark, and resolve in a widening arc.</li>",
-				"<li>A censer that exhales choking emerald smoke, hardening into scales on skin.</li>",
-				"<li>A charm that lets the Green Ember quaff poison and exhale it as fire.</li>",
-			],
-			quotes: [],
 		},
 	],
 	layers: [

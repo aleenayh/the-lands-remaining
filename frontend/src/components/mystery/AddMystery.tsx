@@ -1,10 +1,8 @@
 import { Dialog } from "radix-ui";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { useGame } from "../../context/GameContext";
 import { Divider } from "../shared/Divider";
-import { canonicalMysteries } from "./content";
 import { CountdownItem } from "./MysteryContent";
 import {
 	generateMysteryId,
@@ -21,10 +19,7 @@ type AddMysteryFormInputs = {
 	countdownTotal: number;
 };
 
-type Tabs = keyof typeof canonicalMysteries | "choose" | "custom";
-
 export function AddMystery() {
-	const [selectedTab, setSelectedTab] = useState<Tabs>("choose");
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
@@ -52,53 +47,7 @@ export function AddMystery() {
 					<Dialog.Description className="hidden">
 						Add a new mystery to the game.
 					</Dialog.Description>
-
-					{selectedTab !== "choose" && (
-						<button
-							type="button"
-							onClick={() => setSelectedTab("choose")}
-							className="self-start text-sm text-theme-text-muted hover:text-theme-text-primary mb-2 shrink-0"
-						>
-							← Back to all mysteries
-						</button>
-					)}
-
-					{selectedTab === "choose" && (
-						<div className="flex flex-col gap-2 justify-center items-center">
-							<h2 className="text-lg font-bold text-theme-text-accent">
-								Choose an Option
-							</h2>
-							<button
-								type="button"
-								onClick={() => setSelectedTab("elegy")}
-								className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100"
-							>
-								Elegy
-							</button>
-							<button
-								type="button"
-								onClick={() => setSelectedTab("greatForest")}
-								className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100"
-							>
-								The Great Forest
-							</button>
-							<button
-								type="button"
-								onClick={() => setSelectedTab("custom")}
-								className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100"
-							>
-								Custom Mystery
-							</button>
-						</div>
-					)}
-
-					{selectedTab === "custom" && (
-						<CustomMysteryForm setIsOpen={setIsOpen} mystery={null} />
-					)}
-
-					{selectedTab !== "choose" && selectedTab !== "custom" && (
-						<MysteryLookup type={selectedTab} setIsOpen={setIsOpen} />
-					)}
+					<CustomMysteryForm setIsOpen={setIsOpen} mystery={null} />
 				</Dialog.Content>
 			</Dialog.Portal>
 		</Dialog.Root>
@@ -347,112 +296,6 @@ function CustomMysteryForm({
 					className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100"
 				>
 					{mystery ? "Save Mystery" : "Add Mystery"}
-				</button>
-			</div>
-		</form>
-	);
-}
-
-function MysteryLookup({
-	type,
-	setIsOpen,
-}: {
-	type: keyof typeof canonicalMysteries;
-	setIsOpen: (isOpen: boolean) => void;
-}) {
-	const allMysteries = canonicalMysteries[type];
-
-	const { register, handleSubmit, watch, reset } =
-		useForm<AddMysteryFormInputs>({
-			defaultValues: {
-				title: "",
-				theme: MysteryTheme.Dandelion,
-			},
-		});
-	const { gameState, updateGameState } = useGame();
-
-	const onSubmit = (data: { title: string; theme: MysteryTheme }) => {
-		const mystery = allMysteries.find((m) => m.title === data.title);
-		if (!mystery) {
-			toast.error(`Something went wrong; mystery ${data.title} not found.`);
-			return;
-		}
-		const newMystery: Mystery = {
-			id: generateMysteryId(),
-			title: data.title,
-			intro: mystery.intro,
-			questions: mystery.questionsAndOpportunities.map((q) => ({
-				text: q.question,
-				complexity: q.complexity,
-				opportunity: q.opportunity,
-				result: null,
-			})),
-			theme: data.theme,
-			countdownTotal: mystery.countdownTotal,
-			countdownCurrent: 0,
-		};
-		updateGameState({
-			mysteries: [...gameState.mysteries, newMystery],
-		});
-		reset();
-		setIsOpen(false);
-	};
-	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className="flex flex-col gap-2 overflow-y-auto max-h-[75vh]"
-		>
-			<div className="flex flex-col gap-2">
-				<h2 className="text-lg font-bold text-theme-text-accent">
-					Select a Mystery
-				</h2>
-				<div className="grid grid-cols-2 gap-2">
-					{allMysteries.map((mystery) => (
-						<label
-							key={mystery.title}
-							htmlFor={mystery.title}
-							className="text-theme-text-accent text-center font-bold cursor-pointer"
-						>
-							<input
-								id={mystery.title}
-								type="radio"
-								{...register("title")}
-								value={mystery.title}
-								className="border p-2 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
-							/>
-							{mystery.title}
-						</label>
-					))}
-				</div>
-
-				<Divider />
-				<div className="mt-4 flex flex-col md:flex-row gap-2 items-center text-sm md:text-md">
-					<div className="flex gap-2 items-center w-full md:w-auto">
-						<label htmlFor="theme">Select Countdown Theme</label>
-						<select
-							{...register("theme")}
-							className="border px-2 py-1 rounded-lg bg-theme-bg-secondary text-theme-text-primary hover:bg-theme-bg-accent hover:text-theme-text-accent"
-						>
-							{Object.values(MysteryTheme).map((theme) => (
-								<option key={theme} value={theme}>
-									{theme}
-								</option>
-							))}
-						</select>
-					</div>
-				</div>
-
-				<div className="hidden md:block">
-					<Divider />
-					<p className="text-center italic">Preview Countdown Timer</p>
-					<Preview type={watch("theme")} total={3} />
-				</div>
-				<Divider />
-				<button
-					type="submit"
-					className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100"
-				>
-					Add Mystery
 				</button>
 			</div>
 		</form>

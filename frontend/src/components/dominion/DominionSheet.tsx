@@ -5,13 +5,13 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useGame } from "../../context/GameContext";
 import { PlayerRole } from "../../context/types";
-import { DominionMysteries } from "../mystery/content/dominion";
 import type { Dominion } from "../mystery/types";
 import { parseStaticText } from "../playbooks/utils";
 import { CloseTrayButton } from "../shared/CloseTrayButton";
 import { BorderedTray } from "../shared/DecorativeBorder";
 import { Section } from "../shared/Section";
 import { StyledTooltip } from "../shared/Tooltip";
+import { DominionMysteries } from "./content";
 import { ReactComponent as CrownIcon } from "./crown.svg";
 
 export function DominionSheet({
@@ -29,9 +29,9 @@ export function DominionSheet({
 	const [modalOpen, setModalOpen] = useState(false);
 	if (!dominionMystery && role !== PlayerRole.KEEPER) return null;
 
-	const { title, intro, servants, layers } = dominionMystery
+	const { title, intro, layers } = dominionMystery
 		? DominionMysteries[dominionMystery.title as keyof typeof DominionMysteries]
-		: { title: "Dominion", intro: [], servants: [], layers: [] };
+		: { title: "Dominion", intro: [], layers: [] };
 	return (
 		<div className="flex flex-col justify-start items-start h-full w-full pointer-events-none">
 			{(dominionMystery || role === PlayerRole.KEEPER) && (
@@ -125,36 +125,6 @@ export function DominionSheet({
 																</p>
 															))}
 														</Section>
-													))}
-												</Section>
-												<Section title="Servants" collapsible={true}>
-													{servants.map((s) => (
-														<div key={s.title}>
-															<h2 className="text-lg font-bold text-theme-text-accent">
-																{s.title}
-															</h2>
-															{s.description.map((d) => (
-																<p
-																	key={d}
-																	className="text-left leading-relaxed"
-																>
-																	{parseStaticText(d)}
-																</p>
-															))}
-															{s.quotes.length > 0 && (
-																<h3 className="text-lg font-bold text-theme-text-accent">
-																	Quotes
-																</h3>
-															)}
-															{s.quotes.map((q) => (
-																<p
-																	key={q}
-																	className="text-left leading-relaxed italic"
-																>
-																	&ldquo;{parseStaticText(q)}&rdquo;
-																</p>
-															))}
-														</div>
 													))}
 												</Section>
 												<Dialog.Root
@@ -285,7 +255,12 @@ function DominionMysteryForm({
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
 			<div className="flex gap-2 items-center justify-start my-4">
-				<input id="dominion-noxilliax" type="radio" {...register("title")} value="noxilliax" />
+				<input
+					id="dominion-noxilliax"
+					type="radio"
+					{...register("title")}
+					value="noxilliax"
+				/>
 				<label className="cursor-pointer" htmlFor="dominion-noxilliax">
 					Noxilliax, The Emerald Nightmare (The Great Forest)
 				</label>
