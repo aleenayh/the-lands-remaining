@@ -89,25 +89,12 @@ export type MysteryContent = MysteryBase & {
 	};
 };
 
-type Servant = {
-	title: string;
-	description: string[];
-	quotes: string[];
-};
 type Layer = {
 	title: string;
 	text: string[];
 };
 
 export type DominionContent = MysteryBase & {
-	servants: Servant[];
 	layers: Layer[];
 	clues: string[];
 };
-
-export const AvailableLands = {
-	elegy: "Elegy",
-	greatForest: "The Great Forest",
-	sagravelle: "Sagravelle",
-	nevask: "Nevask",
-} as const;

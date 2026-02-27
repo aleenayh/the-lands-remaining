@@ -1,7 +1,5 @@
-import { Dialog, Tooltip } from "radix-ui";
+import { Tooltip } from "radix-ui";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { ReactComponent as CopyIcon } from "../../components/settings/copy.svg";
 import { useGame } from "../../context/GameContext";
 import { PlayerRole } from "../../context/types";
 import { AnswerQuestionDiceRollModal } from "../shared/Dice";
@@ -9,7 +7,6 @@ import { Divider } from "../shared/Divider";
 import { Section } from "../shared/Section";
 import { StyledTooltip } from "../shared/Tooltip";
 import { EditMystery } from "./AddMystery";
-import { findSupplicant, lookupMystery } from "./content";
 import { themeElements } from "./themes";
 import type { Mystery } from "./types";
 
@@ -61,162 +58,133 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 		});
 	};
 
-	const intro = mystery.intro ?? lookupMystery(mystery.title)?.intro ?? [];
+	const intro = mystery.intro ?? [];
 	return (
-		<Dialog.Root>
-			<div className="flex flex-col gap-0 py-4 w-full">
-				{intro.length > 0 ? (
-					<Section title={mystery.title} collapsible withDecoration leftAlign>
-						<div className="text-sm text-left flex flex-col gap-2">
-							{intro?.map((line) => (
-								<p key={line}>{line}</p>
-							))}
-						</div>
-					</Section>
-				) : (
-					<h2 className={`font-bold text-left text-theme-text-accent text-lg`}>
-						{mystery.title}
-					</h2>
-				)}
-				{role === PlayerRole.KEEPER && (
-					<div className="my-2 flex gap-2 justify-center items-center">
-						<Tooltip.Root>
-							<Tooltip.Trigger>
-								<button
-									type="button"
-									onClick={onRemove}
-									className="border border-theme-border bg-theme-bg-primary hover:bg-theme-bg-accent px-2 py-1 rounded-lg text-sm text-theme-text-secondary hover:text-theme-text-primary"
-								>
-									Remove this mystery
-								</button>
-							</Tooltip.Trigger>
-							<Tooltip.Content>
-								<StyledTooltip>
-									Remove the mystery without claiming a Supplicant. If your
-									Embers resolved the mystery, use Issue Rewards instead.
-								</StyledTooltip>
-							</Tooltip.Content>
-						</Tooltip.Root>
-						<Dialog.Trigger className="border border-theme-border bg-theme-bg-primary hover:bg-theme-bg-accent px-2 py-1 rounded-lg text-sm text-theme-text-secondary hover:text-theme-text-primary">
-							Issue Rewards
-						</Dialog.Trigger>
-
-						<EditMystery mystery={mystery} />
+		<div className="flex flex-col gap-0 py-4 w-full">
+			{intro.length > 0 ? (
+				<Section title={mystery.title} collapsible withDecoration leftAlign>
+					<div className="text-sm text-left flex flex-col gap-2">
+						{intro?.map((line) => (
+							<p key={line}>{line}</p>
+						))}
 					</div>
-				)}
-				{mystery.countdownTotal > 0 && (
-					<div>
-						<div
-							className={`flex gap-3 min-h-[100px] justify-center items-center mx-auto`}
-						>
+				</Section>
+			) : (
+				<h2 className={`font-bold text-left text-theme-text-accent text-lg`}>
+					{mystery.title}
+				</h2>
+			)}
+			{role === PlayerRole.KEEPER && (
+				<div className="my-2 flex gap-2 justify-center items-center">
+					<Tooltip.Root>
+						<Tooltip.Trigger>
+							<button
+								type="button"
+								onClick={onRemove}
+								className="border border-theme-border bg-theme-bg-primary hover:bg-theme-bg-accent px-2 py-1 rounded-lg text-sm text-theme-text-secondary hover:text-theme-text-primary"
+							>
+								Remove this mystery
+							</button>
+						</Tooltip.Trigger>
+						<Tooltip.Content>
+							<StyledTooltip>
+								Remove the mystery from game tracking.
+							</StyledTooltip>
+						</Tooltip.Content>
+					</Tooltip.Root>
+					<EditMystery mystery={mystery} />
+				</div>
+			)}
+			{mystery.countdownTotal > 0 && (
+				<div>
+					<div
+						className={`flex gap-3 min-h-[100px] justify-center items-center mx-auto`}
+					>
+						{Array.from({ length: mystery.countdownTotal }).map((_, index) => (
+							<CountdownItem
+								key={`mc-${mystery.title}-${index}`}
+								theme={mystery.theme}
+								index={index}
+								filled={mystery.countdownCurrent > index}
+							/>
+						))}
+					</div>
+					{role === PlayerRole.KEEPER && (
+						<div className="flex gap-3 justify-center items-center">
 							{Array.from({ length: mystery.countdownTotal }).map(
 								(_, index) => (
-									<CountdownItem
+									<input
+										type="checkbox"
 										key={`mc-${mystery.title}-${index}`}
-										theme={mystery.theme}
-										index={index}
-										filled={mystery.countdownCurrent > index}
+										defaultChecked={mystery.countdownCurrent > index}
+										onChange={(e) => onToggle(e.target.checked)}
 									/>
 								),
 							)}
 						</div>
-						{role === PlayerRole.KEEPER && (
-							<div className="flex gap-3 justify-center items-center">
-								{Array.from({ length: mystery.countdownTotal }).map(
-									(_, index) => (
-										<input
-											type="checkbox"
-											key={`mc-${mystery.title}-${index}`}
-											defaultChecked={mystery.countdownCurrent > index}
-											onChange={(e) => onToggle(e.target.checked)}
-										/>
-									),
-								)}
-							</div>
-						)}
-						<div className="text-theme-text-secondary text-sm">
-							{mystery.countdownCurrent} / {mystery.countdownTotal}
-						</div>
+					)}
+					<div className="text-theme-text-secondary text-sm">
+						{mystery.countdownCurrent} / {mystery.countdownTotal}
 					</div>
-				)}
-				{mystery.questions && mystery.questions.length > 0 && (
-					<div className="py-4 flex flex-col gap-2">
-						<h2 className="text-md text-center whitespace-nowrap text-theme-text-primary">
-							Questions
-						</h2>
-						{mystery.questions.map((question) => (
-							<div key={question.text}>
-								<div className="flex gap-2 justify-start items-center w-full flex-wrap ">
-									{question.text}{" "}
-									<span className="text-sm text-theme-text-secondary italic">
-										(Complexity: {question.complexity})
+				</div>
+			)}
+			{mystery.questions && mystery.questions.length > 0 && (
+				<div className="py-4 flex flex-col gap-2">
+					<h2 className="text-md text-center whitespace-nowrap text-theme-text-primary">
+						Questions
+					</h2>
+					{mystery.questions.map((question) => (
+						<div key={question.text}>
+							<div className="flex gap-2 justify-start items-center w-full flex-wrap ">
+								{question.text}{" "}
+								<span className="text-sm text-theme-text-secondary italic">
+									(Complexity: {question.complexity})
+								</span>
+								{question.result && (
+									<span className="text-sm text-theme-text-secondary font-bold">
+										Result: {question.result}
 									</span>
-									{question.result && (
-										<span className="text-sm text-theme-text-secondary font-bold">
-											Result: {question.result}
-										</span>
-									)}
-									<AnswerQuestionDiceRollModal
-										mystery={mystery}
-										question={question}
-									/>
-								</div>
-								{question.opportunity && (
-									<div className="ml-2 border-l-2 px-4 border-theme-border text-sm leading-tight text-theme-text-secondary text-left">
-										<span className="italic">Opportunity:</span>{" "}
-										{question.opportunity}
-									</div>
 								)}
-								{role === PlayerRole.KEEPER && (
-									<div className="flex flex-col gap-2 justify-center items-center">
-										<Tooltip.Root>
-											<Tooltip.Trigger>
-												<button
-													type="button"
-													className="border border-theme-border bg-theme-bg-primary hover:bg-theme-bg-accent px-2 py-1 rounded-lg text-sm text-theme-text-secondary hover:text-theme-text-primary"
-													onClick={() => resolveQuestion(question.text)}
-												>
-													Resolve Question
-												</button>
-											</Tooltip.Trigger>
-											<Tooltip.Content>
-												<StyledTooltip>
-													Resolving a Question automatically clears all clues
-													marked "explained." If the Mystery has only one
-													Question, you can skip this and instead Issue Rewards.
-												</StyledTooltip>
-											</Tooltip.Content>
-										</Tooltip.Root>
-									</div>
-								)}
+								<AnswerQuestionDiceRollModal
+									mystery={mystery}
+									question={question}
+								/>
 							</div>
-						))}
-					</div>
-				)}
-				<ClueSection mystery={mystery} role={role} />
-				<Divider />
-			</div>
-			<Dialog.Portal>
-				<Dialog.Overlay className="DialogOverlay" />
-				<Dialog.Content className="DialogContent">
-					<Dialog.Close asChild>
-						<button
-							type="button"
-							className="absolute top-2 right-2 aspect-square w-8 h-8 bg-theme-bg-accent text-theme-text-primary rounded-full flex justify-center items-center"
-						>
-							X
-						</button>
-					</Dialog.Close>
-					<Dialog.Title className="DialogTitle">
-						Rewards for {mystery.title}
-					</Dialog.Title>
-					<Dialog.Description className="DialogDescription">
-						Rewards for resolving the mystery.
-					</Dialog.Description>
-					<RewardForm mystery={mystery} onRemove={onRemove} />
-				</Dialog.Content>
-			</Dialog.Portal>
-		</Dialog.Root>
+							{question.opportunity && (
+								<div className="ml-2 border-l-2 px-4 border-theme-border text-sm leading-tight text-theme-text-secondary text-left">
+									<span className="italic">Opportunity:</span>{" "}
+									{question.opportunity}
+								</div>
+							)}
+							{role === PlayerRole.KEEPER && (
+								<div className="flex flex-col gap-2 justify-center items-center">
+									<Tooltip.Root>
+										<Tooltip.Trigger>
+											<button
+												type="button"
+												className="border border-theme-border bg-theme-bg-primary hover:bg-theme-bg-accent px-2 py-1 rounded-lg text-sm text-theme-text-secondary hover:text-theme-text-primary"
+												onClick={() => resolveQuestion(question.text)}
+											>
+												Resolve Question
+											</button>
+										</Tooltip.Trigger>
+										<Tooltip.Content>
+											<StyledTooltip>
+												Resolving a Question automatically clears all clues
+												marked "explained." If the Mystery has only one
+												Question, you can skip this and instead Issue Rewards.
+											</StyledTooltip>
+										</Tooltip.Content>
+									</Tooltip.Root>
+								</div>
+							)}
+						</div>
+					))}
+				</div>
+			)}
+			<ClueSection mystery={mystery} role={role} />
+			<Divider />
+		</div>
 	);
 }
 
@@ -229,7 +197,7 @@ export function CountdownItem({
 	index: number;
 	filled: boolean;
 }) {
-	const { icon, initialColor, filledColor } = themeElements[theme];
+	const { icon } = themeElements[theme];
 	const yOffset = index % 2 === 0 ? -5 : 20;
 	const rotation = index * 30;
 	return (
@@ -237,10 +205,7 @@ export function CountdownItem({
 			style={{ transform: `translateY(${yOffset}px) rotate(${rotation}deg)` }}
 		>
 			<div
-				className="w-10 h-10 bg-theme-bg-secondary rounded-full"
-				style={{
-					color: `${filled ? `hsl(${filledColor.h}, ${filledColor.s}%, ${filledColor.l}%)` : `hsl(${initialColor.h}, ${initialColor.s}%, ${initialColor.l}%)`}`,
-				}}
+				className={`w-10 h-10 bg-theme-bg-secondary rounded-full ${filled ? `text-theme-text-accent` : `text-theme-bg-accent`}`}
 			>
 				{icon}
 			</div>
@@ -409,132 +374,5 @@ function ClueSection({
 				</button>
 			</form>
 		</Section>
-	);
-}
-
-function RewardForm({
-	mystery,
-	onRemove,
-}: {
-	mystery: Mystery;
-	onRemove: () => void;
-}) {
-	const { register, handleSubmit } = useForm<{ supplicant: string }>();
-	const { updateGameState, gameState } = useGame();
-
-	const onSubmit = (data: { supplicant: string }) => {
-		const supplicant = findSupplicant(data.supplicant);
-		if (!supplicant) {
-			toast.error(`Supplicant ${data.supplicant} not found.`);
-			return;
-		}
-		const newSupplicants = {
-			...(gameState.tower.supplicants ?? {}),
-			[data.supplicant]: supplicant,
-		};
-		updateGameState({
-			tower: {
-				...gameState.tower,
-				supplicants: newSupplicants,
-			},
-		});
-		toast.success(`Supplicant chosen: ${data.supplicant}`);
-	};
-
-	const rewards = lookupMystery(mystery.title)?.rewards;
-	if (!rewards) {
-		return <div>No rewards found for {mystery.title}.</div>;
-	}
-
-	const allItems = rewards.items.join("\n\n");
-	const copyToClipboard = () => {
-		navigator.clipboard.writeText(allItems);
-		toast.success("Copied to clipboard");
-	};
-	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className="flex flex-col gap-2 justify-start items-center"
-		>
-			<div className="flex flex-col gap-2">
-				First, as a group, choose a Side Character to become a Supplicant:
-			</div>
-
-			{Object.keys(rewards.supplicants).map((supplicant) => (
-				<div key={supplicant} className="flex flex-col gap-2 items-center">
-					<div className="w-full flex gap-2 items-center justify-start">
-						<input
-							id={`supplicant-${supplicant}`}
-							type="radio"
-							{...register("supplicant")}
-							value={supplicant}
-						/>
-						<label
-							key={supplicant}
-							className="cursor-pointer"
-							htmlFor={`supplicant-${supplicant}`}
-						>
-							{supplicant}
-						</label>
-					</div>
-					<div className="ml-4 text-sm text-theme-text-secondary text-left">
-						{rewards.supplicants[supplicant]}
-					</div>
-				</div>
-			))}
-			<button
-				type="submit"
-				className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100 hover:bg-theme-bg-accent-hover hover:text-theme-text-accent-hover"
-			>
-				Confirm Supplicant
-			</button>
-
-			<div className="flex flex-col gap-0">
-				<p>Then, each Ember chooses one.</p>
-				<p className="text-sm text-theme-text-secondary text-left italic">
-					{" "}
-					(Pre-formatted. Click button to copy and Embers can paste directly
-					into their 'Add equipment' form.)
-				</p>
-			</div>
-			<button
-				type="button"
-				className="bg-theme-bg-accent border-2 border-theme-border-accent hover:bg-theme-bg-accent transition-colors flex justify-center items-center rounded-lg p-2 gap-2"
-				onClick={copyToClipboard}
-			>
-				<CopyIcon className="w-4 h-4" />
-			</button>
-			<textarea
-				value={rewards.items.join("\n\n")}
-				readOnly
-				className="mx-2 p-2 h-40 w-full box-border"
-			/>
-
-			{rewards.special && rewards.special.length > 0 && (
-				<div className="flex flex-col gap-2">
-					<h3 className="text-sm text-theme-text-primary text-center">
-						Special Rewards
-					</h3>
-					{rewards.special.map((special) => (
-						<div key={special.condition}>
-							<div>{special.condition}</div>
-							{special.rewards.map((reward) => (
-								<div key={reward} className="ml-4 py-1">
-									{reward}
-								</div>
-							))}
-						</div>
-					))}
-				</div>
-			)}
-
-			<button
-				type="button"
-				className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100 hover:bg-theme-bg-accent-hover hover:text-theme-text-accent-hover"
-				onClick={onRemove}
-			>
-				Remove this Mystery
-			</button>
-		</form>
 	);
 }

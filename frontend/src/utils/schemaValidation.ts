@@ -1,5 +1,4 @@
 import type { $ZodCatchCtx } from "zod/v4/core";
-import { findSupplicant } from "../components/mystery/content";
 import { defaultGameState } from "../context/defaults";
 import { type GameState, gameStateSchema } from "../context/types";
 import { atOrAfterVersion, getLocalSchemaVersion } from "./versionCheck";
@@ -191,30 +190,6 @@ export function validateGameState(state: unknown): {
 				});
 			}
 			result.data.players = newPlayers;
-			result.data.schemaVersion = getLocalSchemaVersion();
-			migrated = true;
-		}
-
-		//migrate supplicants and cinders - reformatted 0.1.3
-		if (!atOrAfterVersion(result.data.schemaVersion, "0.1.3")) {
-			//migrate supplicants - put description in state
-			const originalSupplicants = result.data.tower.supplicants as unknown as
-				| string
-				| string[];
-			const originalSupplicantsArray = Array.isArray(originalSupplicants)
-				? originalSupplicants
-				: [originalSupplicants];
-
-			for (const supplicant of originalSupplicantsArray) {
-				if (!result.data.tower.supplicants) {
-					result.data.tower.supplicants = {};
-				}
-				const description = findSupplicant(supplicant);
-				if (description) {
-					result.data.tower.supplicants[supplicant] = description;
-				}
-			}
-
 			result.data.schemaVersion = getLocalSchemaVersion();
 			migrated = true;
 		}
