@@ -41,7 +41,7 @@ export function DominionSheet({
 						<button
 							type="button"
 							aria-label="Open Lord Question & Clues"
-							className="drawerButton"
+							className="drawerButton hidden md:block"
 							onClick={() => setIsOpen(!isOpen)}
 						>
 							<CrownIcon className="w-full h-full" />

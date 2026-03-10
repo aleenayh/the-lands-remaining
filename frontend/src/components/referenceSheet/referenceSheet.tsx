@@ -29,7 +29,7 @@ export function ReferenceSheet({
 					<button
 						type="button"
 						aria-label="Open rules reference"
-						className="drawerButton"
+						className="drawerButton hidden md:block"
 						onClick={() => setIsOpen(!isOpen)}
 					>
 						<BookIcon className="w-full h-full" />
@@ -168,9 +168,7 @@ export function ReferenceSheet({
 									<li>
 										On a 6-, the answer is incorrect and the Keeper reacts.
 									</li>
-									<li>
-										On a 12+, the answer is also a Lord Clue.
-									</li>
+									<li>On a 12+, the answer is also a Lord Clue.</li>
 								</ul>
 								<p className="italic text-sm">
 									Note: The Answer a Question roll can never be taken with

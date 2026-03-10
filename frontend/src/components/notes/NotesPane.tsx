@@ -41,7 +41,7 @@ export function NotesPane({
 					<button
 						type="button"
 						aria-label="Open Notes"
-						className="drawerButton"
+						className="drawerButton hidden md:block"
 						onClick={() => setIsOpen(!isOpen)}
 					>
 						<NotesIcon className="w-full h-full" />

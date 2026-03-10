@@ -30,7 +30,8 @@
   --color-border-accent: #564e62;
 
   --color-accent-primary: #52557a;
-  --bg-image: linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05)),
+  --bg-image:
+    linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05)),
     url("../public/assets/backgrounds/fog.png");
   --bg-size: contain;
   --bg-position: bottom left;
@@ -144,7 +145,9 @@ body {
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
   font-family: "Questrial", sans-serif;
-  transition: background-color 0.5s ease, color 0.5s ease;
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease;
 }
 
 html {
@@ -167,7 +170,9 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  transition: background-color 0.5s ease, color 0.5s ease;
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease;
 }
 .App::before {
   content: "";
@@ -226,7 +231,9 @@ h6 {
   border: 1px solid var(--color-border);
   padding: 0.5rem;
   border-left: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
   pointer-events: auto;
   cursor: pointer;
 }
@@ -236,6 +243,18 @@ h6 {
   border: 1px solid var(--color-border-accent);
   border-left: none;
   color: var(--color-text-secondary);
+}
+.mobileNavButton {
+  width: 2.5rem;
+  height: 2.5rem;
+  backdrop-filter: blur(4px);
+  color: var(--color-text-accent);
+  border-radius: 0.5rem 0.5rem 0rem 0rem;
+  border: 1px solid var(--color-border);
+  padding: 0.5rem;
+  border-bottom: none;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 input[type="checkbox"] {
@@ -257,7 +276,9 @@ input[type="checkbox"] {
   text-align: center;
   margin-right: 0.125rem;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 input[type="checkbox"]:hover:not(:disabled) {
@@ -316,7 +337,9 @@ input[type="radio"] {
   text-align: center;
   margin-right: 0.125rem;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 input[type="radio"]:checked {
@@ -336,7 +359,9 @@ textarea {
   font-size: 1rem;
   line-height: 1.5;
   cursor: text;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
 }
 /* ===== SCROLLBAR STYLES ===== */
 /* Hide scrollbars by default, show on hover/scroll, zero width overlay */
@@ -431,7 +456,9 @@ textarea {
   font-size: 15px;
   line-height: 1.5;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease,
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
     border-color 0.2s ease;
   display: flex;
   align-items: center;

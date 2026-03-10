@@ -28,7 +28,7 @@ export function TowerSheet({
 					<button
 						type="button"
 						aria-label="Open Mourning Tower"
-						className="drawerButton"
+						className="drawerButton hidden md:block"
 						onClick={() => setIsOpen(!isOpen)}
 					>
 						<TowerIcon className="w-full h-full" />

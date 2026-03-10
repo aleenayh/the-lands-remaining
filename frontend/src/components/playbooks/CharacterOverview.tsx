@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useGame } from "../../context/GameContext";
 import { PlayerRole } from "../../context/types";
+import { MobileDrawerNavigation } from "../Drawers";
 import { KeeperPill } from "../keeper/KeeperPill";
 import { KeeperSummary } from "../keeper/KeeperSummary";
 import { CopyInvite } from "../settings/GameInfo";
@@ -51,7 +52,7 @@ export function CharacterOverview() {
 				)}
 			</h1>
 			{user.role === PlayerRole.KEEPER && <KeeperSummary />}
-			<div className="flex flex-1 min-h-0 overflow-hidden gap-1 max-w-[1400px] mx-auto">
+			<div className="flex flex-1 min-h-0 overflow-hidden gap-1 max-w-[1400px] mx-auto mb-6 md:mb-2 ">
 				{/* Other players' playbooks - takes up ~60% width, shows up to 4 in a grid */}
 				{otherCharacters.length > 0 ? (
 					<div
@@ -84,6 +85,7 @@ export function CharacterOverview() {
 					</div>
 				)}
 			</div>
+			<MobileDrawerNavigation />
 		</div>
 	);
 }

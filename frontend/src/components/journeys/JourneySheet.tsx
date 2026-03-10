@@ -40,7 +40,7 @@ export function JourneySheet({
 					<button
 						type="button"
 						aria-label="Open Journeys"
-						className="drawerButton"
+						className="drawerButton hidden md:block"
 						onClick={() => setIsOpen(!isOpen)}
 					>
 						<FootprintsIcon className="w-full h-full" />
