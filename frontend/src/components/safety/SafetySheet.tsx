@@ -25,7 +25,7 @@ export function SafetyPane({
 					<button
 						type="button"
 						aria-label="Open settings"
-						className="drawerButton"
+						className="drawerButton hidden md:block"
 						onClick={() => setIsOpen(!isOpen)}
 					>
 						<HeartShieldIcon className="w-full h-full" />
@@ -72,8 +72,10 @@ function LinesAndVeils() {
 	const { lines, veils } = gameState.safety;
 
 	const remove = (type: "line" | "veil", text: string) => {
-		const newLines = type === "line" ? lines.filter((line) => line !== text) : lines;
-		const newVeils = type === "veil" ? veils.filter((veil) => veil !== text) : veils;
+		const newLines =
+			type === "line" ? lines.filter((line) => line !== text) : lines;
+		const newVeils =
+			type === "veil" ? veils.filter((veil) => veil !== text) : veils;
 		updateGameState({
 			safety: {
 				lines: newLines,
@@ -290,12 +292,26 @@ function AddLineOrVeilForm() {
 			/>
 			<div className="flex gap-2 justify-center">
 				<div className="flex gap-2 items-center justify-start">
-					<input id="type-line" type="radio" {...register("type")} value="line" />
-					<label className="cursor-pointer" htmlFor="type-line">Line</label>
+					<input
+						id="type-line"
+						type="radio"
+						{...register("type")}
+						value="line"
+					/>
+					<label className="cursor-pointer" htmlFor="type-line">
+						Line
+					</label>
 				</div>
 				<div className="flex gap-2 items-center justify-start">
-					<input id="type-veil" type="radio" {...register("type")} value="veil" />
-					<label className="cursor-pointer" htmlFor="type-veil">Veil</label>
+					<input
+						id="type-veil"
+						type="radio"
+						{...register("type")}
+						value="veil"
+					/>
+					<label className="cursor-pointer" htmlFor="type-veil">
+						Veil
+					</label>
 				</div>
 			</div>
 			<button

@@ -24,7 +24,7 @@ export function SettingsPane({
 					<button
 						type="button"
 						aria-label="Open game settings"
-						className="drawerButton"
+						className="drawerButton hidden md:block"
 						onClick={() => setIsOpen(!isOpen)}
 					>
 						<CogIcon className="w-full h-full" />
@@ -225,7 +225,7 @@ function PreferencesControls() {
 
 function Credits() {
 	return (
-		<div className="flex flex-col gap-2 justify-start items-start text-left w-full text-md">
+		<div className="flex flex-col gap-2 justify-start items-start text-left w-full text-sm pb-12 md:pb-4">
 			<h3 className="text-lg font-bold text-theme-text-accent text-center w-full">
 				About this Site
 			</h3>

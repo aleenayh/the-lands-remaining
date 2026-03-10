@@ -34,7 +34,7 @@ export function PullOutCharacterOverview({
 					<button
 						type="button"
 						aria-label="Open settings"
-						className="drawerButton"
+						className="drawerButton hidden md:block"
 						onClick={() => setIsOpen(!isOpen)}
 					>
 						<GroupIcon className="w-full h-full" />

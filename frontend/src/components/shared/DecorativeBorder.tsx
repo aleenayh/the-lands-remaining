@@ -32,21 +32,31 @@ export function BorderedTray({
 	className?: string;
 }) {
 	const { prefersReducedMotion } = usePreferences();
+	const mobileScreenSize = window.innerWidth < 768;
+
+	const transitionLeft =
+		!prefersReducedMotion && !mobileScreenSize ? "-100%" : 0;
+	const transitionTop = mobileScreenSize && !prefersReducedMotion ? "100%" : 0;
+	const transitionOpacity = prefersReducedMotion ? 0 : 1;
+
 	return (
 		<motion.div
 			initial={{
-				left: prefersReducedMotion ? 0 : "-100%",
-				opacity: prefersReducedMotion ? 0 : 1,
+				left: transitionLeft,
+				y: transitionTop,
+				opacity: transitionOpacity,
 			}}
-			animate={{ left: 0, opacity: 1 }}
+			animate={{ left: 0, y: 0, opacity: 1 }}
 			exit={{
-				left: prefersReducedMotion ? 0 : "-100%",
-				opacity: prefersReducedMotion ? 0 : 1,
+				left: transitionLeft,
+				y: transitionTop,
+				opacity: transitionOpacity,
 			}}
 			transition={{
-				duration: prefersReducedMotion ? 0 : 1,
+				duration: prefersReducedMotion ? 0 : mobileScreenSize ? 0.5 : 1,
+				ease: "linear",
 			}}
-			className={`absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary z-10 transition-all ease-linear pointer-events-auto border-theme-border-accent border-2 overflow-y-auto  border-l-0 p-4 ${className}`}
+			className={`absolute top-0 left-0 w-full md:w-1/2 h-screen flex flex-col justify-start items-center bg-theme-bg-secondary z-10 transition-all ease-linear pointer-events-auto border-theme-border-accent border-2 overflow-y-auto  border-l-0 p-4 pb-12 ${className}`}
 		>
 			{children}
 			<div className="absolute inset-0 h-full w-full pointer-events-none z-[5]">
