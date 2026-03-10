@@ -51,11 +51,11 @@ export function CharacterOverview() {
 				)}
 			</h1>
 			{user.role === PlayerRole.KEEPER && <KeeperSummary />}
-			<div className="flex flex-1 min-h-0 overflow-hidden gap-1">
+			<div className="flex flex-1 min-h-0 overflow-hidden gap-1 max-w-[1400px] mx-auto">
 				{/* Other players' playbooks - takes up ~60% width, shows up to 4 in a grid */}
 				{otherCharacters.length > 0 ? (
 					<div
-						className={`hidden  min-w-0 md:grid  gap-2 auto-rows-fr overflow-hidden ${user.role === PlayerRole.KEEPER ? "w-full" : "w-[60%]"} grid-cols-[repeat(auto-fit,minmax(200px,1fr))]`}
+						className={`hidden  min-w-0 md:grid gap-2 auto-rows-fr overflow-hidden grid-cols-[repeat(auto-fit,minmax(200px,1fr))]      ${user.role === PlayerRole.KEEPER ? "w-full" : otherCharacters.length === 1 ? "w-[50%]" : "w-[60%]"}`}
 					>
 						{otherCharacters.map((character) => (
 							<div key={character.playerId} className="min-h-0 overflow-hidden">
@@ -73,7 +73,9 @@ export function CharacterOverview() {
 
 				{/* Your playbook - slightly larger, takes ~40% width */}
 				{user.role !== PlayerRole.KEEPER && (
-					<div className="w-full md:w-[40%] min-w-0 min-h-0 overflow-hidden">
+					<div
+						className={`w-full min-w-0 min-h-0 overflow-hidden ${otherCharacters.length > 1 ? "md:w-[40%]" : "md:w-[50%]"}`}
+					>
 						{myCharacter ? (
 							<PlaybookExpanded character={myCharacter} />
 						) : (
@@ -94,6 +96,10 @@ function CharacterCreationStarter({ onCollapse }: { onCollapse: () => void }) {
 		.map((player) => {
 			return { name: player.name, playbook: player.character?.playbook };
 		});
+
+	const floatKeeperToTop = !gameState.players.some(
+		(player) => player.role === PlayerRole.KEEPER,
+	);
 
 	return (
 		<div className="border-2 border-theme-border-accent rounded-lg p-4 h-full flex flex-col overflow-hidden">
@@ -119,6 +125,11 @@ function CharacterCreationStarter({ onCollapse }: { onCollapse: () => void }) {
 					<h1 className="text-2xl font-bold text-center text-theme-text-accent shrink-0">
 						Choose an Ember
 					</h1>
+					{floatKeeperToTop && (
+						<GlassyButton key="keeper" onClick={() => onCollapse()}>
+							Play as Keeper (No Character)
+						</GlassyButton>
+					)}
 					<div className="flex flex-col md:grid md:grid-cols-2 gap-2 flex-1 overflow-y-auto md:flex-none">
 						{Object.values(playbookKeys).map((playbookKey) => {
 							const base = playbookBases[playbookKey];
@@ -137,9 +148,11 @@ function CharacterCreationStarter({ onCollapse }: { onCollapse: () => void }) {
 								</GlassyButton>
 							);
 						})}
-						<GlassyButton key="keeper" onClick={() => onCollapse()}>
-							Play as Keeper (No Character)
-						</GlassyButton>
+						{!floatKeeperToTop && (
+							<GlassyButton key="keeper" onClick={() => onCollapse()}>
+								Play as Keeper (No Character)
+							</GlassyButton>
+						)}
 					</div>
 				</div>
 			)}
