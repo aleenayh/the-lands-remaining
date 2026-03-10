@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ReactComponent as Logo } from "./assets/tlr-logo.svg";
-import { ReactComponent as CrownIcon } from "./dominion/crown.svg";
 import { DominionSheet } from "./dominion/DominionSheet";
+import { ReactComponent as FootprintsIcon } from "./journeys/footprints.svg";
 import { JourneySheet } from "./journeys/JourneySheet";
 import { ReactComponent as TowerIcon } from "./mourningTower/tower.svg";
 import { TowerSheet } from "./mourningTower/towerSheet";
@@ -49,8 +49,8 @@ export function Drawers() {
 const tabKeys = [
 	"reference",
 	"notes",
+	"journeys",
 	"mystery",
-	"dominion",
 	"home",
 	"players",
 	"tower",
@@ -60,7 +60,7 @@ const tabKeys = [
 const icons: Record<(typeof tabKeys)[number], React.ReactNode> = {
 	reference: <BookIcon className="w-full h-full" />,
 	mystery: <HourglassIcon className="w-full h-full" />,
-	dominion: <CrownIcon className="w-full h-full" />,
+	journeys: <FootprintsIcon className="w-full h-full" />,
 	players: <PlayersIcon className="w-full h-full" />,
 	home: <Logo className="w-full h-full" />,
 	notes: <NotesIcon className="w-full h-full" />,
@@ -76,7 +76,7 @@ export function MobileDrawerNavigation() {
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [notesOpen, setNotesOpen] = useState(false);
 	const [towerOpen, setTowerOpen] = useState(false);
-	const [dominionOpen, setDominionOpen] = useState(false);
+	const [journeysOpen, setJourneysOpen] = useState(false);
 	const [safetyOpen, setSafetyOpen] = useState(false);
 
 	const closeAllExcept = (key: (typeof tabKeys)[number] | null) => {
@@ -84,7 +84,7 @@ export function MobileDrawerNavigation() {
 		setMysteryOpen(false);
 		setPlayersOpen(false);
 		setNotesOpen(false);
-		setDominionOpen(false);
+		setJourneysOpen(false);
 		setSafetyOpen(false);
 		setSettingsOpen(false);
 		setTowerOpen(false);
@@ -104,11 +104,11 @@ export function MobileDrawerNavigation() {
 			case "safety":
 				setSafetyOpen(true);
 				break;
+			case "journeys":
+				setJourneysOpen(true);
+				break;
 			case "settings":
 				setSettingsOpen(true);
-				break;
-			case "dominion":
-				setDominionOpen(true);
 				break;
 			case "tower":
 				setTowerOpen(true);
@@ -123,7 +123,7 @@ export function MobileDrawerNavigation() {
 			<div className="flex absolute top-0 left-0 w-full h-full flex-col justify-start items-start pointer-events-none pb-16">
 				<ReferenceSheet isOpen={refOpen} setIsOpen={setRefOpen} />
 				<MysterySheet isOpen={mysteryOpen} setIsOpen={setMysteryOpen} />
-				<DominionSheet isOpen={dominionOpen} setIsOpen={setDominionOpen} />
+				<JourneySheet isOpen={journeysOpen} setIsOpen={setJourneysOpen} />
 				<PullOutCharacterOverview
 					isOpen={playersOpen}
 					setIsOpen={setPlayersOpen}

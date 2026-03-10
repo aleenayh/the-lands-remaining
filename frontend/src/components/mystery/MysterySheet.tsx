@@ -3,6 +3,7 @@ import { Tooltip } from "radix-ui";
 import { useState } from "react";
 import { useGame } from "../../context/GameContext";
 import { PlayerRole } from "../../context/types";
+import { InteriorDominion } from "../dominion/DominionSheet";
 import { CloseTrayButton } from "../shared/CloseTrayButton";
 import { BorderedTray } from "../shared/DecorativeBorder";
 import { StyledTooltip } from "../shared/Tooltip";
@@ -69,6 +70,18 @@ export function MysterySheet({
 											</span>
 										</button>
 									))}
+								{(gameState.dominion || role === PlayerRole.KEEPER) && (
+									<button
+										type="button"
+										key="lordMystery"
+										className={`block md:hidden rounded-lg py-0 px-2 border transition-colors ${displayedMystery === "lordMystery" ? "bg-theme-bg-accent text-theme-text-accent border-theme-border-accent hover:bg-theme-bg-secondary" : "bg-theme-bg-primary text-theme-text-primary border-theme-border hover:bg-theme-bg-accent hover:text-theme-text-accent hover:border-theme-border-accent"}`}
+										onClick={() => setDisplayedMystery("lordMystery")}
+									>
+										<span className="text-sm whitespace-nowrap">
+											The Lord Question
+										</span>
+									</button>
+								)}
 							</div>
 
 							{/* mystery content */}
@@ -96,6 +109,7 @@ export function MysterySheet({
 									) : (
 										<div>No active mysteries</div>
 									)}
+									{displayedMystery === "lordMystery" && <InteriorDominion />}
 								</div>
 							</AnimatePresence>
 

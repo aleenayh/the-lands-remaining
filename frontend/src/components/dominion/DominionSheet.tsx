@@ -27,12 +27,7 @@ export function DominionSheet({
 		user: { role },
 	} = useGame();
 	const dominionMystery = gameState.dominion;
-	const [modalOpen, setModalOpen] = useState(false);
 	if (!dominionMystery && role !== PlayerRole.KEEPER) return null;
-
-	const { title, intro, layers } = dominionMystery
-		? DominionMysteries[dominionMystery.title as keyof typeof DominionMysteries]
-		: { title: "Dominion", intro: [], layers: [] };
 	return (
 		<div className="flex flex-col justify-start items-start h-full w-full pointer-events-none">
 			{(dominionMystery || role === PlayerRole.KEEPER) && (
@@ -57,155 +52,116 @@ export function DominionSheet({
 			<AnimatePresence>
 				{isOpen && (
 					<div>
-						{dominionMystery ? (
-							<BorderedTray>
-								<CloseTrayButton close={() => setIsOpen(!isOpen)} />
-								<h1 className="text-2xl font-bold text-theme-text-accent mb-10">
-									{title}
-								</h1>
-								<div className="h-full overflow-y-auto">
-									<div className="flex flex-col gap-10">
-										<Section
-											title="Introduction"
-											collapsible
-											leftAlign
-											withDecoration
-										>
-											{intro.map((i) => (
-												<p
-													key={i}
-													className="text-left leading-relaxed text-sm"
-												>
-													{parseStaticText(i)}
-												</p>
-											))}
-										</Section>
-
-										<div className="flex flex-col gap-10">
-											<div>
-												{dominionMystery?.questions?.map((q) => (
-													<div key={q.text}>
-														<h2 className="text-lg font-bold text-theme-text-accent">
-															{q.text}
-														</h2>
-														<p className="text-sm text-theme-text-secondary italic">
-															(Complexity: {q.complexity})
-														</p>
-													</div>
-												))}
-											</div>
-										</div>
-										<ClueSection />
-										{role === PlayerRole.KEEPER && (
-											<div className="flex flex-col gap-2 mt-8 border border-theme-border-accent rounded-lg p-4 overflow-y-auto">
-												<h2 className="text-xl font-bold text-theme-text-accent">
-													Keeper Materials
-												</h2>
-												<p className="text-sm text-theme-text-secondary italic">
-													Not visible to Embers.
-												</p>
-												<Section title="Layers" collapsible={true}>
-													{layers.map((l) => (
-														<Section
-															title={l.title}
-															collapsible={true}
-															minify={true}
-															key={l.title}
-														>
-															{l.text.map((t) => (
-																<p
-																	key={t}
-																	className="text-left leading-relaxed"
-																>
-																	{parseStaticText(t)}
-																</p>
-															))}
-														</Section>
-													))}
-												</Section>
-												<Dialog.Root
-													open={modalOpen}
-													onOpenChange={setModalOpen}
-												>
-													<Dialog.Trigger className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100">
-														Change Dominion
-													</Dialog.Trigger>
-													<Dialog.Portal>
-														<Dialog.Overlay className="DialogOverlay" />
-														<Dialog.Content className="DialogContent">
-															<Dialog.Close asChild>
-																<button
-																	type="button"
-																	className="absolute top-2 right-2 aspect-square w-8 h-8 bg-theme-bg-accent text-theme-text-primary rounded-full flex justify-center items-center"
-																>
-																	X
-																</button>
-															</Dialog.Close>
-															<Dialog.Title className="DialogTitle">
-																Change Dominion
-															</Dialog.Title>
-															<Dialog.Description className="DialogDescription">
-																There can only be one active dominion at a time.
-																Selecting a new dominion will replace the
-																current one, including active clues. You can
-																also remove the dominion without selecting a new
-																one.
-															</Dialog.Description>
-															<DominionMysteryForm setIsOpen={setModalOpen} />
-														</Dialog.Content>
-													</Dialog.Portal>
-												</Dialog.Root>
-											</div>
-										)}
-									</div>
-								</div>
-							</BorderedTray>
-						) : (
-							<BorderedTray>
-								<CloseTrayButton close={() => setIsOpen(!isOpen)} />
-								<h1 className="text-2xl font-bold text-theme-text-accent mb-10">
-									{title}
-								</h1>
-								<div className="h-full overflow-y-auto">
-									<div className="text-lg text-theme-text-secondary text-center my-10">
-										No active dominion. You can add one below.
-									</div>
-									{role === PlayerRole.KEEPER && (
-										<Dialog.Root open={modalOpen} onOpenChange={setModalOpen}>
-											<Dialog.Trigger className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100">
-												Change Dominion
-											</Dialog.Trigger>
-											<Dialog.Portal>
-												<Dialog.Overlay className="DialogOverlay" />
-												<Dialog.Content className="DialogContent">
-													<Dialog.Close asChild>
-														<button
-															type="button"
-															className="absolute top-2 right-2 aspect-square w-8 h-8 bg-theme-bg-accent text-theme-text-primary rounded-full flex justify-center items-center"
-														>
-															X
-														</button>
-													</Dialog.Close>
-													<Dialog.Title className="DialogTitle">
-														Change Dominion
-													</Dialog.Title>
-													<Dialog.Description className="DialogDescription">
-														There can only be one active dominion at a time.
-														Selecting a new dominion will replace the current
-														one, including active clues. You can also remove the
-														dominion without selecting a new one.
-													</Dialog.Description>
-													<DominionMysteryForm setIsOpen={setModalOpen} />
-												</Dialog.Content>
-											</Dialog.Portal>
-										</Dialog.Root>
-									)}
-								</div>
-							</BorderedTray>
-						)}
+						<BorderedTray>
+							<CloseTrayButton close={() => setIsOpen(!isOpen)} />
+							<InteriorDominion />
+						</BorderedTray>
 					</div>
 				)}
 			</AnimatePresence>
+		</div>
+	);
+}
+
+export function InteriorDominion() {
+	const {
+		gameState,
+		user: { role },
+	} = useGame();
+	const dominionMystery = gameState.dominion;
+	const [modalOpen, setModalOpen] = useState(false);
+	if (!dominionMystery && role !== PlayerRole.KEEPER) return null;
+
+	const { title, intro, layers } = dominionMystery
+		? DominionMysteries[dominionMystery.title as keyof typeof DominionMysteries]
+		: { title: "Dominion", intro: [], layers: [] };
+	return (
+		<div className="flex flex-col justify-start items-start h-full w-full">
+			{" "}
+			<h1 className="text-2xl font-bold text-theme-text-accent mb-10">
+				{title}
+			</h1>
+			<div className="h-full overflow-y-auto">
+				<div className="flex flex-col gap-10">
+					<Section title="Introduction" collapsible leftAlign withDecoration>
+						{intro.map((i) => (
+							<p key={i} className="text-left leading-relaxed text-sm">
+								{parseStaticText(i)}
+							</p>
+						))}
+					</Section>
+
+					<div className="flex flex-col gap-10">
+						<div>
+							{dominionMystery?.questions?.map((q) => (
+								<div key={q.text}>
+									<h2 className="text-lg font-bold text-theme-text-accent">
+										{q.text}
+									</h2>
+									<p className="text-sm text-theme-text-secondary italic">
+										(Complexity: {q.complexity})
+									</p>
+								</div>
+							))}
+						</div>
+					</div>
+					<ClueSection />
+					{role === PlayerRole.KEEPER && (
+						<div className="flex flex-col gap-2 mt-8 border border-theme-border-accent rounded-lg p-4 overflow-y-auto">
+							<h2 className="text-xl font-bold text-theme-text-accent">
+								Keeper Materials
+							</h2>
+							<p className="text-sm text-theme-text-secondary italic">
+								Not visible to Embers.
+							</p>
+							<Section title="Layers" collapsible={true}>
+								{layers.map((l) => (
+									<Section
+										title={l.title}
+										collapsible={true}
+										minify={true}
+										key={l.title}
+									>
+										{l.text.map((t) => (
+											<p key={t} className="text-left leading-relaxed">
+												{parseStaticText(t)}
+											</p>
+										))}
+									</Section>
+								))}
+							</Section>
+							<Dialog.Root open={modalOpen} onOpenChange={setModalOpen}>
+								<Dialog.Trigger className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100">
+									Change Dominion
+								</Dialog.Trigger>
+								<Dialog.Portal>
+									<Dialog.Overlay className="DialogOverlay" />
+									<Dialog.Content className="DialogContent">
+										<Dialog.Close asChild>
+											<button
+												type="button"
+												className="absolute top-2 right-2 aspect-square w-8 h-8 bg-theme-bg-accent text-theme-text-primary rounded-full flex justify-center items-center"
+											>
+												X
+											</button>
+										</Dialog.Close>
+										<Dialog.Title className="DialogTitle">
+											Change Dominion
+										</Dialog.Title>
+										<Dialog.Description className="DialogDescription">
+											There can only be one active dominion at a time. Selecting
+											a new dominion will replace the current one, including
+											active clues. You can also remove the dominion without
+											selecting a new one.
+										</Dialog.Description>
+										<DominionMysteryForm setIsOpen={setModalOpen} />
+									</Dialog.Content>
+								</Dialog.Portal>
+							</Dialog.Root>
+						</div>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 }
