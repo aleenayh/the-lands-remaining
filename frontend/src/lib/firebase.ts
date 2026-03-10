@@ -102,27 +102,6 @@ export function generateGameHash(): string {
 }
 
 /**
- * Reset a game to default state (keeps the same hash, clears all players/progress)
- * Used for debugging
- */
-export async function resetGameToDefaults(
-	gameHash: string,
-): Promise<GameState> {
-	const gameRef = ref(db, `games/${gameHash}`);
-	const newState: GameState = {
-		...defaultGameState,
-		gameHash,
-	};
-
-	await set(gameRef, {
-		...newState,
-		timestamp: new Date().toISOString(),
-	});
-
-	return newState;
-}
-
-/**
  * Convert a display name to a player ID
  * - Lowercase
  * - Replace spaces with dashes
