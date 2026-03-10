@@ -254,10 +254,10 @@ function Credits() {
 			</p>
 
 			<p>
-				<span translate="no">The Lands Remaining</span> is a creation of{" "}
-				<span translate="no">Jason Cordova</span> distributed by{" "}
-				<a href="https://www.gauntlet-rpg.com/" translate="no">
-					The Gauntlet
+				<span translate="no">The Lands Remaining </span> is a creation of{" "}
+				<span translate="no">Jason Cordova </span> distributed by{" "}
+				<a href="https://www.gauntlet-rpg.com/">
+					<span translate="no">The Gauntlet</span>
 				</a>
 				. This game is currently in development and playtesting. Please{" "}
 				<a href="https://discord.com/invite/ScVrPDgfeg">
