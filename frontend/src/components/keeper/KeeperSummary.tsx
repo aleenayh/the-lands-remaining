@@ -3,6 +3,7 @@ import { Conditions } from "../playbooks/sharedComponents/Conditions";
 import { PlayerPill } from "../playbooks/sharedComponents/PlayerPill";
 import type { Character } from "../playbooks/types";
 import { CopyInvite } from "../settings/GameInfo";
+import { DiceIndicator } from "../shared/Dice";
 
 export function KeeperSummary() {
 	const { gameState } = useGame();
@@ -19,7 +20,10 @@ export function KeeperSummary() {
 							key={character.playerId}
 							className="border-2 border-theme-border-accent bg-theme-bg-primary rounded-lg p-4 relative"
 						>
-							<h2 className="text-lg whitespace-normal text-balance mx-auto">
+							<div className="absolute top-2 left-2">
+								<DiceIndicator playerId={character.playerId} />
+							</div>
+							<h2 className="text-lg whitespace-normal text-balance mx-auto max-w-[90%]">
 								{character.name}
 							</h2>
 							<PlayerPill playerId={character.playerId} />
