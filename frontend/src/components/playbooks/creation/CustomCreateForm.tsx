@@ -434,6 +434,12 @@ export function CustomCreateForm() {
 							<h2 className="font-bold text-center text-theme-text-accent text-lg">
 								Questions
 							</h2>
+							<p className="text-left text-theme-text-muted text-sm">
+								The first two,{" "}
+								<strong>Did the Embers resolve a Mystery?</strong> and{" "}
+								<strong>Did you roll with Cinder?</strong>, are already
+								included. Only add unique questions here.
+							</p>
 							{Object.values(watch("questions")).map((value, index) => (
 								<div
 									className="flex items-center justify-center"

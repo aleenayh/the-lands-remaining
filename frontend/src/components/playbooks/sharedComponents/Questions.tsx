@@ -47,16 +47,34 @@ export function Questions({ character }: { character: Character }) {
 				</div>
 			)}
 			<div className="flex items-center gap-2 text-left">
-				<input id="did-the-embers-resolve-a-mystery" type="checkbox" checked={true} disabled={true} />
-				<label className="text-sm cursor-pointer" htmlFor="did-the-embers-resolve-a-mystery">
+				{/** biome-ignore lint/correctness/useUniqueElementIds: verified unique */}
+				<input
+					id="did-the-embers-resolve-a-mystery"
+					type="checkbox"
+					checked={true}
+					disabled={true}
+				/>
+				<label
+					className="text-sm cursor-pointer"
+					htmlFor="did-the-embers-resolve-a-mystery"
+				>
 					<span className={`text-theme-text-primary font-bold`}>
 						Did the Embers resolve a Mystery?
 					</span>
 				</label>
 			</div>
 			<div className="flex items-center gap-2 text-left">
-				<input id="did-you-roll-with-cinder" type="checkbox" checked={true} disabled={true} />
-				<label className="text-sm cursor-pointer" htmlFor="did-you-roll-with-cinder">
+				{/** biome-ignore lint/correctness/useUniqueElementIds: verified unique */}
+				<input
+					id="did-you-roll-with-cinder"
+					type="checkbox"
+					checked={true}
+					disabled={true}
+				/>
+				<label
+					className="text-sm cursor-pointer"
+					htmlFor="did-you-roll-with-cinder"
+				>
 					<span className={`text-theme-text-primary font-bold`}>
 						Did you roll with Cinder?
 					</span>
@@ -73,13 +91,16 @@ export function Questions({ character }: { character: Character }) {
 						className="flex items-center gap-2 text-left"
 					>
 						<input
-						  id={value}
+							id={value}
 							type="checkbox"
 							checked={marked}
 							disabled={!editable}
 							onChange={(e) => onToggle(e.target.checked, index)}
 						/>
-						<label className={`text-sm ${editable ? "cursor-pointer" : ""}`} htmlFor={value}>
+						<label
+							className={`text-sm ${editable ? "cursor-pointer" : ""}`}
+							htmlFor={value}
+						>
 							<span
 								className={`${marked ? "text-theme-text-primary font-bold" : "text-theme-text-muted"}`}
 							>
