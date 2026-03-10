@@ -15,7 +15,8 @@ function App() {
 	const initialGameHash = searchParams.get("gameHash");
 	// Get saved user info if returning to a game via URL
 	const savedName = localStorage.getItem("playerName") || "";
-	const savedRole = localStorage.getItem("playerRole") as PlayerRole | null;
+	const savedRole = (localStorage.getItem(`playerRole_${initialGameHash}`) ??
+		localStorage.getItem("playerRole")) as PlayerRole | null;
 	const [gameHash, setGameHash] = useState<string | null>(initialGameHash);
 	const [startingState, setStartingState] = useState<GameState | null>(null);
 	const [userName, setUserName] = useState<string | null>(savedName ?? null);
