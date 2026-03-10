@@ -9,6 +9,7 @@ import type { Dominion } from "../mystery/types";
 import { parseStaticText } from "../playbooks/utils";
 import { CloseTrayButton } from "../shared/CloseTrayButton";
 import { BorderedTray } from "../shared/DecorativeBorder";
+import { GlassyButton } from "../shared/GlassyButton";
 import { Section } from "../shared/Section";
 import { StyledTooltip } from "../shared/Tooltip";
 import { DominionMysteries } from "./content";
@@ -94,12 +95,7 @@ export function DominionSheet({
 												))}
 											</div>
 										</div>
-										<ClueSection
-											dominion={
-												dominionMystery.title as keyof typeof DominionMysteries
-											}
-											role={role}
-										/>
+										<ClueSection />
 										{role === PlayerRole.KEEPER && (
 											<div className="flex flex-col gap-2 mt-8 border border-theme-border-accent rounded-lg p-4 overflow-y-auto">
 												<h2 className="text-xl font-bold text-theme-text-accent">
@@ -255,6 +251,7 @@ function DominionMysteryForm({
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
 			<div className="flex gap-2 items-center justify-start my-4">
+				{/** biome-ignore lint/correctness/useUniqueElementIds: confirmed unique */}
 				<input
 					id="dominion-noxilliax"
 					type="radio"
@@ -287,22 +284,12 @@ function DominionMysteryForm({
 }
 
 //Consider DRY up with Mystery ClueSection
-function ClueSection({
-	dominion,
-	role,
-}: {
-	dominion: keyof typeof DominionMysteries;
-	role: PlayerRole;
-}) {
+function ClueSection() {
 	const { updateGameState, gameState } = useGame();
 	const { register, handleSubmit, reset } = useForm<{ customClue: string }>();
 	const { dominion: dominionState } = gameState;
 	if (!dominionState) return null;
 	const earnedClues = dominionState.clues?.filter((clue) => clue.earned);
-
-	const availableCanonicalClues = DominionMysteries[dominion].clues.filter(
-		(clue) => !earnedClues?.some((c) => c.text === clue),
-	);
 
 	const addCustomClue = (data: { customClue: string }) => {
 		const newClues = dominionState.clues
@@ -332,25 +319,6 @@ function ClueSection({
 		reset();
 	};
 
-	const earnClue = (clue: string, checked: boolean) => {
-		const existingClue = dominionState.clues?.find((c) => c.text === clue);
-		const newClues =
-			existingClue && dominionState.clues
-				? dominionState.clues.map((c) =>
-						c.text === clue ? { ...c, earned: checked, removed: false } : c,
-					)
-				: [
-						...(dominionState.clues ?? []),
-						{ text: clue, earned: checked, explained: false, removed: false },
-					];
-		updateGameState({
-			dominion: {
-				...dominionState,
-				clues: newClues,
-			},
-		});
-	};
-
 	const explainClue = (clue: string, checked: boolean) => {
 		const newClues = dominionState.clues?.map((c) =>
 			c.text === clue ? { ...c, explained: checked, removed: false } : c,
@@ -377,7 +345,7 @@ function ClueSection({
 
 	return (
 		<Section title="Clues">
-			<div className="flex gap-2 text-sm text-theme-text-secondary text-left justify-center items-center">
+			<div className="flex gap-2 text-sm text-theme-text-muted text-left justify-center items-center">
 				<div>Earned: {earnedClues?.length}</div> <div>|</div>
 				<div>
 					{" "}
@@ -392,9 +360,8 @@ function ClueSection({
 			<div className="flex flex-col justify-start items-start text-left gap-2 w-full">
 				<div
 					key={"header-row"}
-					className="grid grid-cols-[20px_20px_20px_1fr] gap-4 text-xs whitespace-nowrap overflow-ellipsis w-full"
+					className="hidden md:grid grid-cols-[20px_20px_1fr] gap-4 text-xs whitespace-nowrap overflow-ellipsis items-center w-full"
 				>
-					<span className="text-left -rotate-45">Earned</span>
 					<span className="text-left -rotate-45">Explained</span>
 					<span className="text-left -rotate-45">Remove</span>
 					<span></span>
@@ -403,14 +370,8 @@ function ClueSection({
 					earnedClues.map((clue) => (
 						<div
 							key={clue.text}
-							className="grid grid-cols-[20px_20px__20px_1fr] gap-2 items-center w-full"
+							className="grid grid-cols-[20px_20px_1fr] gap-2 items-center w-full"
 						>
-							<input
-								type="checkbox"
-								checked={clue.earned}
-								disabled={role !== PlayerRole.KEEPER}
-								onChange={(e) => earnClue(clue.text, e.target.checked)}
-							/>
 							<input
 								type="checkbox"
 								checked={clue.explained}
@@ -418,7 +379,7 @@ function ClueSection({
 							/>
 							<button
 								type="button"
-								className="text-xs text-theme-text-secondary bg-theme-bg-primary rounded-full px-0 aspect-square hover:bg-theme-bg-accent hover:text-theme-text-accent hover:border hover:border-theme-border-accent"
+								className="text-xs text-theme-text-muted bg-theme-bg-primary rounded-full px-0 aspect-square hover:bg-theme-bg-accent hover:text-theme-text-accent hover:border hover:border-theme-border-accent"
 								onClick={() => removeClue(clue.text)}
 							>
 								X
@@ -432,46 +393,18 @@ function ClueSection({
 					</div>
 				)}
 			</div>
-			{role === PlayerRole.KEEPER && (
-				<div className="flex flex-col gap-2 w-full ">
-					<Section title="Available Clues" collapsible={true} minify={true}>
-						<span className="text-sm italic text-theme-text-secondary text-left">
-							Unearned clue lists are only visible to the Keeper. Custom clues
-							can be added by any player.
-						</span>
-						<div className="grid grid-cols-2 gap-2">
-							{availableCanonicalClues?.map((clue) => (
-								<div
-									key={clue}
-									className="flex gap-2 items-start justify-start text-left text-sm"
-								>
-									<input
-										type="checkbox"
-										onChange={(e) => earnClue(clue, e.target.checked)}
-									/>
-									{clue}
-								</div>
-							))}
-						</div>
-					</Section>
-				</div>
-			)}
+
 			<form
 				onSubmit={handleSubmit(addCustomClue)}
 				className="flex gap-2 w-full"
 			>
 				<input
 					type="text"
-					placeholder="Add custom clue..."
+					placeholder="Add clue..."
 					className="flex-grow"
 					{...register("customClue")}
 				/>
-				<button
-					type="submit"
-					className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100 hover:bg-theme-bg-accent-hover hover:text-theme-text-accent-hover"
-				>
-					Add
-				</button>
+				<GlassyButton onClick={handleSubmit(addCustomClue)}>Add</GlassyButton>
 			</form>
 		</Section>
 	);

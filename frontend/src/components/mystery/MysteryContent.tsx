@@ -1,9 +1,12 @@
-import { Tooltip } from "radix-ui";
+import { Dialog, Tooltip } from "radix-ui";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useGame } from "../../context/GameContext";
 import { PlayerRole } from "../../context/types";
 import { AnswerQuestionDiceRollModal } from "../shared/Dice";
 import { Divider } from "../shared/Divider";
+import { GlassyButton } from "../shared/GlassyButton";
 import { Section } from "../shared/Section";
 import { StyledTooltip } from "../shared/Tooltip";
 import { EditMystery } from "./AddMystery";
@@ -16,6 +19,10 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 		gameState,
 		updateGameState,
 	} = useGame();
+	const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+	const [questionToResolve, setQuestionToResolve] = useState<string | null>(
+		null,
+	);
 
 	const onToggle = (checked: boolean) => {
 		updateGameState({
@@ -36,8 +43,16 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 			mysteries: gameState.mysteries.filter((m) => m.id !== mystery.id),
 		});
 	};
+	const openConfirmationModal = (question: string) => {
+		setQuestionToResolve(question);
+		setConfirmationModalOpen(true);
+	};
 
-	const resolveQuestion = (question: string) => {
+	const resolveQuestion = (question: string | null) => {
+		if (!question) {
+			toast.error("Something went wrong!");
+			return;
+		}
 		const newClues = mystery.clues
 			? mystery.clues.map((c) =>
 					c.explained
@@ -56,6 +71,9 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 					: m,
 			),
 		});
+		setConfirmationModalOpen(false);
+		setQuestionToResolve(null);
+		toast.success(`Resolved: ${question}`);
 	};
 
 	const intro = mystery.intro ?? [];
@@ -135,7 +153,7 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 					</h2>
 					{mystery.questions.map((question) => (
 						<div key={question.text}>
-							<div className="flex gap-2 justify-start items-center w-full flex-wrap ">
+							<div className="inline-flex gap-2 justify-start items-center w-full flex-wrap text-left whitespace-break-spaces leading-none">
 								{question.text}{" "}
 								<span className="text-sm text-theme-text-secondary italic">
 									(Complexity: {question.complexity})
@@ -163,7 +181,7 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 											<button
 												type="button"
 												className="border border-theme-border bg-theme-bg-primary hover:bg-theme-bg-accent px-2 py-1 rounded-lg text-sm text-theme-text-secondary hover:text-theme-text-primary"
-												onClick={() => resolveQuestion(question.text)}
+												onClick={() => openConfirmationModal(question.text)}
 											>
 												Resolve Question
 											</button>
@@ -182,8 +200,53 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 					))}
 				</div>
 			)}
-			<ClueSection mystery={mystery} role={role} />
+			<ClueSection mystery={mystery} />
 			<Divider />
+			<Dialog.Root
+				open={confirmationModalOpen}
+				onOpenChange={setConfirmationModalOpen}
+			>
+				<Dialog.Portal>
+					<Dialog.Overlay className="DialogOverlay" />
+					<Dialog.Content className="DialogContent" style={{ zIndex: 30 }}>
+						<Dialog.Close asChild>
+							<button
+								type="button"
+								className="absolute top-2 right-2 aspect-square w-8 h-8 bg-theme-bg-accent text-theme-text-primary rounded-full flex justify-center items-center"
+							>
+								X
+							</button>
+						</Dialog.Close>
+						<Dialog.Title className="DialogTitle">
+							Resolve Question
+						</Dialog.Title>
+						<Dialog.Description className="DialogDescription italic">
+							{questionToResolve}
+						</Dialog.Description>
+						<div className="text-sm text-theme-text-muted">
+							This will clear all clues marked "explained", listed below, as
+							well as the question itself. Other clues will remain for use in
+							subsequent questions.
+						</div>
+						<ul className="flex flex-col ml-4 list-disc list-inside text-sm">
+							{mystery.clues
+								?.filter((clue) => clue.explained)
+								.map((clue) => (
+									<li key={clue.text}>{clue.text}</li>
+								))}
+						</ul>
+						<div className="flex justify-center items-center">
+							<button
+								type="button"
+								className="text-theme-text-primary bg-theme-bg-primary hover:bg-theme-bg-accent border border-theme-border-accent rounded-lg p-1"
+								onClick={() => resolveQuestion(questionToResolve)}
+							>
+								Confirm
+							</button>
+						</div>
+					</Dialog.Content>
+				</Dialog.Portal>
+			</Dialog.Root>
 		</div>
 	);
 }
@@ -213,13 +276,7 @@ export function CountdownItem({
 	);
 }
 
-function ClueSection({
-	mystery,
-	role,
-}: {
-	mystery: Mystery;
-	role: PlayerRole;
-}) {
+function ClueSection({ mystery }: { mystery: Mystery }) {
 	const { updateGameState, gameState } = useGame();
 	const earnedClues = mystery.clues?.filter((clue) => clue.earned);
 	const { register, handleSubmit, reset } = useForm<{ customClue: string }>();
@@ -251,29 +308,6 @@ function ClueSection({
 		reset();
 	};
 
-	const earnClue = (clue: string, checked: boolean) => {
-		const existingClue = mystery.clues?.find((c) => c.text === clue);
-		const newClues =
-			existingClue && mystery.clues
-				? mystery.clues.map((c) =>
-						c.text === clue ? { ...c, earned: checked, removed: false } : c,
-					)
-				: [
-						...(mystery.clues ?? []),
-						{ text: clue, earned: checked, explained: false, removed: false },
-					];
-		updateGameState({
-			mysteries: gameState.mysteries.map((m) =>
-				m.id === mystery.id
-					? {
-							...m,
-							clues: [...newClues],
-						}
-					: m,
-			),
-		});
-	};
-
 	const explainClue = (clue: string, checked: boolean) => {
 		const newClues = mystery.clues?.map((c) =>
 			c.text === clue ? { ...c, explained: checked, removed: false } : c,
@@ -301,7 +335,7 @@ function ClueSection({
 
 	return (
 		<Section title="Clues">
-			<div className="flex gap-2 text-sm text-theme-text-secondary text-left justify-center items-center">
+			<div className="flex gap-2 text-sm text-theme-text-muted text-left justify-center items-center">
 				<div>Earned: {earnedClues?.length}</div> <div>|</div>
 				<div>
 					{" "}
@@ -316,9 +350,8 @@ function ClueSection({
 			<div className="flex flex-col justify-start items-start text-left gap-2 w-full">
 				<div
 					key={"header-row"}
-					className="grid grid-cols-[20px_20px_20px_1fr] gap-4 text-xs whitespace-nowrap overflow-ellipsis items-center w-full"
+					className="hidden md:grid grid-cols-[20px_20px_1fr] gap-4 text-xs whitespace-nowrap overflow-ellipsis items-center w-full"
 				>
-					<span className="text-left -rotate-45">Earned</span>
 					<span className="text-left -rotate-45">Explained</span>
 					<span className="text-left -rotate-45">Remove</span>
 					<span></span>
@@ -327,14 +360,8 @@ function ClueSection({
 					earnedClues.map((clue) => (
 						<div
 							key={clue.text}
-							className="grid grid-cols-[20px_20px_20px_1fr] gap-2 items-center w-full"
+							className="grid grid-cols-[20px_20px_1fr] gap-2 items-center w-full"
 						>
-							<input
-								type="checkbox"
-								checked={clue.earned}
-								disabled={role !== PlayerRole.KEEPER}
-								onChange={(e) => earnClue(clue.text, e.target.checked)}
-							/>
 							<input
 								type="checkbox"
 								checked={clue.explained}
@@ -342,7 +369,7 @@ function ClueSection({
 							/>
 							<button
 								type="button"
-								className="text-xs text-theme-text-secondary bg-theme-bg-primary rounded-full px-0 aspect-square hover:bg-theme-bg-accent hover:text-theme-text-accent hover:border hover:border-theme-border-accent"
+								className="text-xs text-theme-text-muted bg-theme-bg-primary rounded-full px-0 aspect-square hover:bg-theme-bg-accent hover:text-theme-text-accent hover:border hover:border-theme-border-accent"
 								onClick={() => removeClue(clue.text)}
 							>
 								X
@@ -356,22 +383,18 @@ function ClueSection({
 					</div>
 				)}
 			</div>
+
 			<form
 				onSubmit={handleSubmit(addCustomClue)}
 				className="flex gap-2 w-full"
 			>
 				<input
 					type="text"
-					placeholder="Add custom clue..."
+					placeholder="Add clue..."
 					className="flex-grow"
 					{...register("customClue")}
 				/>
-				<button
-					type="submit"
-					className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100 hover:bg-theme-bg-accent-hover hover:text-theme-text-accent-hover"
-				>
-					Add
-				</button>
+				<GlassyButton onClick={handleSubmit(addCustomClue)}>Add</GlassyButton>
 			</form>
 		</Section>
 	);
