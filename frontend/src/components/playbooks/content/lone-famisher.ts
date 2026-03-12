@@ -118,7 +118,7 @@ export const LoneFamisher: PlaybookBase = {
 		},
 		{
 			title: "The Famisher Hunting Horn",
-			text: "Famishers preferred bombastic raids over furtive ones, and often signaled their arrival with instruments made from <aspect>the horns of beasts that have long been hunted into extinction</aspect>. It is said the <aspect>inhuman shrieking sound it created could startle <aspect>thunder from the heavens with a single note</aspect>. ",
+			text: "Famishers preferred bombastic raids over furtive ones, and often signaled their arrival with instruments made from <aspect>the horns of beasts that have long been hunted into extinction</aspect>. It is said the <aspect>inhuman shrieking sound</aspect> it created could startle <aspect>thunder from the heavens with a single note</aspect>. ",
 			extraLines: 3,
 			type: "relic",
 		},
