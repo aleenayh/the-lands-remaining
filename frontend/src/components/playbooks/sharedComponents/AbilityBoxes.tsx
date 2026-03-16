@@ -195,7 +195,7 @@ function AbilityBox({ ability, value, abbreviate = false }: AbilityBoxProps) {
 	return (
 		<Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
 			<Dialog.Trigger asChild>
-				<div className="flex flex-col gap-1 rounded-lg border border-theme-border-accent p-1 bg-theme-bg-secondary justify-center items-center min-w-[10%]">
+				<div className="flex flex-col gap-1 rounded-lg border border-theme-border-accent p-1 bg-theme-bg-secondary justify-center items-center min-w-[10%] cursor-pointer">
 					<h2 className="text-theme-text-muted text-[0.5rem] truncate max-w-full whitespace-nowrap overflow-hidden text-ellipsis">
 						<abbr title={ability}>
 							{abbreviate ? ability.slice(0, 4) : ability}
