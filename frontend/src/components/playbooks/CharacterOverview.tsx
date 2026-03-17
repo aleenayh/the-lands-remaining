@@ -52,7 +52,7 @@ export function CharacterOverview() {
 				)}
 			</h1>
 			{user.role === PlayerRole.KEEPER && <KeeperSummary />}
-			<div className="flex flex-1 min-h-0 overflow-hidden gap-1 max-w-[1400px] mx-auto mb-6 md:mb-2 ">
+			<div className="flex flex-1 min-h-0 overflow-hidden gap-1 max-w-[1800px] mx-auto mb-6 md:mb-2 ">
 				{/* Other players' playbooks - takes up ~60% width, shows up to 4 in a grid */}
 				{otherCharacters.length > 0 ? (
 					<div
