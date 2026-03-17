@@ -22,11 +22,11 @@ export function DiceIndicator({ playerId }: { playerId: string }) {
 
 	useEffect(() => {
 		if (!lastRoll || isSelf) return;
-		//zero is an impossible roll, we use it to indicate in process of rolling
-		if (lastRoll.roll === 0) {
+		//-1 is an impossible roll, we use it to indicate in process of rolling
+		if (lastRoll.roll === -1) {
 			setRolling(true);
 			setIsOpen(true);
-		} else if (lastRoll.roll !== 0) {
+		} else if (lastRoll.roll !== -1) {
 			setRolling(false);
 			setTimeout(() => {
 				setIsOpen(false);
@@ -152,9 +152,6 @@ export function AnswerQuestionDiceRollModal({
 	};
 
 	const handleRoll = () => {
-		//update timestamp immediately allows other players to see that you're "rolling"
-		//zero is an impossible roll, we use it to indicate in process of rolling
-
 		setTotal(null);
 		setBounceValue(false);
 		const initialDice = resetDice(2);
