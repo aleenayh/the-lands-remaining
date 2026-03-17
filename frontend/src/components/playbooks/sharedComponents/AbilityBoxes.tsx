@@ -115,13 +115,13 @@ function AbilityBox({ ability, value, abbreviate = false }: AbilityBoxProps) {
 
 	const handleRoll = () => {
 		//update timestamp immediately allows other players to see that you're "rolling"
-		//zero is an impossible roll, we use it to indicate in process of rolling
+		//-1 is an impossible roll, we use it to indicate in process of rolling
 		updateGameState({
 			players: gameState.players.map((player) =>
 				player.id === playerId
 					? {
 							...player,
-							lastRoll: { roll: 0, type: ability, timestamp: new Date() },
+							lastRoll: { roll: -1, type: ability, timestamp: new Date() },
 						}
 					: player,
 			),
