@@ -17,12 +17,14 @@ import type { Character } from "./types";
 export function PlaybookPane({ character }: { character: Character }) {
 	return (
 		<DecorativeBorder className="bg-theme-bg-primary flex flex-col gap-2">
-			<div className="w-full grid grid-cols-[.25fr_auto_.25fr] items-center border-b border-theme-border">
-				<DiceIndicator playerId={character.playerId} />
-				<h2 className="text-lg whitespace-normal text-balance font-bold text-theme-text-accent shrink-0 truncate mx-10">
+			<div className="w-full flex flex-col justify-center items-center border-b border-theme-border">
+				<h2 className="text-lg whitespace-normal text-balance font-bold text-theme-text-accent shrink-0 truncate mx-6">
 					{character.name}
 				</h2>
-				<PlayerPill playerId={character.playerId} />
+				<div className="w-full -mt-4 flex justify-between items-center">
+					<DiceIndicator playerId={character.playerId} />
+					<PlayerPill playerId={character.playerId} />
+				</div>
 			</div>
 			<div className="flex-1 overflow-y-auto overflow-x-hidden min-h-0 min-w-0 flex flex-col gap-0">
 				<Section title="Conditions">
