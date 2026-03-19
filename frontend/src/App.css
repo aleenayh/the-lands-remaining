@@ -207,6 +207,10 @@ body {
   color: white;
 }
 
+[type="button"] {
+  cursor: pointer;
+}
+
 h1,
 h2,
 h3,

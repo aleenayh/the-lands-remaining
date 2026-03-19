@@ -132,7 +132,7 @@ function CharacterCreationStarter({ onCollapse }: { onCollapse: () => void }) {
 							Play as Keeper (No Character)
 						</GlassyButton>
 					)}
-					<div className="flex flex-col md:grid md:grid-cols-2 gap-2 flex-1 overflow-y-auto md:flex-none">
+					<div className="flex flex-col md:grid md:grid-cols-2 gap-2 overflow-y-auto">
 						{Object.values(playbookKeys).map((playbookKey) => {
 							const base = playbookBases[playbookKey];
 							const activeEmber = activeEmbers.find(
