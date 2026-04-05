@@ -76,12 +76,16 @@ function LinesAndVeils() {
 			type === "line" ? lines.filter((line) => line !== text) : lines;
 		const newVeils =
 			type === "veil" ? veils.filter((veil) => veil !== text) : veils;
-		updateGameState({
-			safety: {
-				lines: newLines,
-				veils: newVeils,
-			},
-		});
+			const safety = 
+      {...newLines ? { lines: newLines } : {}, 
+      ...newVeils ? { veils: newVeils } : {}}
+    updateGameState({
+      ...gameState,
+      safety: {
+        ...gameState.safety,
+        ...safety,
+      },
+    })
 		toast.success(`${type === "line" ? "Line" : "Veil"} removed: ${text}`);
 	};
 
