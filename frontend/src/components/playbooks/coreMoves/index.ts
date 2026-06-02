@@ -3,6 +3,7 @@ import { type CoreMoveState, type playbookKey, playbookKeys } from "../types";
 import { CoreMoveCandleBearer } from "./CandleBearer";
 import { CoreMoveCrownsPearl } from "./CrownsPearl";
 import { CoreMoveCruxDruid } from "./CruxDruid";
+import { CoreMoveHallowedHeart } from "./HallowedHeart";
 import {
 	CoreMoveHowlingTroubadour,
 	moonStartPosition,
@@ -24,6 +25,7 @@ export const coreMoves: (
 		[playbookKeys.famisher]: CoreMoveLoneFamisher({ character }),
 		[playbookKeys.cruxDruid]: CoreMoveCruxDruid({ character }),
 		[playbookKeys.howlingTroubadour]: CoreMoveHowlingTroubadour({ character }),
+		[playbookKeys.hallowedHeart]: CoreMoveHallowedHeart({ character }),
 	};
 };
 
@@ -37,6 +39,7 @@ export const coreMoveTitles: Record<Exclude<playbookKey, "custom">, string> = {
 		"Do Not Let Me Hang Alone… & …Plant Me Where My Power Can Grow.",
 	[playbookKeys.howlingTroubadour]:
 		"Under Two Moons… & …In Service of the Wolf King…",
+	[playbookKeys.hallowedHeart]: "Rise now, Champion…",
 };
 
 export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
@@ -101,6 +104,11 @@ export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
 				type: "howling-troubadour",
 				moonPosition: moonStartPosition,
 				tinderBoxes: 0,
+			};
+		case playbookKeys.hallowedHeart:
+			return {
+				type: "hallowed-heart",
+				virtue: "",
 			};
 		case playbookKeys.custom:
 			return { type: "custom" };

@@ -64,21 +64,19 @@ export function AscendTheThroneModal() {
 						Ascend the Throne of the Old Capitol.
 					</Dialog.Description>
 					{step === "ascendText" && (
-						<div className="flex flex-col gap-4 overflow-y-auto max-h-[500px]">
-							{ascendTheThroneContent.map((line, index) => (
-								// biome-ignore lint/suspicious/noArrayIndexKey: text
-								<p key={index}>{parsedStrong(line)}</p>
-							))}
-							<div className="mx-auto w-1/3 gap-4 flex justify-center items-center">
-								<button
-									type="button"
-									className="bg-theme-bg-accent text-theme-text-primary rounded-md p-2"
-									onClick={() => setStep("confirm")}
-								>
-									Ascend
-								</button>
-							</div>
-						</div>
+						<>
+							{Array.isArray(ascendTheThroneContent) ? (
+								<AscendInteriorText
+									ascendTheThroneContent={ascendTheThroneContent}
+									setStep={setStep}
+								/>
+							) : (
+								<MultipleAscendInteriorTexts
+									ascendTheThroneContent={ascendTheThroneContent}
+									setStep={setStep}
+								/>
+							)}
+						</>
 					)}
 					{step === "confirm" && (
 						<div className="flex flex-col gap-4 overflow-y-auto max-h-[500px]">
@@ -132,6 +130,66 @@ export function AscendTheThroneModal() {
 				</Dialog.Content>
 			</Dialog.Portal>
 		</Dialog.Root>
+	);
+}
+
+function MultipleAscendInteriorTexts({
+	ascendTheThroneContent,
+	setStep,
+}: {
+	ascendTheThroneContent: Record<string, string[]>;
+	setStep: (step: "ascendText" | "confirm") => void;
+}) {
+	const options = Object.keys(ascendTheThroneContent);
+	const [ascendText, setAscendText] = useState<string[]>(
+		ascendTheThroneContent[options[0]],
+	);
+
+	return (
+		<div className="flex flex-col gap-4 overflow-y-auto max-h-[500px]">
+			<div className="flex gap-2 justify-center">
+				{options.map((option) => (
+					<button
+						type="button"
+						className={`w-full bg-theme-bg-accent text-sm text-theme-text-accent px-4 py-2 border rounded-lg opacity-80 hover:opacity-100 hover:bg-theme-bg-accent hover:text-theme-text-accent ${ascendText === ascendTheThroneContent[option] ? "font-bold border-theme-border-primary text-theme-accent bg-theme-bg-accent" : "border-transparent bg-theme-bg-primary"}`}
+						onClick={() => setAscendText(ascendTheThroneContent[option])}
+						key={option}
+					>
+						{option}
+					</button>
+				))}
+			</div>
+			<AscendInteriorText
+				ascendTheThroneContent={ascendText}
+				setStep={setStep}
+			/>
+		</div>
+	);
+}
+
+function AscendInteriorText({
+	ascendTheThroneContent,
+	setStep,
+}: {
+	ascendTheThroneContent: string[];
+	setStep: (step: "ascendText" | "confirm") => void;
+}) {
+	return (
+		<div className="flex flex-col gap-4 overflow-y-auto max-h-[500px]">
+			{ascendTheThroneContent.map((line, index) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: text
+				<p key={index}>{parsedStrong(line)}</p>
+			))}
+			<div className="mx-auto w-1/3 gap-4 flex justify-center items-center">
+				<button
+					type="button"
+					className="bg-theme-bg-accent text-theme-text-primary rounded-md p-2 opacity-80 border hover:opacity-100 hover:brightness-125 border-theme-border-primary"
+					onClick={() => setStep("confirm")}
+				>
+					Ascend
+				</button>
+			</div>
+		</div>
 	);
 }
 

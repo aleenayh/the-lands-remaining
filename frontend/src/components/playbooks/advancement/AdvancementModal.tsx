@@ -323,7 +323,7 @@ function MoveSelector({
 							onClick={() => setSelectedMove(move.title)}
 							type="button"
 							disabled={existingMoves.some((m) => m.title === move.title)}
-							className={`mx-auto text-center ${selectedMove === move.title ? "bg-theme-bg-accent text-theme-text-primary" : "bg-theme-bg-secondary text-theme-text-secondary"}`}
+							className={`mx-auto px-4 rounded-md text-center ${selectedMove === move.title ? "bg-theme-bg-accent text-theme-text-primary" : "bg-theme-bg-secondary text-theme-text-secondary"}`}
 						>
 							{move.title}
 						</button>

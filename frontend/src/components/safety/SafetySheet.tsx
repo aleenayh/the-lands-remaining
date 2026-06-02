@@ -76,16 +76,17 @@ function LinesAndVeils() {
 			type === "line" ? lines.filter((line) => line !== text) : lines;
 		const newVeils =
 			type === "veil" ? veils.filter((veil) => veil !== text) : veils;
-			const safety = 
-      {...newLines ? { lines: newLines } : {}, 
-      ...newVeils ? { veils: newVeils } : {}}
-    updateGameState({
-      ...gameState,
-      safety: {
-        ...gameState.safety,
-        ...safety,
-      },
-    })
+		const safety = {
+			...(newLines ? { lines: newLines } : {}),
+			...(newVeils ? { veils: newVeils } : {}),
+		};
+		updateGameState({
+			...gameState,
+			safety: {
+				...gameState.safety,
+				...safety,
+			},
+		});
 		toast.success(`${type === "line" ? "Line" : "Veil"} removed: ${text}`);
 	};
 
@@ -336,21 +337,21 @@ function ExplainerSections() {
 		<div className="w-full flex flex-col md:grid md:grid-cols-3 gap-2">
 			<button
 				type="button"
-				className="w-full bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100 hover:bg-theme-bg-accent-hover hover:text-theme-text-accent-hover"
+				className="w-full bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100 hover:bg-theme-bg-accent hover:text-theme-text-accent"
 				onClick={() => setView("open-door")}
 			>
 				Open Door Policy
 			</button>
 			<button
 				type="button"
-				className="w-full bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100 hover:bg-theme-bg-accent-hover hover:text-theme-text-accent-hover"
+				className="w-full bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100 hover:bg-theme-bg-accent hover:text-theme-text-accent"
 				onClick={() => setView("x-card")}
 			>
 				X-Card
 			</button>
 			<button
 				type="button"
-				className="w-full bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100 hover:bg-theme-bg-accent-hover hover:text-theme-text-accent-hover"
+				className="w-full bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100 hover:bg-theme-bg-accent hover:text-theme-text-accent"
 				onClick={() => setView("lines-veils")}
 			>
 				Lines and Veils

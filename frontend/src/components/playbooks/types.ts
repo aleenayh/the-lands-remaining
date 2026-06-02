@@ -59,7 +59,10 @@ export const playbookBaseSchema = z.object({
 	),
 	oldFire: z.array(z.string()),
 	fireToCome: z.record(z.enum(fireToComeKeysTuple), z.string()),
-	ascendTheThrone: z.array(z.string()),
+	ascendTheThrone: z.union([
+		z.array(z.string()),
+		z.record(z.string(), z.array(z.string())),
+	]),
 	moves: z.array(
 		z.object({
 			title: z.string(),
@@ -140,6 +143,10 @@ export const coreMoveStateSchema = z.discriminatedUnion("type", [
 		tinderBoxes: z.number().catch(0),
 	}),
 	z.object({
+		type: z.literal("hallowed-heart"),
+		virtue: z.string().catch(""),
+	}),
+	z.object({
 		type: z.literal("custom"),
 	}),
 ]);
@@ -155,6 +162,7 @@ export const playbookKeys = {
 	cruxDruid: "crux-druid",
 	howlingTroubadour: "howling-troubadour",
 	custom: "custom",
+	hallowedHeart: "hallowed-heart",
 } as const;
 
 const playbookKeysTuple = [
@@ -166,6 +174,7 @@ const playbookKeysTuple = [
 	"crux-druid",
 	"howling-troubadour",
 	"custom",
+	"hallowed-heart",
 ] as const;
 
 export type playbookKey = (typeof playbookKeys)[keyof typeof playbookKeys];
