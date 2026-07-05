@@ -149,7 +149,9 @@ function KnowsNoEqual({ character }: { character: Character }) {
 
 	return (
 		<div>
-			<h4>A Skyknight Knows No Equal…</h4>
+			<h3 className="text-sm font-bold text-theme-text-accent text-center">
+				A Skyknight Knows No Equal…
+			</h3>
 			{rivalName ? (
 				<p>
 					Your Rival in the Great Lord’s service, {rivalName}, plans, schemes,
@@ -264,7 +266,9 @@ function NameYourRival({ character }: { character: Character }) {
 function NotEvenAmongTheLordsAboveThem() {
 	return (
 		<div>
-			<h4>Not Even Among the Lords Above Them…</h4>
+			<h3 className="text-sm font-bold text-theme-text-accent text-center">
+				Not Even Among the Lords Above Them…
+			</h3>
 			<p>
 				Because of your prior proximity to the Lord and their plans, you can
 				more easily see the interconnected web being woven. When you Answer a
