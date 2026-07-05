@@ -147,6 +147,12 @@ export const coreMoveStateSchema = z.discriminatedUnion("type", [
 		virtue: z.string().catch(""),
 	}),
 	z.object({
+		type: z.literal("skynight"),
+		rivalName: z.string().catch(""),
+		rivalBoxes: z.array(z.boolean()).catch([false, false, false, false]),
+		fledglingName: z.string().catch(""),
+	}),
+	z.object({
 		type: z.literal("custom"),
 	}),
 ]);
@@ -161,8 +167,9 @@ export const playbookKeys = {
 	famisher: "famisher",
 	cruxDruid: "crux-druid",
 	howlingTroubadour: "howling-troubadour",
-	custom: "custom",
 	hallowedHeart: "hallowed-heart",
+	skynight: "skynight",
+	custom: "custom",
 } as const;
 
 const playbookKeysTuple = [
@@ -173,8 +180,9 @@ const playbookKeysTuple = [
 	"famisher",
 	"crux-druid",
 	"howling-troubadour",
-	"custom",
 	"hallowed-heart",
+	"skynight",
+	"custom",
 ] as const;
 
 export type playbookKey = (typeof playbookKeys)[keyof typeof playbookKeys];

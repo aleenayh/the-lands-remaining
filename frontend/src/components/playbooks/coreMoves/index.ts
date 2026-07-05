@@ -3,6 +3,7 @@ import { type CoreMoveState, type playbookKey, playbookKeys } from "../types";
 import { CoreMoveCandleBearer } from "./CandleBearer";
 import { CoreMoveCrownsPearl } from "./CrownsPearl";
 import { CoreMoveCruxDruid } from "./CruxDruid";
+import { CoreMoveFallenSkynight } from "./FallenSkynight";
 import { CoreMoveHallowedHeart } from "./HallowedHeart";
 import {
 	CoreMoveHowlingTroubadour,
@@ -26,6 +27,7 @@ export const coreMoves: (
 		[playbookKeys.cruxDruid]: CoreMoveCruxDruid({ character }),
 		[playbookKeys.howlingTroubadour]: CoreMoveHowlingTroubadour({ character }),
 		[playbookKeys.hallowedHeart]: CoreMoveHallowedHeart({ character }),
+		[playbookKeys.skynight]: CoreMoveFallenSkynight({ character }),
 	};
 };
 
@@ -40,6 +42,8 @@ export const coreMoveTitles: Record<Exclude<playbookKey, "custom">, string> = {
 	[playbookKeys.howlingTroubadour]:
 		"Under Two Moons… & …In Service of the Wolf King…",
 	[playbookKeys.hallowedHeart]: "Rise now, Champion…",
+	[playbookKeys.skynight]:
+		"A Skyknight Knows No Equal… & …Not Even Among the Lords Above Them…",
 };
 
 export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
@@ -109,6 +113,13 @@ export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
 			return {
 				type: "hallowed-heart",
 				virtue: "",
+			};
+		case playbookKeys.skynight:
+			return {
+				type: "skynight",
+				rivalName: "",
+				rivalBoxes: [false, false, false, false],
+				fledglingName: "",
 			};
 		case playbookKeys.custom:
 			return { type: "custom" };

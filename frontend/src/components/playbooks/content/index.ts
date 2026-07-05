@@ -8,6 +8,7 @@ import { fireToComeKeys, playbookKeys } from "../types";
 import { CandleBearer } from "./candle-bearer";
 import { CrownsPearl } from "./crowns-pearl";
 import { CruxDruid } from "./crux-druid";
+import { FallenSkynight } from "./fallen-skynight";
 import { HallowedHeart } from "./hallowed-heart";
 import { HowlingTroubadour } from "./howling-troubadour";
 import { LockAndKey } from "./lock-and-key";
@@ -55,6 +56,7 @@ export const playbookBases: Record<
 	[playbookKeys.cruxDruid]: CruxDruid,
 	[playbookKeys.howlingTroubadour]: HowlingTroubadour,
 	[playbookKeys.hallowedHeart]: HallowedHeart,
+	[playbookKeys.skynight]: FallenSkynight,
 	[playbookKeys.custom]: blankPlaybook,
 };
 
