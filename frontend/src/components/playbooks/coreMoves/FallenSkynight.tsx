@@ -66,6 +66,10 @@ function NameTheFledgling({ character }: { character: Character }) {
 							character: {
 								...player.character,
 								relics: newRelics,
+								coreMoveState: {
+									...coreMoveState,
+									fledglingName: data.fledglingName,
+								},
 							},
 						}
 					: player,
@@ -244,7 +248,7 @@ function NameYourRival({ character }: { character: Character }) {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
+		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
 			<p>
 				Your Rival in the Great Lord’s service, plans, schemes, and acts in the
 				background. They can appear whenever the Keeper chooses. Name them using
@@ -262,11 +266,7 @@ function NameYourRival({ character }: { character: Character }) {
 				Marcuria, the Star of Fury, the Pale Shrike, the Dragonslayer, the
 				Moons’ Chosen, the Rising Sun
 			</p>
-			<input
-				type="text"
-				placeholder="Name your Rival"
-				{...register("rivalName")}
-			/>
+			<input type="text" className="w-full" {...register("rivalName")} />
 			<button
 				type="submit"
 				className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100"
