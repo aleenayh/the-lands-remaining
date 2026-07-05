@@ -10,7 +10,6 @@ export function CoreMoveHallowedHeart({ character }: { character: Character }) {
 	const { coreMoveState } = character;
 
 	if (coreMoveState.type !== "hallowed-heart") return null;
-	console.log("virtue: ", coreMoveState.virtue);
 
 	return (
 		<div className="flex flex-col gap-2 text-left">
