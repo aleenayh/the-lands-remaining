@@ -137,7 +137,7 @@ function KnowsNoEqual({ character }: { character: Character }) {
 	if (coreMoveState.type !== "skynight") return null;
 	const { rivalName, rivalBoxes } = coreMoveState;
 	const hasPeerMove = character.moves.some(
-		(move) => move.title === "…Nor Even In Their Peers.",
+		(move) => move.title === "…Not Even In Their Peers.",
 	);
 
 	const toggleRivalBox = (index: number) => {
