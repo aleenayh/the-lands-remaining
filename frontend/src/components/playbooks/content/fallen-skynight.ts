@@ -56,7 +56,8 @@ export const FallenSkynight: PlaybookBase = {
 		"wild hair, too heavy with dirt to be stirred by the wind",
 		"an impressively long but fraying braid",
 		"goggles on your forehead, one lens cracked",
-		"eyes hidden behind a beastmaw visor you refuse to lift; moisture trails from the charcoal streak across your eyes and nose",
+		"eyes hidden behind a beastmaw visor you refuse to lift",
+		"moisture trails from the charcoal streak across your eyes and nose",
 		"dull eyes, the color of the unpleasant clouds",
 		"lopsided smirk that once shined with confidence",
 		"long, dusty scarf whipping in the wind",
@@ -180,7 +181,7 @@ export const FallenSkynight: PlaybookBase = {
 			],
 		},
 		{
-			title: "…Not Even In Their Peers.”",
+			title: "…Not Even In Their Peers.",
 			text: [
 				"Perhaps your aloof exterior encourages further exploration, or maybe it’s just the note in your voice. Whatever it is, people find your spark oddly magnetic. Add 1 to your Presence (max 3), but cross off a box from your Rival’s track; that box can no longer be marked. Roll with advantage when acting to throw someone off guard, discourage unwanted attention, or de-escalate a situation through patience and diplomacy. When you take this move, narrate a flashback to a time when you and the Rival trained in combat together. Who got the better of the other, and how?",
 			],

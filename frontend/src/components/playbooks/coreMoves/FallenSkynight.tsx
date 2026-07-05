@@ -67,38 +67,49 @@ function NameTheFledgling({ character }: { character: Character }) {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
-			<h4>Name the Fledgling</h4>
-			<input
-				type="text"
-				placeholder="Name the Fledgling"
-				{...register("fledglingName")}
-			/>
-			<p className="italic">
-				A juvenile airbeast, roughly the size of a large housecat, though it
-				will be much larger someday. For now, it can{" "}
-				<strong>glide short distances and carry small objects</strong>, but
-				mostly it takes long naps and chirrups when hungry, which is often.
-				Despite the fearsome mien of its older kin, many find its current
-				childlike curiosity and budding intelligence{" "}
-				<strong>quite adorable.</strong>
-			</p>
+			<h3 className="text-sm font-bold text-theme-text-accent text-center">
+				Name the Fledgling
+			</h3>
+			<div className="flex flex-col gap-2">
+				<p>
+					Pick one or choose a name related to its defining feature, its habits,
+					or the name of a dead monarch.
+				</p>
+				<p className="text-xs text-theme-text-secondary italic">
+					Beak, Redwing, Sting, Streak, Dash, Snow, Swift, Jade, Onyx, Pounce,
+					Smoke, Gambit, Queenie, Shadow, Stripes, Monarch, Neweh, Florra,
+					Patendo, Setast
+				</p>
+				<input type="text" className="w-full" {...register("fledglingName")} />
+				<p className="italic">
+					A juvenile airbeast, roughly the size of a large housecat, though it
+					will be much larger someday. For now, it can{" "}
+					<strong>glide short distances and carry small objects</strong>, but
+					mostly it takes long naps and chirrups when hungry, which is often.
+					Despite the fearsome mien of its older kin, many find its current
+					childlike curiosity and budding intelligence{" "}
+					<strong>quite adorable.</strong>
+				</p>
 
-			<p>
-				Give the Fledgling one more Aspect based on the kind of creature it is.
-				A wyvern might have a poisonous sting, a gryphon has rending talons, a
-				hippogriff might have unmatched speed and agility for one so small.
-			</p>
-			<input
-				type="text"
-				placeholder="Aspect the Fledgling"
-				{...register("fledglingAspect")}
-			/>
-			<button
-				type="submit"
-				className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100"
-			>
-				Confirm
-			</button>
+				<p>
+					Give the Fledgling one more Aspect based on the kind of creature it
+					is. A wyvern might have a poisonous sting, a gryphon has rending
+					talons, a hippogriff might have unmatched speed and agility for one so
+					small.
+				</p>
+				<input
+					type="text"
+					placeholder="add an aspect..."
+					className="w-full"
+					{...register("fledglingAspect")}
+				/>
+				<button
+					type="submit"
+					className="bg-theme-bg-accent text-theme-text-accent px-4 py-2 rounded-lg opacity-80 hover:opacity-100"
+				>
+					Confirm
+				</button>
+			</div>
 		</form>
 	);
 }
@@ -162,17 +173,19 @@ function KnowsNoEqual({ character }: { character: Character }) {
 				the Lord is defeated and the story continues, they will swear service to
 				the next Lord that promises them the power to defeat you.
 			</p>
-			{Array.from({ length: 4 }).map((_, index) => (
-				<input
-					key={`rivalBox-${index}`}
-					type="checkbox"
-					disabled={!editable || (index === 3 && hasPeerMove)}
-					checked={rivalBoxes[index] || (index === 3 && hasPeerMove)}
-					onChange={() => {
-						toggleRivalBox(index);
-					}}
-				/>
-			))}
+			<div className="w-full flex justify-center gap-2">
+				{Array.from({ length: 4 }).map((_, index) => (
+					<input
+						key={`rivalBox-${index}`}
+						type="checkbox"
+						disabled={!editable || (index === 3 && hasPeerMove)}
+						checked={rivalBoxes[index] || (index === 3 && hasPeerMove)}
+						onChange={() => {
+							toggleRivalBox(index);
+						}}
+					/>
+				))}
+			</div>
 			<p>
 				When you share a vulnerable moment with your Rival while performing your
 				Ritual, you may clear an appropriate Condition, and the Rival may ask
