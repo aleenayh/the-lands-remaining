@@ -49,7 +49,7 @@ function NameTheFledgling({ character }: { character: Character }) {
 		);
 		const newFledgling = {
 			title: `${data.fledglingName} the Fledgling`,
-			text: `A juvenile airbeast, roughly the size of a large housecat, though it will be much larger someday. For now, it can <aspect>glide short distances and carry small objects</aspect>, but mostly it takes long naps and chirrups when hungry, which is often. Despite the fearsome mien of its older kin, many find its current childlike curiosity and budding intelligence <aspect>quite adorable</aspect>. ${data.fledglingAspect}`,
+			text: `A juvenile airbeast, roughly the size of a large housecat, though it will be much larger someday. For now, it can <aspect>glide short distances and carry small objects</aspect>, but mostly it takes long naps and chirrups when hungry, which is often. Despite the fearsome mien of its older kin, many find its current childlike curiosity and budding intelligence <aspect>quite adorable</aspect>. <aspect>${data.fledglingAspect}</aspect>`,
 			extraLines: 3,
 			aspects: oldFledgling?.aspects || [],
 			type: "relic" as const,
