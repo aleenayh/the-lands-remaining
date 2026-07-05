@@ -44,21 +44,29 @@ function NameTheFledgling({ character }: { character: Character }) {
 		const oldRelics = character.relics.filter(
 			(relic) => relic.title !== "The Fledgling",
 		);
+		const oldFledgling = character.relics.find(
+			(relic) => relic.title === "The Fledgling",
+		);
 		const newFledgling = {
 			title: `${data.fledglingName} the Fledgling`,
 			text: `A juvenile airbeast, roughly the size of a large housecat, though it will be much larger someday. For now, it can <aspect>glide short distances and carry small objects</aspect>, but mostly it takes long naps and chirrups when hungry, which is often. Despite the fearsome mien of its older kin, many find its current childlike curiosity and budding intelligence <aspect>quite adorable</aspect>. ${data.fledglingAspect}`,
 			extraLines: 3,
-			type: "relic",
+			aspects: oldFledgling?.aspects || [],
+			type: "relic" as const,
+			atAlcove: oldFledgling?.atAlcove || false,
 		};
 		const newRelics = [...oldRelics, newFledgling];
 
 		updateGameState({
 			...gameState,
 			players: gameState.players.map((player) =>
-				player.id === id
+				player.id === id && player.character
 					? {
 							...player,
-							relics: newRelics,
+							character: {
+								...player.character,
+								relics: newRelics,
+							},
 						}
 					: player,
 			),
@@ -134,12 +142,15 @@ function KnowsNoEqual({ character }: { character: Character }) {
 		updateGameState({
 			...gameState,
 			players: gameState.players.map((player) =>
-				player.id === id
+				player.id === id && player.character
 					? {
 							...player,
-							coreMoveState: {
-								...coreMoveState,
-								rivalBoxes: newRivalBoxes,
+							character: {
+								...player.character,
+								coreMoveState: {
+									...coreMoveState,
+									rivalBoxes: newRivalBoxes,
+								},
 							},
 						}
 					: player,
@@ -216,12 +227,15 @@ function NameYourRival({ character }: { character: Character }) {
 		updateGameState({
 			...gameState,
 			players: gameState.players.map((player) =>
-				player.id === id
+				player.id === id && player.character
 					? {
 							...player,
-							coreMoveState: {
-								...coreMoveState,
-								rivalName: data.rivalName,
+							character: {
+								...player.character,
+								coreMoveState: {
+									...coreMoveState,
+									rivalName: data.rivalName,
+								},
 							},
 						}
 					: player,
