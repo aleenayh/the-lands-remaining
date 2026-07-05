@@ -78,7 +78,10 @@ function NameTheFledgling({ character }: { character: Character }) {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			className="flex flex-col gap-2 items-center text-left"
+		>
 			<h3 className="text-sm font-bold text-theme-text-accent text-center">
 				Name the Fledgling
 			</h3>
@@ -163,7 +166,7 @@ function KnowsNoEqual({ character }: { character: Character }) {
 	};
 
 	return (
-		<div>
+		<div className="flex flex-col gap-2 items-center text-left">
 			<h3 className="text-sm font-bold text-theme-text-accent text-center">
 				A Skyknight Knows No Equal…
 			</h3>
@@ -248,7 +251,10 @@ function NameYourRival({ character }: { character: Character }) {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			className="flex flex-col gap-2 items-center text-left"
+		>
 			<p>
 				Your Rival in the Great Lord’s service, plans, schemes, and acts in the
 				background. They can appear whenever the Keeper chooses. Name them using
@@ -279,7 +285,7 @@ function NameYourRival({ character }: { character: Character }) {
 
 function NotEvenAmongTheLordsAboveThem() {
 	return (
-		<div>
+		<div className="flex flex-col gap-2 items-center text-left">
 			<h3 className="text-sm font-bold text-theme-text-accent text-center">
 				Not Even Among the Lords Above Them…
 			</h3>
