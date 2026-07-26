@@ -13,6 +13,7 @@ import { Alcove } from "./Alcove";
 import { anchoresses } from "./content";
 import { ReactComponent as TowerIcon } from "./tower.svg";
 import type { AnchoressContent } from "./types";
+import { cleanBlockToSingleString } from "../shared/utils";
 
 export function TowerSheet({
 	isOpen,
@@ -155,7 +156,7 @@ function AddSupplicantForm({ onClose }: { onClose: () => void }) {
 	const onSubmit = (data: { supplicant: string; description: string }) => {
 		const newSupplicants = {
 			...gameState.tower.supplicants,
-			[data.supplicant]: data.description,
+			[data.supplicant]: cleanBlockToSingleString(data.description),
 		};
 		updateGameState({
 			tower: { ...gameState.tower, supplicants: newSupplicants },

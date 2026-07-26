@@ -10,6 +10,10 @@ import {
 	MysteryTheme,
 	type Question,
 } from "./types";
+import {
+	cleanBlockToSingleString,
+	cleanBlockToStringArrays,
+} from "../shared/utils";
 
 type AddMysteryFormInputs = {
 	title: string;
@@ -97,7 +101,9 @@ function CustomMysteryForm({
 	setIsOpen: (isOpen: boolean) => void;
 	mystery: Mystery | null;
 }) {
-	const [numberOfQuestions, setNumberOfQuestions] = useState(mystery?.questions?.length || 1);
+	const [numberOfQuestions, setNumberOfQuestions] = useState(
+		mystery?.questions?.length || 1,
+	);
 	const { register, handleSubmit, watch, reset, setValue } =
 		useForm<AddMysteryFormInputs>({
 			defaultValues: {
@@ -135,8 +141,13 @@ function CustomMysteryForm({
 			...mystery,
 			id: mystery?.id || generateMysteryId(),
 			title: data.title,
-			intro: data.intro.split("\n").filter((line) => line.trim() !== ""),
-			questions: data.questions,
+			intro: cleanBlockToStringArrays(data.intro),
+			questions: data.questions.map((q) => {
+				return {
+					...q,
+					opportunity: cleanBlockToSingleString(q.opportunity ?? ""),
+				};
+			}),
 			theme: data.theme,
 			countdownTotal: data.countdownTotal,
 			countdownCurrent: mystery?.countdownCurrent || 0,

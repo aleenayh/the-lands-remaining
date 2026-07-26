@@ -8,6 +8,10 @@ import { PlayerRole } from "../../../context/types";
 import { AbilityBoxes } from "../sharedComponents/AbilityBoxes";
 import type { Character } from "../types";
 import { constructAspectArray } from "./CharacterCreateForm";
+import {
+	cleanBlockToSingleString,
+	cleanBlockToStringArrays,
+} from "../../shared/utils";
 
 type CharacterCreateFormInputs = {
 	name: string;
@@ -771,10 +775,10 @@ function constructCustomCharacter(
 		cinders.map((_, index) => [index, false]),
 	);
 	const customTextFields = {
-		fireToComeDefinitions: fireToCome,
-		oldFireDefinitions: oldFire,
-		questionDefinitions: questions,
-		cinderDefinitions: cinders,
+		fireToComeDefinitions: cleanBlockToStringArrays(fireToCome),
+		oldFireDefinitions: cleanBlockToStringArrays(oldFire),
+		questionDefinitions: cleanBlockToStringArrays(questions),
+		cinderDefinitions: cleanBlockToStringArrays(cinders),
 	};
 	const oldFireRecord = Object.fromEntries(
 		oldFire.map((_, index) => [index, false]),
@@ -797,6 +801,7 @@ function constructCustomCharacter(
 		cinders: cindersRecord,
 		relics: relics.map((relic) => ({
 			...relic,
+			text: cleanBlockToSingleString(relic.text),
 			aspects: constructAspectArray([relic]),
 			atAlcove: false,
 		})),
@@ -851,7 +856,7 @@ function WriteMoveModal({
 	}) => {
 		const newMove = {
 			title: data.title,
-			text: parseAspects(data.text.split("\n")),
+			text: parseAspects(cleanBlockToStringArrays(data.text.split("\n"))),
 			checks: Array.from({ length: data.numberChecks }, () => 0),
 			lines: Array.from({ length: data.numberLines }, () => ""),
 		};
