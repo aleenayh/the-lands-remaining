@@ -102,7 +102,7 @@ export const LockAndKey: PlaybookBase = {
 	],
 	relics: [
 		{
-			title: "Burgular's Tools",
+			title: "Burglar's Tools",
 			text: "A bundle of tools in <aspect>a waterproof roll</aspect>, including <aspect>tar paper</aspect>, <aspect>a file & lockpicks</aspect>, and <aspect>a small mirror on an extendible handle</aspect>. ",
 			extraLines: 3,
 			type: "relic",

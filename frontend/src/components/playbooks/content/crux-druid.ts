@@ -93,9 +93,9 @@ export const CruxDruid: PlaybookBase = {
 	],
 	abilities: {
 		vitality: 0,
+		composure: 2,
 		reason: 0,
 		presence: 1,
-		composure: 2,
 		cinder: -2,
 	},
 	cinders: {

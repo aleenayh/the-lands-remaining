@@ -163,6 +163,7 @@ export const CrownsPearl: PlaybookBase = {
 			title: "…I Will Come When I Am Called…",
 			text: [
 				"When you mark someone in the style of the merfolk, say how you intend to do so. If it is a Side Character, roll the Light Move based on your appeal. If you intend to mark a fellow Ember, they simply have to accept it, but they take the mark as a Condition. Once a person is so marked, you can always hear them when they call your name.",
+				"Once per session, <i>when your name is called,</i> if you are near a source of water at least the size of a puddle the width of your shoulders, you may dive into it, emerging within seconds at the source of water nearest the caller, regardless of distance. Take your next roll with advantage.",
 			],
 		},
 		{
