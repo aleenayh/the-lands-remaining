@@ -155,6 +155,32 @@ export const coreMoveStateSchema = z.discriminatedUnion("type", [
 	z.object({
 		type: z.literal("custom"),
 	}),
+	z.object({
+		type: z.literal("storm-saint"),
+		boxes: z
+			.array(z.boolean())
+			.catch([
+				false,
+				false,
+				false,
+				false,
+				false,
+				false,
+				false,
+				false,
+				false,
+				false,
+				false,
+				false,
+			]),
+		emberBoxes: z.array(z.array(z.boolean())).catch([
+			[false, false, false],
+			[false, false, false],
+			[false, false, false],
+			[false, false, false],
+		]),
+		emberNames: z.array(z.string()).catch(["", "", "", ""]),
+	}),
 ]);
 
 export type CoreMoveState = z.infer<typeof coreMoveStateSchema>;
@@ -169,6 +195,7 @@ export const playbookKeys = {
 	howlingTroubadour: "howling-troubadour",
 	hallowedHeart: "hallowed-heart",
 	skynight: "skynight",
+	stormSaint: "storm-saint",
 	custom: "custom",
 } as const;
 
@@ -182,6 +209,7 @@ const playbookKeysTuple = [
 	"howling-troubadour",
 	"hallowed-heart",
 	"skynight",
+	"storm-saint",
 	"custom",
 ] as const;
 

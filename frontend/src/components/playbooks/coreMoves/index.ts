@@ -12,6 +12,7 @@ import {
 import { CoreMoveLockAndKey } from "./LockAndKey";
 import { CoreMoveLoneFamisher } from "./LoneFamisher";
 import { CoreMoveNameless, legionNames } from "./Nameless";
+import { CoreMoveStormSaint } from "./StormSaint";
 
 export const coreMoves: (
 	character: Character,
@@ -28,6 +29,7 @@ export const coreMoves: (
 		[playbookKeys.howlingTroubadour]: CoreMoveHowlingTroubadour({ character }),
 		[playbookKeys.hallowedHeart]: CoreMoveHallowedHeart({ character }),
 		[playbookKeys.skynight]: CoreMoveFallenSkynight({ character }),
+		[playbookKeys.stormSaint]: CoreMoveStormSaint({ character }),
 	};
 };
 
@@ -44,6 +46,7 @@ export const coreMoveTitles: Record<Exclude<playbookKey, "custom">, string> = {
 	[playbookKeys.hallowedHeart]: "Rise now, Champion…",
 	[playbookKeys.skynight]:
 		"A Skyknight Knows No Equal… & …Not Even Among the Lords Above Them…",
+	[playbookKeys.stormSaint]: "May the Sacred Storm preserve and protect…",
 };
 
 export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
@@ -120,6 +123,31 @@ export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
 				rivalName: "",
 				rivalBoxes: [false, false, false, false],
 				fledglingName: "",
+			};
+		case playbookKeys.stormSaint:
+			return {
+				type: "storm-saint",
+				boxes: [
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+				],
+				emberBoxes: [
+					[false, false, false],
+					[false, false, false],
+					[false, false, false],
+					[false, false, false],
+				],
+				emberNames: ["", "", "", ""],
 			};
 		case playbookKeys.custom:
 			return { type: "custom" };
