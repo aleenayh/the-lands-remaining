@@ -188,6 +188,7 @@ function AbilityBox({ ability, value, abbreviate = false }: AbilityBoxProps) {
 		if (!open) {
 			setBounceValue(false);
 			setTotal(null);
+			setRollType("regular");
 			setDice(resetDice(2));
 		}
 	};
