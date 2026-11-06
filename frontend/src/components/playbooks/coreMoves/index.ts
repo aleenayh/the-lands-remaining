@@ -147,7 +147,6 @@ export function generateCoreMoveState(playbookKey: playbookKey): CoreMoveState {
 					[false, false, false],
 					[false, false, false],
 				],
-				emberNames: ["", "", "", ""],
 			};
 		case playbookKeys.custom:
 			return { type: "custom" };

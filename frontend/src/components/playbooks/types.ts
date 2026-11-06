@@ -173,13 +173,7 @@ export const coreMoveStateSchema = z.discriminatedUnion("type", [
 				false,
 				false,
 			]),
-		emberBoxes: z.array(z.array(z.boolean())).catch([
-			[false, false, false],
-			[false, false, false],
-			[false, false, false],
-			[false, false, false],
-		]),
-		emberNames: z.array(z.string()).catch(["", "", "", ""]),
+		emberBoxes: z.array(z.array(z.boolean()).length(3)),
 	}),
 ]);
 

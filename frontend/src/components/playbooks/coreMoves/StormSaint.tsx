@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import { useGame } from "../../../context/GameContext";
 import type { Character } from "../types";
 
@@ -38,21 +37,76 @@ export function CoreMoveStormSaint({ character }: { character: Character }) {
 		});
 	};
 
-	const toggleEmberBox = (index: number) => {
+	const otherEmbersNames = gameState.players
+		.filter((player) => player.id !== character.playerId)
+		.map((player) => player.character?.name)
+		.filter(Boolean);
+
+	const toggleEmberBox = (emberIndex: number, index: number) => {
 		if (!editable) return;
 		if (coreMoveState.type !== "storm-saint") return;
+		const newEmberBoxes = { ...coreMoveState.emberBoxes };
+		newEmberBoxes[emberIndex][index] = !newEmberBoxes[emberIndex][index];
 
-		toast.error("Not implemented");
+		updateGameState({
+			players: gameState.players.map((player) =>
+				player.id === id
+					? {
+							...player,
+							character: {
+								...character,
+								coreMoveState: {
+									...coreMoveState,
+									emberBoxes: newEmberBoxes,
+								},
+							},
+						}
+					: player,
+			),
+		});
 	};
 
 	const toggleStormbound = () => {
 		if (!editable) return;
 		if (coreMoveState.type !== "storm-saint") return;
+		const characterState = gameState.players.find(
+			(player) => player.id === character.playerId,
+		)?.character;
+		if (!characterState) return;
 
-		toast.error("Not implemented");
+		const newConditions = stormbound
+			? characterState.conditions.filter((cond) => cond !== "Stormbound")
+			: ["Stormbound", ...characterState.conditions];
+		const newAbilities = stormbound
+			? {
+					...characterState.abilities,
+					composure: characterState.abilities.composure + 3,
+					cinder: characterState.abilities.cinder - 2,
+				}
+			: {
+					...characterState.abilities,
+					composure: characterState.abilities.composure - 3,
+					cinder: characterState.abilities.cinder + 2,
+				};
+
+		updateGameState({
+			players: gameState.players.map((player) =>
+				player.id === id
+					? {
+							...player,
+							character: {
+								...character,
+								conditions: newConditions,
+								abilities: newAbilities,
+							},
+						}
+					: player,
+			),
+		});
 	};
 
 	if (coreMoveState.type !== "storm-saint") return null;
+
 	return (
 		<div className="flex flex-col gap-2 text-left">
 			<h3 className="text-sm font-bold text-theme-text-accent text-center">
@@ -153,14 +207,16 @@ export function CoreMoveStormSaint({ character }: { character: Character }) {
 				is full.
 			</p>
 
-			{Array.from({ length: 4 }).map((_, index) => (
-				<div key={index}>
-					<p>{coreMoveState.emberNames[index]}</p>
+			{Array.from({ length: 4 }).map((_, emberIndex) => (
+				<div key={`emberline-${emberIndex}`} className="flex gap-2">
+					<p>{otherEmbersNames[emberIndex] || " "}</p>
 					{Array.from({ length: 3 }).map((_, index) => (
 						<input
-							key={index}
+							key={`checkbox-${index}`}
 							type="checkbox"
-							onChange={() => toggleEmberBox(index)}
+							defaultChecked={coreMoveState.emberBoxes[emberIndex][index]}
+							disabled={!editable}
+							onToggle={() => toggleEmberBox(emberIndex, index)}
 						/>
 					))}
 				</div>
