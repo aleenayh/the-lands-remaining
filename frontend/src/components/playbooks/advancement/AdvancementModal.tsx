@@ -6,7 +6,6 @@ import { useGame } from "../../../context/GameContext";
 import { usePreferences } from "../../../context/PreferencesContext";
 import { advancements, playbookBases } from "../content";
 import { coreMoveTitles } from "../coreMoves";
-import { constructAspectArray } from "../creation/CharacterCreateForm";
 import { orderAbilities } from "../sharedComponents/AbilityBoxes";
 import { type Abilities, type Character, playbookKeys } from "../types";
 import { parseStaticText } from "../utils";
@@ -469,13 +468,11 @@ function UnmarkAspects({
 	advancementIndex: number | null;
 }) {
 	const { gameState, updateGameState } = useGame();
-	const markedAspects =
-		gameState.players.find((player) => player.id === character.playerId)
-			?.character?.relicAspects ?? [];
-	const numberMarked =
-		markedAspects.filter((aspect) => aspect === 1).length || 0;
-
-	const playbook = playbookBases[character.playbook];
+	const allAspects =
+		gameState.players
+			.find((player) => player.id === character.playerId)
+			?.character?.relics.flatMap((equip) => equip.aspects) ?? [];
+	const numberMarked = allAspects.filter((aspect) => aspect === 1).length || 0;
 
 	const onConfirm = () => {
 		if (advancementIndex === null) {
@@ -485,7 +482,11 @@ function UnmarkAspects({
 			...character.advancements,
 			[advancementIndex]: true,
 		};
-		const newAspects = constructAspectArray(playbook.relics);
+		const newEquip = character.relics.map((relic) => ({
+			...relic,
+			aspects: relic.aspects.map((_) => 0),
+		}));
+
 		updateGameState({
 			players: gameState.players.map((player) =>
 				player.id === character.playerId
@@ -493,7 +494,7 @@ function UnmarkAspects({
 							...player,
 							character: {
 								...character,
-								relicAspects: newAspects,
+								relics: newEquip,
 								advancements: newAdvancements,
 							},
 						}
@@ -510,7 +511,10 @@ function UnmarkAspects({
 				Unmark Aspects
 			</h2>
 			<div className="h-6" />
-			<p>This will unmark {numberMarked} Aspects across all of your Relics.</p>
+			<p>
+				This will unmark {numberMarked} Aspects across all of your Relics and
+				Equipment.
+			</p>
 			<div className="h-6" />
 			<ConfirmChoice onClick={onConfirm} />
 		</div>
