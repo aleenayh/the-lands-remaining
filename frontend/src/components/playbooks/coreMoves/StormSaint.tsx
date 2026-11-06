@@ -207,7 +207,7 @@ export function CoreMoveStormSaint({ character }: { character: Character }) {
 				is full.
 			</p>
 
-			{Array.from({ length: 4 }).map((_, emberIndex) => (
+			{Array.from({ length: otherEmbersNames.length }).map((_, emberIndex) => (
 				<div key={`emberline-${emberIndex}`} className="flex gap-2">
 					<p>{otherEmbersNames[emberIndex] || " "}</p>
 					{Array.from({ length: 3 }).map((_, index) => (
@@ -216,7 +216,7 @@ export function CoreMoveStormSaint({ character }: { character: Character }) {
 							type="checkbox"
 							defaultChecked={coreMoveState.emberBoxes[emberIndex][index]}
 							disabled={!editable}
-							onToggle={() => toggleEmberBox(emberIndex, index)}
+							onChange={() => toggleEmberBox(emberIndex, index)}
 						/>
 					))}
 				</div>
