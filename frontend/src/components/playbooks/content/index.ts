@@ -14,6 +14,7 @@ import { HowlingTroubadour } from "./howling-troubadour";
 import { LockAndKey } from "./lock-and-key";
 import { LoneFamisher } from "./lone-famisher";
 import { Nameless } from "./nameless";
+import { StormSaint } from "./storm-saint";
 
 const blankPlaybook: PlaybookBase = {
 	title: "Community-Created Ember",
@@ -57,6 +58,7 @@ export const playbookBases: Record<
 	[playbookKeys.howlingTroubadour]: HowlingTroubadour,
 	[playbookKeys.hallowedHeart]: HallowedHeart,
 	[playbookKeys.skynight]: FallenSkynight,
+	[playbookKeys.stormSaint]: StormSaint,
 	[playbookKeys.custom]: blankPlaybook,
 };
 
