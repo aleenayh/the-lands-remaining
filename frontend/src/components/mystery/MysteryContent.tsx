@@ -23,6 +23,7 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 	const [questionToResolve, setQuestionToResolve] = useState<string | null>(
 		null,
 	);
+	const [removeClues, setRemoveClues] = useState(false);
 
 	const onToggle = (checked: boolean) => {
 		updateGameState({
@@ -53,13 +54,21 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 			toast.error("Something went wrong!");
 			return;
 		}
-		const newClues = mystery.clues
-			? mystery.clues.map((c) =>
+		const oldClues = mystery.clues
+			? mystery.clues
+			: [{ text: question, earned: false, explained: false, removed: true }];
+
+		const newClues = removeClues
+			? oldClues.map((c) =>
 					c.explained
 						? { ...c, earned: false, explained: false, removed: true }
 						: c,
 				)
-			: [{ text: question, earned: false, explained: false, removed: true }];
+			: oldClues.map((c) =>
+					c.explained
+						? { ...c, earned: true, explained: false, removed: true }
+						: c,
+				);
 		updateGameState({
 			mysteries: gameState.mysteries.map((m) =>
 				m.id === mystery.id
@@ -223,10 +232,18 @@ export function MysteryContent({ mystery }: { mystery: Mystery }) {
 						<Dialog.Description className="DialogDescription italic">
 							{questionToResolve}
 						</Dialog.Description>
+						<input
+							type="checkbox"
+							defaultChecked={removeClues}
+							onChange={(e) => setRemoveClues(e.target.checked)}
+						/>{" "}
+						Clear Clues for this Question?
 						<div className="text-sm text-theme-text-muted">
-							This will clear all clues marked "explained", listed below, as
-							well as the question itself. Other clues will remain for use in
-							subsequent questions.
+							Removing clues will clear all clues marked "explained", listed
+							below, as well as the question itself. Other clues will remain for
+							use in subsequent questions. Uncheck this box to remove only the
+							question and leave the clues visible with a{" "}
+							<span className="line-through">strikethrough</span>.
 						</div>
 						<ul className="flex flex-col ml-4 list-disc list-inside text-sm">
 							{mystery.clues
@@ -278,7 +295,12 @@ export function CountdownItem({
 
 function ClueSection({ mystery }: { mystery: Mystery }) {
 	const { updateGameState, gameState } = useGame();
-	const earnedClues = mystery.clues?.filter((clue) => clue.earned);
+	const earnedClues = mystery.clues?.filter(
+		(clue) => clue.earned && !clue.removed,
+	);
+	const strickenClues = mystery.clues?.filter(
+		(clue) => clue.removed && clue.earned,
+	);
 	const { register, handleSubmit, reset } = useForm<{ customClue: string }>();
 
 	const addCustomClue = (data: { customClue: string }) => {
@@ -382,6 +404,24 @@ function ClueSection({ mystery }: { mystery: Mystery }) {
 						No clues yet
 					</div>
 				)}
+				{strickenClues &&
+					strickenClues.length > 0 &&
+					strickenClues.map((clue) => (
+						<div
+							key={clue.text}
+							className="grid grid-cols-[20px_20px_1fr] gap-2 items-center w-full"
+						>
+							<input type="checkbox" checked={true} disabled />
+							<button
+								type="button"
+								className="text-xs text-theme-text-muted bg-theme-bg-primary rounded-full px-0 aspect-square hover:bg-theme-bg-accent hover:text-theme-text-accent hover:border hover:border-theme-border-accent"
+								onClick={() => removeClue(clue.text)}
+							>
+								X
+							</button>
+							<span className="text-left line-through">{clue.text}</span>
+						</div>
+					))}
 			</div>
 
 			<form
