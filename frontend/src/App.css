@@ -68,6 +68,34 @@
   --bg-image-mask: none;
 }
 
+[data-theme="taramand"] {
+  --color-bg-primary: hsl(171 30% 15%);
+  --color-bg-secondary: hsl(191 30% 20%);
+  --color-bg-accent: hsl(200 15% 30%);
+
+  --color-text-primary: hsl(171 20% 60%);
+  --color-text-secondary: hsl(220 80% 70%);
+  --color-text-muted: hsl(210 40% 70%);
+  --color-text-accent: hsl(171 60% 50%);
+
+  --color-border: hsl(191 80% 30%);
+  --color-border-accent: hsl(191 30% 60%);
+
+  --color-accent-primary: hsl(191 80% 60%);
+
+  --bg-image: url("../public/assets/backgrounds/waves-3.svg");
+  --bg-position: bottom left;
+  --bg-image-opacity: 0.4;
+  --bg-image-mask: linear-gradient(
+    to bottom right,
+    black 0%,
+    black 550px,
+    transparent 900px
+  );
+  --bg-size: auto 500px;
+  --bg-repeat: repeat-x;
+}
+
 [data-theme="sagravelle"] {
   --color-bg-primary: #250000;
   --color-bg-secondary: #5e2c00;

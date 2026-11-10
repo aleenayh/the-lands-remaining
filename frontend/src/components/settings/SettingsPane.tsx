@@ -123,6 +123,18 @@ function ThemeSelector() {
 					/>
 					Nevask
 				</label>
+				<label htmlFor={`${themeId}-taramand`} className="cursor-pointer">
+					<input
+						id={`${themeId}-taramand`}
+						type="radio"
+						value="taramand"
+						name="theme"
+						className="mr-2"
+						defaultChecked={initialTheme === "taramand"}
+						onChange={(e) => confirmTheme(e.target.value)}
+					/>
+					The Taramand Sea
+				</label>
 				<label htmlFor={`${themeId}-dark`} className="cursor-pointer">
 					<input
 						id={`${themeId}-dark`}
