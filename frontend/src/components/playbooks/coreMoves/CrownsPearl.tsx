@@ -95,15 +95,7 @@ export function CoreMoveCrownsPearl({ character }: { character: Character }) {
 			)}
 
 			<p>
-				When you attempt to reach out to someone else or someone attempts to
-				reach out to you as part of another move, you may withdraw or turn
-				inwards, and mark a box instead. If a Clue is discussed, you may not be
-				a part of that discussion. Instead, narrate a painful or nostalgic
-				sensory memory from your time as a married royal, no longer than a few
-				seconds. Examples might be the narrowing of eyes, the sour smell of
-				cooked fish, the feel of silk bedsheets, or something else. When all
-				boxes are full, cross out this move and clear Mute, and add The Song of
-				Storm and Silver to your Relics.
+			When someone tries to connect with you in an intimate way, you may withdraw or turn inwards and mark a box instead. Narrate a painful or nostalgic sensory memory from your time as a married royal, no longer than a few seconds. Examples might be the narrowing of eyes, the sour smell of cooked fish, the feel of silk bedsheets, or something else. When all boxes are full, cross out this move and clear Mute, and add The Song of Storm and Silver to your Relics.
 			</p>
 
 			<div className="w-full flex justify-center items-center gap-2">
