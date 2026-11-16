@@ -1,7 +1,7 @@
 import type { PlaybookBase } from "../types";
 
 export const FallenSkynight: PlaybookBase = {
-	title: "The Fallen Skynight",
+	title: "The Fallen Skyknight",
 	intro: [
 		"You soared across the endless blue skies on the back of one of the world’s great airbeasts, aiding the needy at times of peace, and reporting on enemy positions in times of war. Then came the Dimning, and you, like the other Embers, fell. The wyverns and griffons and greathawks, all the great airbeasts, vanished or went feral. When you awoke, you found yourself, in odd company: a Great Lord was gathering strength, and you, listless and forsaken, clung to their power for a time. They had promised what no one else could: a path back to the azure expanse that was taken from you—a clutch of juvenile airbeasts like the one you once rode.",
 		"You never learned the full extent of the Lord’s plans, but you learned enough to cut ties, and so you stole away with a fledgling just as it began to imprint on you. Now inseparable, the two of you made your way through the perilous mists and valleys, until you finally found yourself here, in the company of these other Embers. However, you were not the Lord’s only Skyknight-aspirant. They had in their company one other, who still wishes to see their plans come to fruition. They are now your Rival. They will do whatever it takes to bring you back into the fold.",
